@@ -1,27 +1,26 @@
 # Local Quick Planner
 
-Organize your day and projects in seconds, 100% local.
-
-## About
-
-Local Quick Planner is a tool designed to help you organize your daily tasks and project management without relying on cloud services. All your data stays on your local machine, ensuring privacy and quick access.
+Local Quick Planner is a lightweight Microsoft Planner–style board that runs entirely in your browser. All data lives in `localStorage` so your tasks stay on your machine.
 
 ## Features
+- **My Day** view with To Do, In Progress, Done columns
+- **My Tasks** Kanban board with Ideas, Backlog, In Progress, Done
+- Drag & drop powered by [dnd-kit](https://dndkit.com)
+- State management via [Zustand](https://github.com/pmndrs/zustand)
+- Export / Import JSON and clear all data
 
-🚧 Coming soon...
+## Tech Stack
+- Next.js (App Router) + React + TypeScript
+- Tailwind CSS
+- Zustand
+- dnd-kit
 
-## Getting Started
-
-🚧 Under development...
-
-## Privacy First
-
-This application is designed with privacy in mind. All your data is stored locally on your machine, giving you complete control over your information.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+## Quick Start
+```bash
+pnpm install
+pnpm dev
+```
+Then open http://localhost:3000 in your browser.
 
 ## License
-
-🚧 License information coming soon...
+[MIT](LICENSE)
