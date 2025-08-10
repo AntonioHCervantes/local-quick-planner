@@ -17,8 +17,8 @@ Local Quick Planner is a lightweight Microsoft Planner–style board that runs e
 
 ## Quick Start
 ```bash
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 Then open http://localhost:3000 in your browser.
 
