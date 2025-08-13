@@ -1,12 +1,12 @@
 'use client';
 import AddTask from '../../components/AddTask';
-import Board from '../../components/Board';
+import TaskList from '../../components/TaskList';
 
 export default function MyTasksPage() {
   return (
     <main>
       <AddTask />
-      <Board mode="kanban" />
+      <TaskList />
     </main>
   );
 }
