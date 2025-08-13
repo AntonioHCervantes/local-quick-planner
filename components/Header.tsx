@@ -78,21 +78,22 @@ export default function Header() {
         <div className="fixed inset-0 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-sm rounded bg-gray-900 p-6 text-center text-gray-100">
             <p className="mb-4">
-              Se recomienda que exporte el Dashboard para poder recuperar el
-              trabajo en cualquier momento importando el dashboard.
+              Are you sure you want to delete the dashboard? We recommend
+              exporting it so you can restore your work later by importing the
+              dashboard.
             </p>
             <div className="flex justify-center gap-2">
               <button
                 onClick={() => setShowConfirm(false)}
                 className="rounded bg-gray-700 px-3 py-1 hover:bg-gray-600 focus:bg-gray-600"
               >
-                Cancelar
+                Cancel
               </button>
               <button
                 onClick={handleDelete}
                 className="rounded bg-red-600 px-3 py-1 hover:bg-red-500 focus:bg-red-500"
               >
-                Eliminar
+                Delete
               </button>
             </div>
           </div>
