@@ -1,5 +1,5 @@
 'use client';
-import { CalendarPlus, CalendarX } from 'lucide-react';
+import { CalendarPlus, CalendarX, Trash2 } from 'lucide-react';
 import { useStore } from '../lib/store';
 import { Priority } from '../lib/types';
 
@@ -8,7 +8,14 @@ interface Props {
 }
 
 export default function TaskItem({ taskId }: Props) {
-  const { tasks, updateTask, tags: allTags, addTag, toggleMyDay } = useStore();
+  const {
+    tasks,
+    updateTask,
+    tags: allTags,
+    addTag,
+    toggleMyDay,
+    removeTask,
+  } = useStore();
   const task = tasks.find(t => t.id === taskId);
 
   if (!task) {
@@ -68,6 +75,13 @@ export default function TaskItem({ taskId }: Props) {
           ) : (
             <CalendarPlus className="h-4 w-4" />
           )}
+        </button>
+        <button
+          onClick={() => removeTask(task.id)}
+          aria-label="Delete task"
+          className="rounded bg-red-600 p-1 text-white hover:bg-red-700 focus:ring"
+        >
+          <Trash2 className="h-4 w-4" />
         </button>
       </div>
       <div className="flex items-center gap-2">
