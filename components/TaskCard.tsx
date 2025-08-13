@@ -46,7 +46,7 @@ export default function TaskCard({ task, dragOverlay = false }: Props) {
       style={style}
       {...attributes}
       {...listeners}
-      className={`bg-gray-800 rounded p-2 cursor-grab focus:outline-none focus:ring border-l-4 ${priorityColors[task.priority]}`}
+      className={`rounded border-l-4 p-2 cursor-grab focus:outline-none focus:ring bg-gray-100 dark:bg-gray-800 ${priorityColors[task.priority]}`}
     >
       <div className="flex items-center justify-between">
         <span>{task.title}</span>

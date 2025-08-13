@@ -77,7 +77,7 @@ export default function TaskItem({ taskId }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-2 rounded bg-gray-800 p-2">
+    <div className="flex flex-col gap-2 rounded bg-gray-100 p-2 dark:bg-gray-800">
       <div className="flex items-center gap-2">
         {isEditing ? (
           <input
@@ -85,7 +85,7 @@ export default function TaskItem({ taskId }: Props) {
             onChange={e => setTitle(e.target.value)}
             onBlur={saveTitle}
             onKeyDown={handleTitleKeyDown}
-            className="flex-1 rounded bg-gray-700 p-1 text-sm focus:ring"
+            className="flex-1 rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
             autoFocus
           />
         ) : (
@@ -103,7 +103,7 @@ export default function TaskItem({ taskId }: Props) {
               priority: e.target.value as Priority,
             })
           }
-          className="rounded bg-gray-700 p-1 text-sm focus:ring"
+          className="rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
         >
           <option value="low">Low</option>
           <option value="medium">Medium</option>
@@ -148,7 +148,7 @@ export default function TaskItem({ taskId }: Props) {
         </div>
         <input
           onKeyDown={handleTagInputChange}
-          className="flex-1 rounded bg-gray-700 p-1 text-sm focus:ring"
+          className="flex-1 rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
           placeholder="Add tag"
           list="existing-tags"
         />

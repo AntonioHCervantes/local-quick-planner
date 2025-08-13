@@ -7,9 +7,12 @@ export default function TasksView() {
   const store = useStore();
   return (
     <main>
-      <AddTask addTask={store.addTask} tags={store.tags} addTag={store.addTag} />
+      <AddTask
+        addTask={store.addTask}
+        tags={store.tags}
+        addTag={store.addTag}
+      />
       <TaskList tasks={store.tasks} />
     </main>
   );
 }
-

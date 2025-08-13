@@ -15,7 +15,9 @@ export default function TaskList({ tasks }: { tasks: Task[] }) {
         />
       ))}
       {sorted.length === 0 && (
-        <p className="text-center text-sm text-gray-400">No tasks</p>
+        <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+          No tasks
+        </p>
       )}
     </div>
   );
