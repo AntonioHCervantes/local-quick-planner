@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
-import { Download, Upload, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { Download, Upload, Trash2, Sun, Moon } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useStore } from '../lib/store';
 
 export default function Header() {
@@ -11,6 +11,24 @@ export default function Header() {
   const handleDelete = () => {
     clearAll();
     setShowConfirm(false);
+  };
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+
+  useEffect(() => {
+    const stored = localStorage.getItem('theme');
+    if (stored === 'light' || stored === 'dark') {
+      setTheme(stored);
+      document.documentElement.classList.toggle('dark', stored === 'dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    document.documentElement.classList.toggle('dark', next === 'dark');
+    localStorage.setItem('theme', next);
   };
 
   const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +48,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="flex items-center justify-between bg-gray-950 px-4 py-2">
+      <header className="flex items-center justify-between bg-gray-100 px-4 py-2 dark:bg-gray-950">
         <nav className="flex gap-4">
           <Link
             href="/my-day"
@@ -49,13 +67,13 @@ export default function Header() {
           <button
             onClick={exportData}
             aria-label="Export"
-            className="p-2 rounded hover:bg-gray-800 focus:bg-gray-800"
+            className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
           >
             <Download className="h-4 w-4" />
           </button>
           <label
             aria-label="Import"
-            className="p-2 rounded hover:bg-gray-800 focus-within:bg-gray-800 cursor-pointer"
+            className="cursor-pointer rounded p-2 hover:bg-gray-200 focus-within:bg-gray-200 dark:hover:bg-gray-800 dark:focus-within:bg-gray-800"
           >
             <Upload className="h-4 w-4" />
             <input
@@ -68,9 +86,20 @@ export default function Header() {
           <button
             onClick={() => setShowConfirm(true)}
             aria-label="Clear all"
-            className="p-2 rounded hover:bg-gray-800 focus:bg-gray-800"
+            className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
           >
             <Trash2 className="h-4 w-4" />
+          </button>
+          <button
+            onClick={toggleTheme}
+            aria-label="Toggle theme"
+            className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
+          >
+            {theme === 'dark' ? (
+              <Sun className="h-4 w-4" />
+            ) : (
+              <Moon className="h-4 w-4" />
+            )}
           </button>
         </div>
       </header>
