@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import { CalendarPlus, CalendarX, Trash2 } from 'lucide-react';
 import { useStore } from '../lib/store';
 import { Priority } from '../lib/types';
@@ -17,6 +18,8 @@ export default function TaskItem({ taskId }: Props) {
     removeTask,
   } = useStore();
   const task = tasks.find(t => t.id === taskId);
+  const [isEditing, setIsEditing] = useState(false);
+  const [title, setTitle] = useState(task?.title ?? '');
 
   if (!task) {
     return null;
@@ -48,10 +51,51 @@ export default function TaskItem({ taskId }: Props) {
     return tag ? tag.color : '#ccc';
   };
 
+  const startEditing = () => {
+    setTitle(task.title);
+    setIsEditing(true);
+  };
+
+  const saveTitle = () => {
+    const newTitle = title.trim();
+    if (newTitle && newTitle !== task.title) {
+      updateTask(task.id, { title: newTitle });
+    } else {
+      setTitle(task.title);
+    }
+    setIsEditing(false);
+  };
+
+  const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      saveTitle();
+    } else if (e.key === 'Escape') {
+      setTitle(task.title);
+      setIsEditing(false);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-2 rounded bg-gray-800 p-2">
       <div className="flex items-center gap-2">
-        <p className="flex-1">{task.title}</p>
+        {isEditing ? (
+          <input
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            onBlur={saveTitle}
+            onKeyDown={handleTitleKeyDown}
+            className="flex-1 rounded bg-gray-700 p-1 text-sm focus:ring"
+            autoFocus
+          />
+        ) : (
+          <p
+            className="flex-1"
+            onClick={startEditing}
+          >
+            {task.title}
+          </p>
+        )}
         <select
           value={task.priority ?? ''}
           onChange={e =>
