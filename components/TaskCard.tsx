@@ -7,6 +7,7 @@ import { useStore } from '../lib/store';
 
 interface Props {
   task: Task;
+  dragOverlay?: boolean;
 }
 
 const priorityColors = {
@@ -15,12 +16,18 @@ const priorityColors = {
   high: 'border-l-red-500',
 };
 
-export default function TaskCard({ task }: Props) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: task.id });
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
+export default function TaskCard({ task, dragOverlay = false }: Props) {
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({
+      id: task.id,
+      disabled: dragOverlay,
+    });
+  const style = dragOverlay
+    ? undefined
+    : {
+        transform: CSS.Transform.toString(transform),
+        transition,
+      };
   const { moveTask, tags: allTags } = useStore();
   const markDone = () => {
     if (task.dayStatus !== 'done') {
@@ -45,18 +52,29 @@ export default function TaskCard({ task }: Props) {
         <span>{task.title}</span>
         <div className="flex items-center gap-2">
           {task.dayStatus !== 'done' && (
-            <button onClick={markDone} aria-label="Mark as done" className="text-green-400 hover:text-green-500">
+            <button
+              onClick={markDone}
+              aria-label="Mark as done"
+              className="text-green-400 hover:text-green-500"
+            >
               <Check className="h-4 w-4" />
             </button>
           )}
-          <button aria-label="Edit task" className="text-gray-400 hover:text-gray-200">
+          <button
+            aria-label="Edit task"
+            className="text-gray-400 hover:text-gray-200"
+          >
             <Edit className="h-4 w-4" />
           </button>
         </div>
       </div>
       <div className="mt-2 flex flex-wrap gap-1">
         {task.tags?.map(tag => (
-          <span key={tag} style={{ backgroundColor: getTagColor(tag) }} className="text-xs px-2 py-1 rounded-full">
+          <span
+            key={tag}
+            style={{ backgroundColor: getTagColor(tag) }}
+            className="text-xs px-2 py-1 rounded-full"
+          >
             {tag}
           </span>
         ))}
