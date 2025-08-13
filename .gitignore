@@ -5,3 +5,5 @@ out
 pnpm-lock.yaml
 .DS_Store
 tsconfig.tsbuildinfo
+.gemini/
+*.swp

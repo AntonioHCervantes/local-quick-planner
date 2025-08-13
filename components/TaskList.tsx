@@ -1,9 +1,8 @@
 'use client';
 import TaskItem from './TaskItem';
-import { useStore } from '../lib/store';
+import { Task } from '../lib/types';
 
-export default function TaskList() {
-  const { tasks } = useStore();
+export default function TaskList({ tasks }: { tasks: Task[] }) {
   const sorted = [...tasks].sort(
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   );
@@ -12,7 +11,7 @@ export default function TaskList() {
       {sorted.map(task => (
         <TaskItem
           key={task.id}
-          task={task}
+          taskId={task.id}
         />
       ))}
       {sorted.length === 0 && (

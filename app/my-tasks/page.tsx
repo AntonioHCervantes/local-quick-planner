@@ -1,12 +1,7 @@
-'use client';
-import AddTask from '../../components/AddTask';
-import TaskList from '../../components/TaskList';
+import dynamic from 'next/dynamic'
+
+const TasksView = dynamic(() => import('../../components/TasksView'), { ssr: false })
 
 export default function MyTasksPage() {
-  return (
-    <main>
-      <AddTask />
-      <TaskList />
-    </main>
-  );
+  return <TasksView />
 }

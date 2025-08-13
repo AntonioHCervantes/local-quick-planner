@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { PersistedState, Task, List } from './types';
+import { PersistedState, Task, List, Tag, Priority } from './types';
 import { loadState, saveState } from './storage';
 
 const defaultLists: List[] = [
@@ -12,6 +12,7 @@ const defaultLists: List[] = [
 const defaultState: PersistedState = {
   tasks: [],
   lists: defaultLists,
+  tags: [],
   order: {
     'list-ideas': [],
     'list-backlog': [],
@@ -21,15 +22,16 @@ const defaultState: PersistedState = {
     'day-doing': [],
     'day-done': [],
   },
-  version: 1,
+  version: 2,
 };
 
 type Store = PersistedState & {
   addTask: (input: {
     title: string;
-    listId?: string;
-    plannedFor?: string;
+    tags: string[];
+    priority: Priority;
   }) => void;
+  addTag: (tag: Tag) => void;
   updateTask: (id: string, patch: Partial<Task>) => void;
   removeTask: (id: string) => void;
   moveTask: (
@@ -50,27 +52,50 @@ type Store = PersistedState & {
 
 const persisted = loadState();
 
+if (persisted) {
+  if (!persisted.tags) {
+    persisted.tags = [];
+  }
+  if (persisted.version < 3) {
+    persisted.tasks.forEach(task => {
+      if (!task.tags) {
+        task.tags = [];
+      }
+      if (!task.priority) {
+        (task as any).priority = 'medium';
+      }
+    });
+    persisted.version = 3;
+  }
+}
+
 export const useStore = create<Store>((set, get) => ({
   ...(persisted ?? defaultState),
-  addTask: ({ title, listId = 'ideas', plannedFor }) => {
+  addTask: ({ title, tags, priority }) => {
     const id = crypto.randomUUID();
     const task: Task = {
       id,
       title,
       createdAt: new Date().toISOString(),
-      listId,
-      plannedFor: plannedFor ?? null,
-      dayStatus: plannedFor ? 'todo' : undefined,
+      listId: 'backlog',
+      plannedFor: null,
+      tags,
+      priority,
     };
     set(state => {
       const newOrder = { ...state.order };
-      const listKey = `list-${listId}`;
+      const listKey = `list-backlog`;
       newOrder[listKey] = [...(newOrder[listKey] || []), id];
-      if (task.dayStatus) {
-        const dayKey = `day-${task.dayStatus}`;
-        newOrder[dayKey] = [...(newOrder[dayKey] || []), id];
-      }
       return { tasks: [...state.tasks, task], order: newOrder };
+    });
+    saveState(get());
+  },
+  addTag: tag => {
+    set(state => {
+      if (state.tags.find(t => t.label === tag.label)) {
+        return state;
+      }
+      return { tags: [...state.tags, tag] };
     });
     saveState(get());
   },
