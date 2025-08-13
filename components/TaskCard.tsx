@@ -1,7 +1,7 @@
 'use client';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { Check, Edit } from 'lucide-react';
+import { Check } from 'lucide-react';
 import { Task } from '../lib/types';
 import { useStore } from '../lib/store';
 
@@ -60,12 +60,6 @@ export default function TaskCard({ task, dragOverlay = false }: Props) {
               <Check className="h-4 w-4" />
             </button>
           )}
-          <button
-            aria-label="Edit task"
-            className="text-gray-400 hover:text-gray-200"
-          >
-            <Edit className="h-4 w-4" />
-          </button>
         </div>
       </div>
       <div className="mt-2 flex flex-wrap gap-1">
