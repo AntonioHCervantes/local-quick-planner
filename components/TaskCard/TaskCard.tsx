@@ -1,5 +1,5 @@
 'use client';
-import { Check } from 'lucide-react';
+import { Check, Trash2 } from 'lucide-react';
 import useTaskCard, { UseTaskCardProps } from './useTaskCard';
 
 const priorityColors = {
@@ -11,8 +11,8 @@ const priorityColors = {
 export default function TaskCard(props: UseTaskCardProps) {
   const { state, actions } = useTaskCard(props);
   const { attributes, listeners, setNodeRef, style, t } = state;
-  const { markDone, getTagColor } = actions;
-  const { task } = props;
+  const { markDone, getTagColor, deleteTask } = actions;
+  const { task, mode } = props;
 
   return (
     <div
@@ -32,6 +32,15 @@ export default function TaskCard(props: UseTaskCardProps) {
               className="text-green-400 hover:text-green-500"
             >
               <Check className="h-4 w-4" />
+            </button>
+          )}
+          {mode === 'my-day' && task.dayStatus === 'done' && (
+            <button
+              onClick={deleteTask}
+              aria-label={t('taskCard.deleteTask')}
+              className="text-red-400 hover:text-red-500"
+            >
+              <Trash2 className="h-4 w-4" />
             </button>
           )}
         </div>

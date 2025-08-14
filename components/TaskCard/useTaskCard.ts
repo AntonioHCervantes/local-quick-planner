@@ -8,6 +8,7 @@ import { useI18n } from '../../lib/i18n';
 export interface UseTaskCardProps {
   task: Task;
   dragOverlay?: boolean;
+  mode?: 'my-day' | 'kanban';
 }
 
 export default function useTaskCard({
@@ -25,13 +26,17 @@ export default function useTaskCard({
         transform: CSS.Transform.toString(transform),
         transition,
       };
-  const { moveTask, tags: allTags } = useStore();
+  const { moveTask, removeTask, tags: allTags } = useStore();
   const { t } = useI18n();
 
   const markDone = () => {
     if (task.dayStatus !== 'done') {
       moveTask(task.id, { dayStatus: 'done' });
     }
+  };
+
+  const deleteTask = () => {
+    removeTask(task.id);
   };
 
   const getTagColor = (tagLabel: string) => {
@@ -41,6 +46,6 @@ export default function useTaskCard({
 
   return {
     state: { attributes, listeners, setNodeRef, style, t, allTags },
-    actions: { markDone, getTagColor },
+    actions: { markDone, getTagColor, deleteTask },
   } as const;
 }
