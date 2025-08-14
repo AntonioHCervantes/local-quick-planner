@@ -1,5 +1,5 @@
 'use client';
-import { CalendarPlus, CalendarX, Trash2 } from 'lucide-react';
+import { CalendarPlus, CalendarX, Trash2, Sun } from 'lucide-react';
 import { Priority } from '../../lib/types';
 import { useI18n } from '../../lib/i18n';
 import useTaskItem, { UseTaskItemProps } from './useTaskItem';
@@ -26,7 +26,13 @@ export default function TaskItem({ taskId }: UseTaskItemProps) {
   }
 
   return (
-    <div className="flex flex-col gap-2 rounded bg-gray-100 p-2 dark:bg-gray-800">
+    <div
+      className={`flex flex-col gap-2 rounded p-2 ${
+        task.plannedFor
+          ? 'bg-yellow-100 dark:bg-yellow-900'
+          : 'bg-gray-100 dark:bg-gray-800'
+      }`}
+    >
       <div className="flex items-center gap-2">
         {isEditing ? (
           <input
@@ -39,9 +45,10 @@ export default function TaskItem({ taskId }: UseTaskItemProps) {
           />
         ) : (
           <p
-            className="flex-1"
+            className="flex flex-1 items-center gap-1"
             onClick={startEditing}
           >
+            {task.plannedFor && <Sun className="h-4 w-4 text-yellow-500" />}
             {task.title}
           </p>
         )}
@@ -63,7 +70,11 @@ export default function TaskItem({ taskId }: UseTaskItemProps) {
           aria-label={
             task.plannedFor ? t('taskItem.removeMyDay') : t('taskItem.addMyDay')
           }
-          className="rounded bg-blue-600 p-1 text-white hover:bg-blue-700 focus:ring"
+          className={`rounded p-1 focus:ring ${
+            task.plannedFor
+              ? 'bg-yellow-500 text-black hover:bg-yellow-600'
+              : 'bg-blue-600 text-white hover:bg-blue-700'
+          }`}
         >
           {task.plannedFor ? (
             <CalendarX className="h-4 w-4" />
