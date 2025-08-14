@@ -40,7 +40,10 @@ const translations: Record<Language, any> = {
       priorityLabel: 'Priority',
       addButton: 'Add',
     },
-    taskCard: { markDone: 'Mark as done' },
+    taskCard: {
+      markDone: 'Mark as done',
+      deleteTask: 'Delete task',
+    },
     taskItem: {
       removeMyDay: 'Remove from My Day',
       addMyDay: 'Add to My Day',
@@ -81,7 +84,10 @@ const translations: Record<Language, any> = {
       priorityLabel: 'Prioridad',
       addButton: 'Añadir',
     },
-    taskCard: { markDone: 'Marcar como completada' },
+    taskCard: {
+      markDone: 'Marcar como completada',
+      deleteTask: 'Eliminar tarea',
+    },
     taskItem: {
       removeMyDay: 'Quitar de Mi Día',
       addMyDay: 'Agregar a Mi Día',

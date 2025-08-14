@@ -1,5 +1,5 @@
 'use client';
-import { Check } from 'lucide-react';
+import { Check, Trash2 } from 'lucide-react';
 import useTaskCard, { UseTaskCardProps } from './useTaskCard';
 
 const priorityColors = {
@@ -11,8 +11,8 @@ const priorityColors = {
 export default function TaskCard(props: UseTaskCardProps) {
   const { state, actions } = useTaskCard(props);
   const { attributes, listeners, setNodeRef, style, t } = state;
-  const { markDone, getTagColor } = actions;
-  const { task } = props;
+  const { markDone, getTagColor, deleteTask } = actions;
+  const { task, mode } = props;
 
   return (
     <div
@@ -22,8 +22,14 @@ export default function TaskCard(props: UseTaskCardProps) {
       {...listeners}
       className={`rounded border-l-4 p-4 cursor-grab focus:outline-none focus:ring bg-gray-100 dark:bg-gray-800 ${priorityColors[task.priority]}`}
     >
-      <div className="flex items-center justify-between">
-        <span>{task.title}</span>
+      <div
+        className={`flex justify-between ${
+          mode === 'my-day' && task.dayStatus === 'done'
+            ? 'items-start'
+            : 'items-center'
+        }`}
+      >
+        <span className="flex-1 mr-2">{task.title}</span>
         <div className="flex items-center gap-2">
           {task.dayStatus !== 'done' && (
             <button
@@ -32,6 +38,15 @@ export default function TaskCard(props: UseTaskCardProps) {
               className="text-green-400 hover:text-green-500"
             >
               <Check className="h-4 w-4" />
+            </button>
+          )}
+          {mode === 'my-day' && task.dayStatus === 'done' && (
+            <button
+              onClick={deleteTask}
+              aria-label={t('taskCard.deleteTask')}
+              className="text-red-400 hover:text-red-500"
+            >
+              <Trash2 className="h-4 w-4" />
             </button>
           )}
         </div>

@@ -33,6 +33,7 @@ export default function Column({ id, title, tasks, mode }: ColumnProps) {
             <TaskCard
               key={task.id}
               task={task}
+              mode={mode}
             />
           ))}
         </div>
