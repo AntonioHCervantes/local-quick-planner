@@ -1,5 +1,5 @@
 'use client';
-import { CalendarPlus, CalendarX, Trash2, Sun } from 'lucide-react';
+import { CalendarPlus, CalendarX, Trash2 } from 'lucide-react';
 import { Priority } from '../../lib/types';
 import { useI18n } from '../../lib/i18n';
 import useTaskItem, { UseTaskItemProps } from './useTaskItem';
@@ -29,7 +29,7 @@ export default function TaskItem({ taskId }: UseTaskItemProps) {
     <div
       className={`flex flex-col gap-2 rounded p-2 ${
         task.plannedFor
-          ? 'bg-yellow-100 dark:bg-yellow-900'
+          ? 'bg-yellow-100 dark:bg-[#bb871e]'
           : 'bg-gray-100 dark:bg-gray-800'
       }`}
     >
@@ -45,10 +45,9 @@ export default function TaskItem({ taskId }: UseTaskItemProps) {
           />
         ) : (
           <p
-            className="flex flex-1 items-center gap-1"
+            className="flex-1"
             onClick={startEditing}
           >
-            {task.plannedFor && <Sun className="h-4 w-4 text-yellow-500" />}
             {task.title}
           </p>
         )}
