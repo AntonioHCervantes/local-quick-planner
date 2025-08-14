@@ -26,7 +26,7 @@ export default function Header() {
             className="flex items-center hover:underline focus:underline"
           >
             {t('nav.myDay')}
-            <span className="ml-1 rounded-full bg-blue-600 px-2 py-0.5 text-xs text-white">
+            <span className="ml-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs text-current dark:bg-[#bb871e]">
               {myDayCount}
             </span>
           </Link>
