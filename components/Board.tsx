@@ -105,6 +105,7 @@ export default function Board({ mode }: BoardProps) {
             id={col.id}
             title={col.title}
             tasks={getTasks(col.id)}
+            mode={mode}
           />
         ))}
       </div>
