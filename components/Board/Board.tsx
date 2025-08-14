@@ -1,7 +1,7 @@
 'use client';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
-import Column from '../Column';
-import TaskCard from '../TaskCard';
+import Column from '../Column/Column';
+import TaskCard from '../TaskCard/TaskCard';
 import useBoard, { UseBoardProps } from './useBoard';
 
 export default function Board(props: UseBoardProps) {

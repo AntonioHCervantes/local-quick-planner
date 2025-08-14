@@ -4,7 +4,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { Task } from '../../lib/types';
-import TaskCard from '../TaskCard';
+import TaskCard from '../TaskCard/TaskCard';
 import useColumn, { UseColumnProps } from './useColumn';
 
 interface ColumnProps extends UseColumnProps {

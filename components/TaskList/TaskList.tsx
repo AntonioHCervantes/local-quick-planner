@@ -1,5 +1,5 @@
 'use client';
-import TaskItem from '../TaskItem';
+import TaskItem from '../TaskItem/TaskItem';
 import { useI18n } from '../../lib/i18n';
 import useTaskList, { UseTaskListProps } from './useTaskList';
 

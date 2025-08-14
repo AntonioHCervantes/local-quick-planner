@@ -1,6 +1,6 @@
 'use client';
-import AddTask from '../AddTask';
-import TaskList from '../TaskList';
+import AddTask from '../AddTask/AddTask';
+import TaskList from '../TaskList/TaskList';
 import useTasksView from './useTasksView';
 
 export default function TasksView() {
