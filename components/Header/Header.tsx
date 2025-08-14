@@ -6,7 +6,7 @@ import useHeader from './useHeader';
 
 export default function Header() {
   const { state, actions } = useHeader();
-  const { showConfirm, showLang, theme, t, language } = state;
+  const { showConfirm, showLang, theme, t, language, myDayCount } = state;
   const {
     exportData,
     setShowConfirm,
@@ -23,9 +23,12 @@ export default function Header() {
         <nav className="flex gap-4">
           <Link
             href="/my-day"
-            className="hover:underline focus:underline"
+            className="flex items-center hover:underline focus:underline"
           >
             {t('nav.myDay')}
+            <span className="ml-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs text-current dark:bg-[#bb871e]">
+              {myDayCount}
+            </span>
           </Link>
           <Link
             href="/my-tasks"

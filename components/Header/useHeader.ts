@@ -4,11 +4,18 @@ import { useStore } from '../../lib/store';
 import { useI18n } from '../../lib/i18n';
 
 export default function useHeader() {
-  const { exportData, importData, clearAll } = useStore();
+  const { tasks, exportData, importData, clearAll } = useStore(state => ({
+    tasks: state.tasks,
+    exportData: state.exportData,
+    importData: state.importData,
+    clearAll: state.clearAll,
+  }));
   const { t, language, setLanguage } = useI18n();
   const [showConfirm, setShowConfirm] = useState(false);
   const [showLang, setShowLang] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const today = new Date().toISOString().slice(0, 10);
+  const myDayCount = tasks.filter(t => t.plannedFor === today).length;
 
   useEffect(() => {
     const stored = localStorage.getItem('theme');
@@ -48,7 +55,7 @@ export default function useHeader() {
   };
 
   return {
-    state: { showConfirm, showLang, theme, t, language },
+    state: { showConfirm, showLang, theme, t, language, myDayCount },
     actions: {
       exportData,
       setShowConfirm,
