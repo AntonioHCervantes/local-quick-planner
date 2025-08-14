@@ -85,7 +85,22 @@ export const useStore = create<Store>((set, get) => ({
     set(state => {
       const newOrder = { ...state.order };
       const listKey = `list-backlog`;
-      newOrder[listKey] = [...(newOrder[listKey] || []), id];
+      const ids = newOrder[listKey] || [];
+      const priorityOrder: Record<Priority, number> = {
+        low: 0,
+        medium: 1,
+        high: 2,
+      };
+      let insertIndex = ids.findIndex(tid => {
+        const t = state.tasks.find(task => task.id === tid);
+        return t && priorityOrder[t.priority] < priorityOrder[priority];
+      });
+      if (insertIndex === -1) insertIndex = ids.length;
+      newOrder[listKey] = [
+        ...ids.slice(0, insertIndex),
+        id,
+        ...ids.slice(insertIndex),
+      ];
       return { tasks: [...state.tasks, task], order: newOrder };
     });
     saveState(get());
