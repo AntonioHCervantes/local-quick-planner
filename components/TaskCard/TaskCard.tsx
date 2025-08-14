@@ -1,15 +1,6 @@
 'use client';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { Check } from 'lucide-react';
-import { Task } from '../lib/types';
-import { useStore } from '../lib/store';
-import { useI18n } from '../lib/i18n';
-
-interface Props {
-  task: Task;
-  dragOverlay?: boolean;
-}
+import useTaskCard, { UseTaskCardProps } from './useTaskCard';
 
 const priorityColors = {
   low: 'border-l-green-500',
@@ -17,35 +8,16 @@ const priorityColors = {
   high: 'border-l-red-500',
 };
 
-export default function TaskCard({ task, dragOverlay = false }: Props) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({
-      id: task.id,
-      disabled: dragOverlay,
-    });
-  const style = dragOverlay
-    ? undefined
-    : {
-        transform: CSS.Transform.toString(transform),
-        transition,
-      };
-  const { moveTask, tags: allTags } = useStore();
-  const { t } = useI18n();
-  const markDone = () => {
-    if (task.dayStatus !== 'done') {
-      moveTask(task.id, { dayStatus: 'done' });
-    }
-  };
-
-  const getTagColor = (tagLabel: string) => {
-    const tag = allTags.find(t => t.label === tagLabel);
-    return tag ? tag.color : '#ccc';
-  };
+export default function TaskCard(props: UseTaskCardProps) {
+  const { state, actions } = useTaskCard(props);
+  const { attributes, listeners, setNodeRef, style, t } = state;
+  const { markDone, getTagColor } = actions;
+  const { task } = props;
 
   return (
     <div
       ref={setNodeRef}
-      style={style}
+      style={style as any}
       {...attributes}
       {...listeners}
       className={`rounded border-l-4 p-4 cursor-grab focus:outline-none focus:ring bg-gray-100 dark:bg-gray-800 ${priorityColors[task.priority]}`}

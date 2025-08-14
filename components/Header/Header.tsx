@@ -1,53 +1,21 @@
 'use client';
 import Link from 'next/link';
 import { Download, Upload, Trash2, Sun, Moon } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { useStore } from '../lib/store';
-import { useI18n, Language } from '../lib/i18n';
+import { Language } from '../../lib/i18n';
+import useHeader from './useHeader';
 
 export default function Header() {
-  const { exportData, importData, clearAll } = useStore();
-  const [showConfirm, setShowConfirm] = useState(false);
-  const { t, language, setLanguage } = useI18n();
-  const [showLang, setShowLang] = useState(false);
-
-  const handleDelete = () => {
-    clearAll();
-    setShowConfirm(false);
-  };
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-
-  useEffect(() => {
-    const stored = localStorage.getItem('theme');
-    if (stored === 'light' || stored === 'dark') {
-      setTheme(stored);
-      document.documentElement.classList.toggle('dark', stored === 'dark');
-    } else {
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    const next = theme === 'dark' ? 'light' : 'dark';
-    setTheme(next);
-    document.documentElement.classList.toggle('dark', next === 'dark');
-    localStorage.setItem('theme', next);
-  };
-
-  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const data = JSON.parse(reader.result as string);
-        importData(data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    reader.readAsText(file);
-  };
+  const { state, actions } = useHeader();
+  const { showConfirm, showLang, theme, t, language } = state;
+  const {
+    exportData,
+    setShowConfirm,
+    handleDelete,
+    toggleTheme,
+    setShowLang,
+    setLanguage,
+    handleImport,
+  } = actions;
 
   return (
     <>

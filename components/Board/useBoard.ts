@@ -1,6 +1,6 @@
 'use client';
+import { useState } from 'react';
 import {
-  DndContext,
   closestCorners,
   PointerSensor,
   useSensor,
@@ -8,27 +8,22 @@ import {
   DragEndEvent,
   DragStartEvent,
   DragOverEvent,
-  DragOverlay,
 } from '@dnd-kit/core';
-import { useState } from 'react';
-import { Task } from '../lib/types';
-import { useStore } from '../lib/store';
-import Column from './Column';
-import TaskCard from './TaskCard';
-import { useI18n } from '../lib/i18n';
+import { Task } from '../../lib/types';
+import { useStore } from '../../lib/store';
+import { useI18n } from '../../lib/i18n';
 
-interface BoardProps {
+export interface UseBoardProps {
   mode: 'my-day' | 'kanban';
 }
 
-export default function Board({ mode }: BoardProps) {
+export default function useBoard({ mode }: UseBoardProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
   const { tasks, lists, order, moveTask, reorderTask } = useStore();
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const { t } = useI18n();
-
   const today = new Date().toISOString().slice(0, 10);
 
   const columns =
@@ -98,33 +93,9 @@ export default function Board({ mode }: BoardProps) {
     reorderTask(activeId, overContainer, overIndex, mode);
   };
 
-  return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCorners}
-      onDragStart={handleDragStart}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}
-    >
-      <div className="flex gap-4 overflow-x-auto p-4">
-        {columns.map(col => (
-          <Column
-            key={col.id}
-            id={col.id}
-            title={col.title}
-            tasks={getTasks(col.id)}
-            mode={mode}
-          />
-        ))}
-      </div>
-      <DragOverlay>
-        {activeTask ? (
-          <TaskCard
-            task={activeTask}
-            dragOverlay
-          />
-        ) : null}
-      </DragOverlay>
-    </DndContext>
-  );
+  return {
+    state: { sensors, activeTask, columns },
+    actions: { getTasks, handleDragStart, handleDragOver, handleDragEnd },
+    helpers: { closestCorners },
+  } as const;
 }

@@ -1,12 +1,11 @@
 'use client';
-import TaskItem from './TaskItem';
-import { Task } from '../lib/types';
-import { useI18n } from '../lib/i18n';
+import TaskItem from '../TaskItem/TaskItem';
+import { useI18n } from '../../lib/i18n';
+import useTaskList, { UseTaskListProps } from './useTaskList';
 
-export default function TaskList({ tasks }: { tasks: Task[] }) {
-  const sorted = [...tasks].sort(
-    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-  );
+export default function TaskList(props: UseTaskListProps) {
+  const { state } = useTaskList(props);
+  const { sorted } = state;
   const { t } = useI18n();
   return (
     <div className="space-y-2 p-4">

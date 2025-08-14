@@ -1,49 +1,15 @@
 'use client';
-import { useState } from 'react';
 import { Plus } from 'lucide-react';
-import { Priority, Tag } from '../lib/types';
-import { useI18n } from '../lib/i18n';
+import { Priority } from '../../lib/types';
+import { useI18n } from '../../lib/i18n';
+import useAddTask, { UseAddTaskProps } from './useAddTask';
 
-export default function AddTask({
-  addTask,
-  tags: existingTags,
-  addTag,
-}: {
-  addTask: (input: {
-    title: string;
-    tags: string[];
-    priority: Priority;
-  }) => void;
-  tags: Tag[];
-  addTag: (tag: Tag) => void;
-}) {
-  const [title, setTitle] = useState('');
-  const [tags, setTags] = useState<string[]>([]);
-  const [priority, setPriority] = useState<Priority>('medium');
+export default function AddTask(props: UseAddTaskProps) {
+  const { state, actions } = useAddTask(props);
+  const { title, tags, priority, existingTags } = state;
+  const { setTitle, setPriority, handleAdd, handleTagInputChange, removeTag } =
+    actions;
   const { t } = useI18n();
-
-  const handleAdd = () => {
-    if (!title.trim()) return;
-    addTask({ title: title.trim(), tags, priority });
-    setTitle('');
-    setTags([]);
-  };
-
-  const handleTagInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' || e.key === ',') {
-      e.preventDefault();
-      const newTag = e.currentTarget.value.trim();
-      if (newTag && !tags.includes(newTag)) {
-        setTags([...tags, newTag]);
-        if (!existingTags.find(t => t.label === newTag)) {
-          // A simple way to generate a random color
-          const color = `hsl(${Math.random() * 360}, 70%, 50%)`;
-          addTag({ id: crypto.randomUUID(), label: newTag, color });
-        }
-      }
-      e.currentTarget.value = '';
-    }
-  };
 
   return (
     <form
@@ -96,7 +62,7 @@ export default function AddTask({
             >
               {tag}
               <button
-                onClick={() => setTags(tags.filter(t => t !== tag))}
+                onClick={() => removeTag(tag)}
                 className="ml-1 text-red-500"
               >
                 x
