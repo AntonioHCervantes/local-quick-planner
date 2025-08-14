@@ -4,14 +4,14 @@ import { useI18n } from '../../lib/i18n';
 
 interface TagFilterProps {
   tags: Tag[];
-  activeTags: string[];
+  activeTags?: string[];
   toggleTag: (label: string) => void;
   showAll: () => void;
 }
 
 export default function TagFilter({
   tags,
-  activeTags,
+  activeTags = [],
   toggleTag,
   showAll,
 }: TagFilterProps) {
