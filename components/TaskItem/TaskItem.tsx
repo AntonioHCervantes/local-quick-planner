@@ -1,82 +1,29 @@
 'use client';
-import { useState } from 'react';
 import { CalendarPlus, CalendarX, Trash2 } from 'lucide-react';
-import { useStore } from '../lib/store';
-import { Priority } from '../lib/types';
-import { useI18n } from '../lib/i18n';
+import { Priority } from '../../lib/types';
+import { useI18n } from '../../lib/i18n';
+import useTaskItem, { UseTaskItemProps } from './useTaskItem';
 
-interface Props {
-  taskId: string;
-}
-
-export default function TaskItem({ taskId }: Props) {
+export default function TaskItem({ taskId }: UseTaskItemProps) {
+  const { state, actions } = useTaskItem({ taskId });
+  const { task, isEditing, title, allTags } = state;
   const {
-    tasks,
+    setTitle,
+    handleTagInputChange,
+    removeTag,
+    getTagColor,
+    startEditing,
+    saveTitle,
+    handleTitleKeyDown,
     updateTask,
-    tags: allTags,
-    addTag,
     toggleMyDay,
     removeTask,
-  } = useStore();
-  const task = tasks.find(t => t.id === taskId);
-  const [isEditing, setIsEditing] = useState(false);
-  const [title, setTitle] = useState(task?.title ?? '');
+  } = actions as any; // when task undefined, actions is empty
   const { t } = useI18n();
 
   if (!task) {
     return null;
   }
-
-  const handleTagInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' || e.key === ',') {
-      e.preventDefault();
-      const newTag = e.currentTarget.value.trim();
-      if (newTag && !task.tags.includes(newTag)) {
-        const newTags = [...task.tags, newTag];
-        updateTask(task.id, { tags: newTags });
-        if (!allTags.find(t => t.label === newTag)) {
-          const color = `hsl(${Math.random() * 360}, 70%, 50%)`;
-          addTag({ id: crypto.randomUUID(), label: newTag, color });
-        }
-      }
-      e.currentTarget.value = '';
-    }
-  };
-
-  const removeTag = (tagToRemove: string) => {
-    const newTags = task.tags.filter(tag => tag !== tagToRemove);
-    updateTask(task.id, { tags: newTags });
-  };
-
-  const getTagColor = (tagLabel: string) => {
-    const tag = allTags.find(t => t.label === tagLabel);
-    return tag ? tag.color : '#ccc';
-  };
-
-  const startEditing = () => {
-    setTitle(task.title);
-    setIsEditing(true);
-  };
-
-  const saveTitle = () => {
-    const newTitle = title.trim();
-    if (newTitle && newTitle !== task.title) {
-      updateTask(task.id, { title: newTitle });
-    } else {
-      setTitle(task.title);
-    }
-    setIsEditing(false);
-  };
-
-  const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      saveTitle();
-    } else if (e.key === 'Escape') {
-      setTitle(task.title);
-      setIsEditing(false);
-    }
-  };
 
   return (
     <div className="flex flex-col gap-2 rounded bg-gray-100 p-2 dark:bg-gray-800">

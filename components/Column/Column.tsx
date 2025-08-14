@@ -1,25 +1,21 @@
 'use client';
-import { useDroppable } from '@dnd-kit/core';
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { Task } from '../lib/types';
-import TaskCard from './TaskCard';
+import { Task } from '../../lib/types';
+import TaskCard from '../TaskCard';
+import useColumn, { UseColumnProps } from './useColumn';
 
-interface ColumnProps {
-  id: string;
+interface ColumnProps extends UseColumnProps {
   title: string;
   tasks: Task[];
-  mode: 'my-day' | 'kanban';
 }
 
 export default function Column({ id, title, tasks, mode }: ColumnProps) {
-  const { setNodeRef } = useDroppable({ id });
-  const containerClasses =
-    mode === 'my-day' ? 'flex-1 min-w-0' : 'w-80 flex-shrink-0';
-  const listClasses =
-    mode === 'my-day' ? 'space-y-4 min-h-4' : 'space-y-2 min-h-4';
+  const { state, actions } = useColumn({ id, mode });
+  const { containerClasses, listClasses } = state;
+  const { setNodeRef } = actions;
 
   return (
     <div
