@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { CalendarPlus, CalendarX, Trash2 } from 'lucide-react';
 import { useStore } from '../lib/store';
 import { Priority } from '../lib/types';
+import { useI18n } from '../lib/i18n';
 
 interface Props {
   taskId: string;
@@ -20,6 +21,7 @@ export default function TaskItem({ taskId }: Props) {
   const task = tasks.find(t => t.id === taskId);
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(task?.title ?? '');
+  const { t } = useI18n();
 
   if (!task) {
     return null;
@@ -105,13 +107,15 @@ export default function TaskItem({ taskId }: Props) {
           }
           className="rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
         >
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
+          <option value="low">{t('priority.low')}</option>
+          <option value="medium">{t('priority.medium')}</option>
+          <option value="high">{t('priority.high')}</option>
         </select>
         <button
           onClick={() => toggleMyDay(task.id)}
-          aria-label={task.plannedFor ? 'Remove from My Day' : 'Add to My Day'}
+          aria-label={
+            task.plannedFor ? t('taskItem.removeMyDay') : t('taskItem.addMyDay')
+          }
           className="rounded bg-blue-600 p-1 text-white hover:bg-blue-700 focus:ring"
         >
           {task.plannedFor ? (
@@ -122,7 +126,7 @@ export default function TaskItem({ taskId }: Props) {
         </button>
         <button
           onClick={() => removeTask(task.id)}
-          aria-label="Delete task"
+          aria-label={t('taskItem.deleteTask')}
           className="rounded bg-red-600 p-1 text-white hover:bg-red-700 focus:ring"
         >
           <Trash2 className="h-4 w-4" />
@@ -149,7 +153,7 @@ export default function TaskItem({ taskId }: Props) {
         <input
           onKeyDown={handleTagInputChange}
           className="flex-1 rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
-          placeholder="Add tag"
+          placeholder={t('taskItem.tagPlaceholder')}
           list="existing-tags"
         />
         <datalist id="existing-tags">
