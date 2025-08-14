@@ -15,6 +15,7 @@ import { Task } from '../lib/types';
 import { useStore } from '../lib/store';
 import Column from './Column';
 import TaskCard from './TaskCard';
+import { useI18n } from '../lib/i18n';
 
 interface BoardProps {
   mode: 'my-day' | 'kanban';
@@ -26,19 +27,26 @@ export default function Board({ mode }: BoardProps) {
   );
   const { tasks, lists, order, moveTask, reorderTask } = useStore();
   const [activeTask, setActiveTask] = useState<Task | null>(null);
+  const { t } = useI18n();
 
   const today = new Date().toISOString().slice(0, 10);
 
   const columns =
     mode === 'my-day'
       ? [
-          { id: 'todo', title: 'To Do' },
-          { id: 'doing', title: 'In Progress' },
-          { id: 'done', title: 'Done' },
+          { id: 'todo', title: t('board.todo') },
+          { id: 'doing', title: t('board.doing') },
+          { id: 'done', title: t('board.done') },
         ]
       : [...lists]
           .sort((a, b) => a.order - b.order)
-          .map(l => ({ id: l.id, title: l.title }));
+          .map(l => {
+            const title = t(`lists.${l.id}`);
+            return {
+              id: l.id,
+              title: title.startsWith('lists.') ? l.title : title,
+            };
+          });
 
   function getTasks(columnId: string): Task[] {
     const key = mode === 'my-day' ? `day-${columnId}` : `list-${columnId}`;

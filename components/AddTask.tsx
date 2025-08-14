@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Priority, Tag } from '../lib/types';
+import { useI18n } from '../lib/i18n';
 
 export default function AddTask({
   addTask,
@@ -19,6 +20,7 @@ export default function AddTask({
   const [title, setTitle] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [priority, setPriority] = useState<Priority>('medium');
+  const { t } = useI18n();
 
   const handleAdd = () => {
     if (!title.trim()) return;
@@ -55,27 +57,27 @@ export default function AddTask({
         htmlFor="task-title"
         className="sr-only"
       >
-        Title
+        {t('addTask.titleLabel')}
       </label>
       <input
         id="task-title"
         value={title}
         onChange={e => setTitle(e.target.value)}
         className="flex-1 rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800"
-        placeholder="New task"
+        placeholder={t('addTask.titlePlaceholder')}
       />
       <div className="flex items-center gap-2">
         <label
           htmlFor="task-tags"
           className="sr-only"
         >
-          Tags
+          {t('addTask.tagsLabel')}
         </label>
         <input
           id="task-tags"
           onKeyDown={handleTagInputChange}
           className="rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800"
-          placeholder="Add tags (press Enter)"
+          placeholder={t('addTask.tagsPlaceholder')}
           list="existing-tags"
         />
         <datalist id="existing-tags">
@@ -107,7 +109,7 @@ export default function AddTask({
         htmlFor="task-priority"
         className="sr-only"
       >
-        Priority
+        {t('addTask.priorityLabel')}
       </label>
       <select
         id="task-priority"
@@ -115,15 +117,15 @@ export default function AddTask({
         onChange={e => setPriority(e.target.value as Priority)}
         className="rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800"
       >
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
+        <option value="low">{t('priority.low')}</option>
+        <option value="medium">{t('priority.medium')}</option>
+        <option value="high">{t('priority.high')}</option>
       </select>
       <button
         type="submit"
         className="flex items-center gap-1 rounded bg-blue-600 px-3 py-2 text-sm hover:bg-blue-700 focus:ring"
       >
-        <Plus className="h-4 w-4" /> Add
+        <Plus className="h-4 w-4" /> {t('addTask.addButton')}
       </button>
     </form>
   );

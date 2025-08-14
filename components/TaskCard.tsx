@@ -4,6 +4,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { Check } from 'lucide-react';
 import { Task } from '../lib/types';
 import { useStore } from '../lib/store';
+import { useI18n } from '../lib/i18n';
 
 interface Props {
   task: Task;
@@ -29,6 +30,7 @@ export default function TaskCard({ task, dragOverlay = false }: Props) {
         transition,
       };
   const { moveTask, tags: allTags } = useStore();
+  const { t } = useI18n();
   const markDone = () => {
     if (task.dayStatus !== 'done') {
       moveTask(task.id, { dayStatus: 'done' });
@@ -54,7 +56,7 @@ export default function TaskCard({ task, dragOverlay = false }: Props) {
           {task.dayStatus !== 'done' && (
             <button
               onClick={markDone}
-              aria-label="Mark as done"
+              aria-label={t('taskCard.markDone')}
               className="text-green-400 hover:text-green-500"
             >
               <Check className="h-4 w-4" />
