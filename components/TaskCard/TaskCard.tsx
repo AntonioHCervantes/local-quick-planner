@@ -35,6 +35,7 @@ export default function TaskCard(props: UseTaskCardProps) {
             <button
               onClick={markDone}
               aria-label={t('taskCard.markDone')}
+              title={t('taskCard.markDone')}
               className="text-green-400 hover:text-green-500"
             >
               <Check className="h-4 w-4" />
@@ -44,6 +45,7 @@ export default function TaskCard(props: UseTaskCardProps) {
             <button
               onClick={deleteTask}
               aria-label={t('taskCard.deleteTask')}
+              title={t('taskCard.deleteTask')}
               className="text-red-400 hover:text-red-500"
             >
               <Trash2 className="h-4 w-4" />

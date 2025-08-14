@@ -18,6 +18,7 @@ const translations: Record<Language, any> = {
       clearAll: 'Clear all',
       toggleTheme: 'Toggle theme',
       language: 'Select language',
+      removeTag: 'Remove tag',
     },
     confirmDelete: {
       message:
@@ -62,6 +63,7 @@ const translations: Record<Language, any> = {
       clearAll: 'Eliminar todo',
       toggleTheme: 'Cambiar tema',
       language: 'Seleccionar idioma',
+      removeTag: 'Eliminar etiqueta',
     },
     confirmDelete: {
       message:

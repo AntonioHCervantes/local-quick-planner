@@ -69,6 +69,9 @@ export default function TaskItem({ taskId }: UseTaskItemProps) {
           aria-label={
             task.plannedFor ? t('taskItem.removeMyDay') : t('taskItem.addMyDay')
           }
+          title={
+            task.plannedFor ? t('taskItem.removeMyDay') : t('taskItem.addMyDay')
+          }
           className={`rounded p-1 focus:ring ${
             task.plannedFor
               ? 'bg-yellow-500 text-black hover:bg-yellow-600'
@@ -84,6 +87,7 @@ export default function TaskItem({ taskId }: UseTaskItemProps) {
         <button
           onClick={() => removeTask(task.id)}
           aria-label={t('taskItem.deleteTask')}
+          title={t('taskItem.deleteTask')}
           className="rounded bg-red-600 p-1 text-white hover:bg-red-700 focus:ring"
         >
           <Trash2 className="h-4 w-4" />
@@ -100,6 +104,8 @@ export default function TaskItem({ taskId }: UseTaskItemProps) {
               {tag}
               <button
                 onClick={() => removeTag(tag)}
+                aria-label={t('actions.removeTag')}
+                title={t('actions.removeTag')}
                 className="ml-1 text-red-500"
               >
                 x

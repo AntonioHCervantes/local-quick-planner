@@ -38,12 +38,14 @@ export default function Header() {
           <button
             onClick={exportData}
             aria-label={t('actions.export')}
+            title={t('actions.export')}
             className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
           >
             <Download className="h-4 w-4" />
           </button>
           <label
             aria-label={t('actions.import')}
+            title={t('actions.import')}
             className="cursor-pointer rounded p-2 hover:bg-gray-200 focus-within:bg-gray-200 dark:hover:bg-gray-800 dark:focus-within:bg-gray-800"
           >
             <Upload className="h-4 w-4" />
@@ -57,6 +59,7 @@ export default function Header() {
           <button
             onClick={() => setShowConfirm(true)}
             aria-label={t('actions.clearAll')}
+            title={t('actions.clearAll')}
             className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
           >
             <Trash2 className="h-4 w-4" />
@@ -64,6 +67,7 @@ export default function Header() {
           <button
             onClick={toggleTheme}
             aria-label={t('actions.toggleTheme')}
+            title={t('actions.toggleTheme')}
             className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
           >
             {theme === 'dark' ? (
