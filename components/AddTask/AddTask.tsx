@@ -63,6 +63,8 @@ export default function AddTask(props: UseAddTaskProps) {
               {tag}
               <button
                 onClick={() => removeTag(tag)}
+                aria-label={t('actions.removeTag')}
+                title={t('actions.removeTag')}
                 className="ml-1 text-red-500"
               >
                 x
