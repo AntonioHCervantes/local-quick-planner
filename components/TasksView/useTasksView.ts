@@ -1,10 +1,18 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '../../lib/store';
+import { loadState } from '../../lib/storage';
 
 export default function useTasksView() {
   const store = useStore();
   const [activeTags, setActiveTags] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (store.tags.length === 0) {
+      const persisted = loadState();
+      persisted?.tags?.forEach(tag => store.addTag(tag));
+    }
+  }, [store]);
 
   useEffect(() => {
     setActiveTags(prev => {
