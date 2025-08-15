@@ -126,9 +126,17 @@ export const useStore = create<Store>((set, get) => ({
       for (const key in newOrder) {
         newOrder[key] = newOrder[key].filter(tid => tid !== id);
       }
-      return { tasks: state.tasks.filter(t => t.id !== id), order: newOrder };
+      const tasks = state.tasks.filter(t => t.id !== id);
+      const persisted = {
+        tasks,
+        lists: state.lists,
+        tags: state.tags,
+        order: newOrder,
+        version: state.version,
+      };
+      saveState(persisted);
+      return { tasks, order: newOrder };
     });
-    saveState(get());
   },
   moveTask: (id, update) => {
     set(state => {
