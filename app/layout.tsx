@@ -2,15 +2,17 @@
 import './globals.css';
 import type { ReactNode } from 'react';
 import Header from '../components/Header/Header';
+import Footer from '../components/Footer/Footer';
 import { I18nProvider } from '../lib/i18n';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+      <body className="flex min-h-screen flex-col bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
         <I18nProvider>
           <Header />
-          {children}
+          <main className="flex-1">{children}</main>
+          <Footer />
         </I18nProvider>
       </body>
     </html>

@@ -54,6 +54,13 @@ const translations: Record<Language, any> = {
     priority: { low: 'Low', medium: 'Medium', high: 'High' },
     taskList: { noTasks: 'No tasks' },
     tagFilter: { showAll: 'Show all tasks' },
+    footer: {
+      about: 'About',
+      openSource: 'Open Source',
+      faqs: 'FAQs & Support',
+      privacy: 'Privacy Policy',
+      terms: 'Terms of Service',
+    },
     lang: { en: 'English', es: 'Spanish' },
   },
   es: {
@@ -100,6 +107,13 @@ const translations: Record<Language, any> = {
     priority: { low: 'Baja', medium: 'Media', high: 'Alta' },
     taskList: { noTasks: 'No hay tareas' },
     tagFilter: { showAll: 'Mostrar todas las tareas' },
+    footer: {
+      about: 'Acerca de',
+      openSource: 'Código abierto',
+      faqs: 'Preguntas frecuentes y soporte',
+      privacy: 'Política de privacidad',
+      terms: 'Términos del servicio',
+    },
     lang: { en: 'Inglés', es: 'Español' },
   },
 };
