@@ -6,6 +6,7 @@ import { loadState } from '../../lib/storage';
 export default function useTasksView() {
   const store = useStore();
   const [activeTags, setActiveTags] = useState<string[]>([]);
+  const [tagToRemove, setTagToRemove] = useState<string | null>(null);
 
   useEffect(() => {
     if (store.tags.length === 0) {
@@ -17,8 +18,9 @@ export default function useTasksView() {
   useEffect(() => {
     setActiveTags(prev => {
       const labels = store.tags.map(t => t.label);
+      const existing = prev.filter(l => labels.includes(l));
       const newTags = labels.filter(l => !prev.includes(l));
-      return [...prev, ...newTags];
+      return [...existing, ...newTags];
     });
   }, [store.tags]);
 
@@ -32,6 +34,25 @@ export default function useTasksView() {
     setActiveTags(store.tags.map(t => t.label));
   };
 
+  const removeTag = (label: string) => {
+    const isUsed = store.tasks.some(task => task.tags.includes(label));
+    if (isUsed) {
+      setTagToRemove(label);
+      return;
+    }
+    store.removeTag(label);
+    setActiveTags(prev => prev.filter(tg => tg !== label));
+  };
+
+  const confirmRemoveTag = () => {
+    if (!tagToRemove) return;
+    store.removeTag(tagToRemove);
+    setActiveTags(prev => prev.filter(tg => tg !== tagToRemove));
+    setTagToRemove(null);
+  };
+
+  const cancelRemoveTag = () => setTagToRemove(null);
+
   const filteredTasks = useMemo(() => {
     return store.tasks.filter(task => {
       if (task.tags.length === 0) return true;
@@ -40,12 +61,15 @@ export default function useTasksView() {
   }, [store.tasks, activeTags]);
 
   return {
-    state: { tasks: filteredTasks, tags: store.tags, activeTags },
+    state: { tasks: filteredTasks, tags: store.tags, activeTags, tagToRemove },
     actions: {
       addTask: store.addTask,
       addTag: store.addTag,
       toggleTagFilter,
       resetTagFilter,
+      removeTag,
+      confirmRemoveTag,
+      cancelRemoveTag,
     },
   } as const;
 }

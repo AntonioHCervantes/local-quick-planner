@@ -32,6 +32,7 @@ type Store = PersistedState & {
     priority: Priority;
   }) => void;
   addTag: (tag: Tag) => void;
+  removeTag: (label: string) => void;
   updateTask: (id: string, patch: Partial<Task>) => void;
   removeTask: (id: string) => void;
   moveTask: (
@@ -112,6 +113,16 @@ export const useStore = create<Store>((set, get) => ({
       }
       return { tags: [...state.tags, tag] };
     });
+    saveState(get());
+  },
+  removeTag: label => {
+    set(state => ({
+      tags: state.tags.filter(t => t.label !== label),
+      tasks: state.tasks.map(task => ({
+        ...task,
+        tags: task.tags.filter(t => t !== label),
+      })),
+    }));
     saveState(get());
   },
   updateTask: (id, patch) => {
