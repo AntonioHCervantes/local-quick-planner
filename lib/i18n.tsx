@@ -53,6 +53,7 @@ const translations: Record<Language, any> = {
     },
     priority: { low: 'Low', medium: 'Medium', high: 'High' },
     taskList: { noTasks: 'No tasks' },
+    tagFilter: { showAll: 'Show all tasks' },
     lang: { en: 'English', es: 'Spanish' },
   },
   es: {
@@ -98,6 +99,7 @@ const translations: Record<Language, any> = {
     },
     priority: { low: 'Baja', medium: 'Media', high: 'Alta' },
     taskList: { noTasks: 'No hay tareas' },
+    tagFilter: { showAll: 'Mostrar todas las tareas' },
     lang: { en: 'Inglés', es: 'Español' },
   },
 };
