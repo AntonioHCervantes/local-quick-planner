@@ -7,7 +7,8 @@ import useTasksView from './useTasksView';
 export default function TasksView() {
   const { state, actions } = useTasksView();
   const { tasks, tags, activeTags } = state;
-  const { addTask, addTag, toggleTagFilter, resetTagFilter } = actions;
+  const { addTask, addTag, toggleTagFilter, resetTagFilter, removeTag } =
+    actions;
   return (
     <main>
       <AddTask
@@ -20,6 +21,7 @@ export default function TasksView() {
         activeTags={activeTags}
         toggleTag={toggleTagFilter}
         showAll={resetTagFilter}
+        removeTag={removeTag}
       />
       <TaskList tasks={tasks} />
     </main>

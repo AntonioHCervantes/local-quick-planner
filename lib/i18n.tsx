@@ -53,7 +53,11 @@ const translations: Record<Language, any> = {
     },
     priority: { low: 'Low', medium: 'Medium', high: 'High' },
     taskList: { noTasks: 'No tasks' },
-    tagFilter: { showAll: 'Show all tasks' },
+    tagFilter: {
+      showAll: 'Show all tasks',
+      confirmDelete:
+        'Some tasks are using this tag. If you remove it, those tasks will lose the tag. Continue?',
+    },
     footer: {
       about: 'About',
       openSource: 'Open Source',
@@ -106,7 +110,11 @@ const translations: Record<Language, any> = {
     },
     priority: { low: 'Baja', medium: 'Media', high: 'Alta' },
     taskList: { noTasks: 'No hay tareas' },
-    tagFilter: { showAll: 'Mostrar todas las tareas' },
+    tagFilter: {
+      showAll: 'Mostrar todas las tareas',
+      confirmDelete:
+        'Algunas tareas usan esta etiqueta. Si la eliminas, esas tareas perderán la etiqueta. ¿Continuar?',
+    },
     footer: {
       about: 'Acerca de',
       openSource: 'Código abierto',

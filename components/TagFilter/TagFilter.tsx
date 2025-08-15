@@ -7,6 +7,7 @@ interface TagFilterProps {
   activeTags?: string[];
   toggleTag: (label: string) => void;
   showAll: () => void;
+  removeTag: (label: string) => void;
 }
 
 export default function TagFilter({
@@ -14,6 +15,7 @@ export default function TagFilter({
   activeTags = [],
   toggleTag,
   showAll,
+  removeTag,
 }: TagFilterProps) {
   const { t } = useI18n();
   if (tags.length === 0) return null;
@@ -22,14 +24,29 @@ export default function TagFilter({
       {tags.map(tag => {
         const isActive = activeTags.includes(tag.label);
         return (
-          <button
+          <div
             key={tag.id}
-            onClick={() => toggleTag(tag.label)}
-            style={{ backgroundColor: isActive ? tag.color : '#ccc' }}
-            className="rounded-full px-2 py-1 text-xs"
+            className="flex items-center"
           >
-            {tag.label}
-          </button>
+            <button
+              onClick={() => toggleTag(tag.label)}
+              style={{ backgroundColor: isActive ? tag.color : '#ccc' }}
+              className="rounded-full px-2 py-1 text-xs"
+            >
+              {tag.label}
+            </button>
+            <button
+              onClick={e => {
+                e.stopPropagation();
+                removeTag(tag.label);
+              }}
+              aria-label={t('actions.removeTag')}
+              title={t('actions.removeTag')}
+              className="ml-1 text-xs text-red-500"
+            >
+              ×
+            </button>
+          </div>
         );
       })}
       <button
