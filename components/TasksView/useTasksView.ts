@@ -2,12 +2,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '../../lib/store';
 import { loadState } from '../../lib/storage';
-import { useI18n } from '../../lib/i18n';
 
 export default function useTasksView() {
   const store = useStore();
   const [activeTags, setActiveTags] = useState<string[]>([]);
-  const { t } = useI18n();
+  const [tagToRemove, setTagToRemove] = useState<string | null>(null);
 
   useEffect(() => {
     if (store.tags.length === 0) {
@@ -38,12 +37,21 @@ export default function useTasksView() {
   const removeTag = (label: string) => {
     const isUsed = store.tasks.some(task => task.tags.includes(label));
     if (isUsed) {
-      const confirmed = window.confirm(t('tagFilter.confirmDelete'));
-      if (!confirmed) return;
+      setTagToRemove(label);
+      return;
     }
     store.removeTag(label);
     setActiveTags(prev => prev.filter(tg => tg !== label));
   };
+
+  const confirmRemoveTag = () => {
+    if (!tagToRemove) return;
+    store.removeTag(tagToRemove);
+    setActiveTags(prev => prev.filter(tg => tg !== tagToRemove));
+    setTagToRemove(null);
+  };
+
+  const cancelRemoveTag = () => setTagToRemove(null);
 
   const filteredTasks = useMemo(() => {
     return store.tasks.filter(task => {
@@ -53,13 +61,15 @@ export default function useTasksView() {
   }, [store.tasks, activeTags]);
 
   return {
-    state: { tasks: filteredTasks, tags: store.tags, activeTags },
+    state: { tasks: filteredTasks, tags: store.tags, activeTags, tagToRemove },
     actions: {
       addTask: store.addTask,
       addTag: store.addTag,
       toggleTagFilter,
       resetTagFilter,
       removeTag,
+      confirmRemoveTag,
+      cancelRemoveTag,
     },
   } as const;
 }
