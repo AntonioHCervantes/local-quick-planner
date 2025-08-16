@@ -19,16 +19,14 @@ export default function Header() {
 
   return (
     <>
-      <header className="flex items-center justify-between bg-gray-100 px-4 py-2 dark:bg-gray-950">
+      <header className="flex items-center justify-between bg-[hsl(var(--surface-2))] px-4 py-2">
         <nav className="flex gap-4">
           <Link
             href="/my-day"
             className="flex items-center hover:underline focus:underline"
           >
             {t('nav.myDay')}
-            <span className="ml-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs text-current dark:bg-[#bb871e]">
-              {myDayCount}
-            </span>
+            <span className="ml-1 chip-warning px-2 py-0.5">{myDayCount}</span>
           </Link>
           <Link
             href="/my-tasks"
@@ -42,14 +40,14 @@ export default function Header() {
             onClick={exportData}
             aria-label={t('actions.export')}
             title={t('actions.export')}
-            className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
+            className="btn-ghost"
           >
             <Download className="h-4 w-4" />
           </button>
           <label
             aria-label={t('actions.import')}
             title={t('actions.import')}
-            className="cursor-pointer rounded p-2 hover:bg-gray-200 focus-within:bg-gray-200 dark:hover:bg-gray-800 dark:focus-within:bg-gray-800"
+            className="cursor-pointer btn-ghost"
           >
             <Upload className="h-4 w-4" />
             <input
@@ -63,7 +61,7 @@ export default function Header() {
             onClick={() => setShowConfirm(true)}
             aria-label={t('actions.clearAll')}
             title={t('actions.clearAll')}
-            className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
+            className="btn-ghost"
           >
             <Trash2 className="h-4 w-4" />
           </button>
@@ -71,7 +69,7 @@ export default function Header() {
             onClick={toggleTheme}
             aria-label={t('actions.toggleTheme')}
             title={t('actions.toggleTheme')}
-            className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
+            className="btn-ghost"
           >
             {theme === 'dark' ? (
               <Sun className="h-4 w-4" />
@@ -83,12 +81,12 @@ export default function Header() {
             <button
               onClick={() => setShowLang(v => !v)}
               aria-label={t('actions.language')}
-              className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
+              className="btn-ghost"
             >
               {language.toUpperCase()}
             </button>
             {showLang && (
-              <div className="absolute right-0 mt-2 rounded bg-gray-100 shadow dark:bg-gray-800">
+              <div className="absolute right-0 mt-2 rounded bg-[hsl(var(--surface-2))] shadow">
                 {(['en', 'es'] as Language[]).map(code => (
                   <button
                     key={code}
@@ -96,7 +94,7 @@ export default function Header() {
                       setLanguage(code);
                       setShowLang(false);
                     }}
-                    className="block w-full px-4 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-700"
+                    className="block w-full px-4 py-2 text-left hover:bg-[hsl(var(--surface-3))]"
                   >
                     {code.toUpperCase()} - {t(`lang.${code}`)}
                   </button>
@@ -108,18 +106,18 @@ export default function Header() {
       </header>
       {showConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-sm rounded bg-gray-900 p-6 text-center text-gray-100">
+          <div className="w-full max-w-sm rounded bg-[hsl(var(--surface))] p-6 text-center text-[hsl(var(--text))]">
             <p className="mb-4">{t('confirmDelete.message')}</p>
             <div className="flex justify-center gap-2">
               <button
                 onClick={() => setShowConfirm(false)}
-                className="rounded bg-gray-700 px-3 py-1 hover:bg-gray-600 focus:bg-gray-600"
+                className="btn-secondary px-3 py-1"
               >
                 {t('confirmDelete.cancel')}
               </button>
               <button
                 onClick={handleDelete}
-                className="rounded bg-red-600 px-3 py-1 hover:bg-red-500 focus:bg-red-500"
+                className="btn-danger px-3 py-1"
               >
                 {t('confirmDelete.delete')}
               </button>
