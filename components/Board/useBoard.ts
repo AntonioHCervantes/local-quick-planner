@@ -24,7 +24,6 @@ export default function useBoard({ mode }: UseBoardProps) {
   const { tasks, lists, order, moveTask, reorderTask } = useStore();
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const { t } = useI18n();
-  const today = new Date().toISOString().slice(0, 10);
 
   const columns =
     mode === 'my-day'
@@ -49,7 +48,7 @@ export default function useBoard({ mode }: UseBoardProps) {
     return ids
       .map(id => tasks.find(t => t.id === id))
       .filter((t): t is Task => !!t)
-      .filter(t => (mode === 'my-day' ? t.plannedFor === today : true));
+      .filter(t => (mode === 'my-day' ? t.plannedFor !== null : true));
   }
 
   const handleDragStart = (event: DragStartEvent) => {
