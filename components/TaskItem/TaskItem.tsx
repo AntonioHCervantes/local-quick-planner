@@ -128,16 +128,16 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
               <span
                 key={tag}
                 style={{ backgroundColor: getTagColor(tag) }}
-                className="text-xs px-2 py-1 rounded-full"
+                className="flex items-center rounded-full pl-2 pr-1 py-1 text-xs"
               >
-                {tag}
+                <span className="mr-1 select-none">{tag}</span>
                 <button
                   onClick={() => removeTag(tag)}
                   aria-label={t('actions.removeTag')}
                   title={t('actions.removeTag')}
-                  className="ml-1 text-red-500"
+                  className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20"
                 >
-                  x
+                  ×
                 </button>
               </span>
             ))}
