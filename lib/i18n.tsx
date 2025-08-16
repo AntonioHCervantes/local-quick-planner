@@ -88,6 +88,58 @@ const translations: Record<Language, any> = {
       learnMore: 'Learn more in our',
       and: 'and',
     },
+    faqs: {
+      title: 'Frequently Asked Questions',
+      q1: {
+        question: 'What is Local Quick Planner?',
+        answer:
+          'Local Quick Planner is a fast, free and open-source task manager that boosts your productivity by organizing tasks right in your browser.',
+      },
+      q2: {
+        question: 'How do I create a new task?',
+        answer:
+          'Use the input at the top, type your task and press Enter or click Add; you can also tag tasks to filter them by topic or project.',
+      },
+      q3: {
+        question: 'Can I export my tasks?',
+        answer:
+          'Yes, use the Export action in the header to download your data.',
+      },
+      q4: {
+        question: 'What is the difference between My Day and My Tasks?',
+        answer:
+          'My Day lets you focus on tasks for today with the "To Do", "In Progress" and "Done" states. My Tasks is a place to collect and prioritize everything long term before moving tasks into My Day.',
+      },
+      q5: {
+        question: 'How do I move tasks between columns?',
+        answer:
+          'Drag tasks between columns or use the icons on each card to move them to the next column.',
+      },
+      q6: {
+        question: 'Where is my data stored?',
+        answer:
+          'All information is saved locally in your browser. Nothing is sent to any server.',
+      },
+      q7: {
+        question: 'How do I import tasks from another device?',
+        answer:
+          'Use the Import action in the header to load a previously exported JSON file.',
+      },
+      q8: {
+        question: 'Can I change the theme or language?',
+        answer:
+          'Yes, use the header controls to toggle the theme and select your language.',
+      },
+      q9: {
+        question: 'How do I reset or clear all tasks?',
+        answer:
+          'Use the Clear all action in the header to remove every task; consider exporting first.',
+      },
+      supportTitle: 'Support',
+      support:
+        'Need more help? Use our GitHub issues to report problems or suggestions.',
+      supportLink: 'Open an issue',
+    },
     lang: { en: 'English', es: 'Spanish' },
   },
   es: {
@@ -169,6 +221,58 @@ const translations: Record<Language, any> = {
         'Local Quick Planner es totalmente gratuito y de código abierto.',
       learnMore: 'Obtén más información en nuestras',
       and: 'y',
+    },
+    faqs: {
+      title: 'Preguntas frecuentes',
+      q1: {
+        question: '¿Qué es Local Quick Planner?',
+        answer:
+          'Local Quick Planner es un gestor de tareas rápido, gratuito y de código abierto que mejora tu productividad gracias a la organización de tus tareas en el navegador.',
+      },
+      q2: {
+        question: '¿Cómo creo una nueva tarea?',
+        answer:
+          'Usa la entrada en la parte superior, escribe tu tarea y pulsa Enter o el botón Añadir; además puedes etiquetar las tareas para filtrarlas fácilmente por temas o proyectos.',
+      },
+      q3: {
+        question: '¿Puedo exportar mis tareas?',
+        answer:
+          'Sí, utiliza la acción Exportar en la cabecera para descargar tus datos.',
+      },
+      q4: {
+        question: '¿Cuál es la diferencia entre Mi Día y Mis Tareas?',
+        answer:
+          'Mi Día te permite controlar las tareas que quieres hacer hoy con los estados "Por hacer", "En progreso" y "Hecho". En Mis Tareas puedes ir agregando todo lo que debas hacer, priorizarlo a largo plazo y moverlo luego a Mi Día.',
+      },
+      q5: {
+        question: '¿Cómo muevo tareas entre columnas?',
+        answer:
+          'Puedes arrastrar las tareas entre columnas o usar los iconos que aparecen en cada tarjeta para pasarlas a la siguiente columna.',
+      },
+      q6: {
+        question: '¿Dónde se guardan mis datos?',
+        answer:
+          'Toda la información se guarda localmente en tu navegador. Nada se envía a servidores.',
+      },
+      q7: {
+        question: '¿Cómo importo tareas de otro dispositivo?',
+        answer:
+          'Usa la acción Importar en la cabecera para cargar un archivo JSON exportado previamente.',
+      },
+      q8: {
+        question: '¿Puedo cambiar el tema o el idioma?',
+        answer:
+          'Sí, utiliza los controles de la cabecera para alternar el tema y seleccionar tu idioma.',
+      },
+      q9: {
+        question: '¿Cómo puedo reiniciar o eliminar todas las tareas?',
+        answer:
+          'Usa la acción Eliminar todo en la cabecera para borrar todas las tareas; te recomendamos exportarlas antes.',
+      },
+      supportTitle: 'Soporte',
+      support:
+        '¿Necesitas más ayuda? Usa las issues de GitHub para reportar incidencias o sugerencias.',
+      supportLink: 'Abrir un issue',
     },
     lang: { en: 'Inglés', es: 'Español' },
   },
