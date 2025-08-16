@@ -17,6 +17,7 @@ export default function AddTask(props: UseAddTaskProps) {
         e.preventDefault();
         handleAdd();
       }}
+      autoComplete="off"
       className="flex flex-wrap items-center gap-2 p-4"
     >
       <label
@@ -31,6 +32,7 @@ export default function AddTask(props: UseAddTaskProps) {
         onChange={e => setTitle(e.target.value)}
         className="flex-1 rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800"
         placeholder={t('addTask.titlePlaceholder')}
+        autoComplete="off"
       />
       <div className="flex items-center gap-2">
         <label
