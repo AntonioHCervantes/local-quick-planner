@@ -49,14 +49,14 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
         {...listeners}
         className="flex items-center pr-2 cursor-grab"
       >
-        <GripVertical className="h-4 w-4 text-[hsl(var(--text-muted))]" />
+        <GripVertical className="h-4 w-4 text-gray-500" />
       </div>
       <div
         className={`flex flex-col gap-2 rounded p-2 flex-1 ${
           task.plannedFor
-            ? 'bg-[hsl(var(--warning)/0.15)]'
-            : 'bg-[hsl(var(--surface-2))]'
-        } ${highlighted ? 'ring-2 ring-[hsl(var(--info))]' : ''}`}
+            ? 'bg-yellow-100 dark:bg-[#bb871e]'
+            : 'bg-gray-100 dark:bg-gray-800'
+        } ${highlighted ? 'ring-2 ring-blue-500' : ''}`}
       >
         <div className="flex items-center gap-2">
           {isEditing ? (
@@ -65,7 +65,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
               onChange={e => setTitle(e.target.value)}
               onBlur={saveTitle}
               onKeyDown={handleTitleKeyDown}
-              className="flex-1 rounded bg-[hsl(var(--surface-3))] p-1 text-sm focus:ring"
+              className="flex-1 rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
               autoFocus
             />
           ) : (
@@ -83,7 +83,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
                 priority: e.target.value as Priority,
               })
             }
-            className="rounded bg-[hsl(var(--surface-3))] p-1 text-sm focus:ring"
+            className="rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
           >
             <option value="low">{t('priority.low')}</option>
             <option value="medium">{t('priority.medium')}</option>
@@ -101,10 +101,10 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
                 ? t('taskItem.removeMyDay')
                 : t('taskItem.addMyDay')
             }
-            className={`rounded p-1 focus:ring text-[hsl(var(--on-primary))] ${
+            className={`rounded p-1 focus:ring ${
               task.plannedFor
-                ? 'bg-[hsl(var(--warning))] hover:brightness-110'
-                : 'bg-[hsl(var(--primary))] hover:bg-[hsl(var(--primary-hover))]'
+                ? 'bg-yellow-500 text-black hover:bg-yellow-600'
+                : 'bg-emerald-700 text-white hover:bg-emerald-800'
             }`}
           >
             {task.plannedFor ? (
@@ -117,7 +117,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
             onClick={() => removeTask(task.id)}
             aria-label={t('taskItem.deleteTask')}
             title={t('taskItem.deleteTask')}
-            className="btn-danger p-1"
+            className="rounded bg-red-700 p-1 text-white hover:bg-red-800 focus:ring"
           >
             <Trash2 className="h-4 w-4" />
           </button>
@@ -144,7 +144,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
           </div>
           <input
             onKeyDown={handleTagInputChange}
-            className="flex-1 rounded bg-[hsl(var(--surface-3))] p-1 text-sm focus:ring"
+            className="flex-1 rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
             placeholder={t('taskItem.tagPlaceholder')}
             list="existing-tags"
           />

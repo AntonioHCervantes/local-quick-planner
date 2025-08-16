@@ -35,7 +35,7 @@ export default function TaskList({ tasks, highlightedId }: TaskListProps) {
             />
           ))}
           {tasks.length === 0 && (
-            <p className="text-center text-sm text-[hsl(var(--text-muted))]">
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400">
               {t('taskList.noTasks')}
             </p>
           )}

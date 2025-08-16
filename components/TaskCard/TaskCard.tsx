@@ -3,9 +3,9 @@ import { Check, Trash2, Play } from 'lucide-react';
 import useTaskCard, { UseTaskCardProps } from './useTaskCard';
 
 const priorityColors = {
-  low: 'border-l-[hsl(var(--success))]',
-  medium: 'border-l-[hsl(var(--warning))]',
-  high: 'border-l-[hsl(var(--danger))]',
+  low: 'border-l-green-500',
+  medium: 'border-l-yellow-500',
+  high: 'border-l-red-500',
 };
 
 export default function TaskCard(props: UseTaskCardProps) {
@@ -20,7 +20,7 @@ export default function TaskCard(props: UseTaskCardProps) {
       style={style as any}
       {...attributes}
       {...listeners}
-      className={`rounded border-l-4 p-4 cursor-grab focus:outline-none focus:ring bg-[hsl(var(--surface-2))] ${priorityColors[task.priority]}`}
+      className={`rounded border-l-4 p-4 cursor-grab focus:outline-none focus:ring bg-gray-100 dark:bg-gray-800 ${priorityColors[task.priority]}`}
     >
       <div
         className={`flex justify-between ${
@@ -40,7 +40,7 @@ export default function TaskCard(props: UseTaskCardProps) {
                   onClick={markInProgress}
                   aria-label={t('taskCard.markInProgress')}
                   title={t('taskCard.markInProgress')}
-                  className="text-[hsl(var(--info))] hover:opacity-80"
+                  className="text-blue-400 hover:text-blue-500"
                 >
                   <Play className="h-4 w-4" />
                 </button>
@@ -50,7 +50,7 @@ export default function TaskCard(props: UseTaskCardProps) {
                   onClick={markDone}
                   aria-label={t('taskCard.markDone')}
                   title={t('taskCard.markDone')}
-                  className="text-[hsl(var(--success))] hover:opacity-80"
+                  className="text-green-400 hover:text-green-500"
                 >
                   <Check className="h-4 w-4" />
                 </button>
@@ -60,7 +60,7 @@ export default function TaskCard(props: UseTaskCardProps) {
                   onClick={deleteTask}
                   aria-label={t('taskCard.deleteTask')}
                   title={t('taskCard.deleteTask')}
-                  className="text-[hsl(var(--danger))] hover:opacity-80"
+                  className="text-red-400 hover:text-red-500"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
@@ -72,7 +72,7 @@ export default function TaskCard(props: UseTaskCardProps) {
                 onClick={markDone}
                 aria-label={t('taskCard.markDone')}
                 title={t('taskCard.markDone')}
-                className="text-[hsl(var(--success))] hover:opacity-80"
+                className="text-green-400 hover:text-green-500"
               >
                 <Check className="h-4 w-4" />
               </button>

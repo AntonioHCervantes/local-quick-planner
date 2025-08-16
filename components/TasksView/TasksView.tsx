@@ -40,18 +40,18 @@ export default function TasksView() {
       />
       {tagToRemove && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-sm rounded bg-[hsl(var(--surface))] p-6 text-center text-[hsl(var(--text))]">
+          <div className="w-full max-w-sm rounded bg-gray-900 p-6 text-center text-gray-100">
             <p className="mb-4">{t('tagFilter.confirmDelete')}</p>
             <div className="flex justify-center gap-2">
               <button
                 onClick={cancelRemoveTag}
-                className="btn-secondary px-3 py-1"
+                className="rounded bg-gray-700 px-3 py-1 hover:bg-gray-600 focus:bg-gray-600"
               >
                 {t('confirmDelete.cancel')}
               </button>
               <button
                 onClick={confirmRemoveTag}
-                className="btn-danger px-3 py-1"
+                className="rounded bg-red-700 px-3 py-1 hover:bg-red-800 focus:bg-red-800"
               >
                 {t('confirmDelete.delete')}
               </button>

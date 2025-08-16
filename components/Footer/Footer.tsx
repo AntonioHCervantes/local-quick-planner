@@ -7,8 +7,8 @@ export default function Footer() {
   const { t } = useI18n();
 
   return (
-    <footer className="bg-[hsl(var(--surface-2))] py-4">
-      <nav className="mx-auto flex flex-wrap justify-center gap-4 px-4 text-sm text-[hsl(var(--text-muted))]">
+    <footer className="bg-gray-100 py-4 dark:bg-gray-950">
+      <nav className="mx-auto flex flex-wrap justify-center gap-4 px-4 text-sm text-gray-600 dark:text-gray-400">
         <Link
           href="/about"
           className="hover:underline"
