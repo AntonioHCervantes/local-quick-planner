@@ -35,7 +35,12 @@ export default function useTaskItem({ taskId }: UseTaskItemProps) {
         updateTask(task.id, { tags: newTags });
         if (!allTags.find(t => t.label === newTag)) {
           const color = `hsl(${Math.random() * 360}, 70%, 50%)`;
-          addTag({ id: crypto.randomUUID(), label: newTag, color });
+          addTag({
+            id: crypto.randomUUID(),
+            label: newTag,
+            color,
+            favorite: false,
+          });
         }
       }
       e.currentTarget.value = '';
