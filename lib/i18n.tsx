@@ -61,6 +61,26 @@ const translations: Record<Language, any> = {
       privacy: 'Privacy Policy',
       terms: 'Terms of Service',
     },
+    aboutPage: {
+      title: 'About Local Quick Planner',
+      intro:
+        'Local Quick Planner is a simple, fast, and free tool to organize your tasks right in your browser.',
+      features: {
+        myDay: 'Plan your daily priorities with the "My Day" view.',
+        myTasks: 'Organize projects with the "My Tasks" Kanban board.',
+        dragDrop: 'Move tasks effortlessly with drag and drop.',
+        export: 'Back up or transfer your data with export and import options.',
+        privacy:
+          'Keep all your data on your device; nothing is sent to a server.',
+      },
+      personal:
+        'This tool is focused on personal planning and is not intended for teams or multi-user workflows.',
+      productivity:
+        'It helps you stay organized and improve your productivity.',
+      freeOpenSource: 'Local Quick Planner is completely free and open source.',
+      learnMore: 'Learn more in our',
+      and: 'and',
+    },
     lang: { en: 'English', es: 'Spanish' },
   },
   es: {
@@ -113,6 +133,28 @@ const translations: Record<Language, any> = {
       faqs: 'Preguntas frecuentes y soporte',
       privacy: 'Política de privacidad',
       terms: 'Términos del servicio',
+    },
+    aboutPage: {
+      title: 'Acerca de Local Quick Planner',
+      intro:
+        'Local Quick Planner es una herramienta simple, rápida y gratuita para organizar tus tareas directamente en tu navegador.',
+      features: {
+        myDay: 'Planifica tus prioridades diarias con la vista "Mi Día".',
+        myTasks: 'Organiza tus proyectos con el tablero Kanban "Mis Tareas".',
+        dragDrop: 'Mueve las tareas fácilmente con drag and drop.',
+        export:
+          'Haz copias de seguridad o traslada tus datos con las opciones de exportar e importar.',
+        privacy:
+          'Mantén todos tus datos en tu dispositivo; nada se envía a servidores.',
+      },
+      personal:
+        'Esta herramienta está enfocada en la planificación personal y no está pensada para equipos ni flujos multiusuario.',
+      productivity:
+        'Te ayuda a mantener el enfoque y mejorar tu productividad.',
+      freeOpenSource:
+        'Local Quick Planner es totalmente gratuito y de código abierto.',
+      learnMore: 'Obtén más información en nuestras',
+      and: 'y',
     },
     lang: { en: 'Inglés', es: 'Español' },
   },
