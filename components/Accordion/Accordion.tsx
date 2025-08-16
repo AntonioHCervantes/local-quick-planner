@@ -25,7 +25,7 @@ export default function Accordion({ items }: { items: AccordionItem[] }) {
             className="bg-white dark:bg-gray-900"
           >
             <button
-              className="flex w-full items-center justify-between p-4 text-left font-medium hover:bg-gray-50 focus:outline-none focus:ring dark:hover:bg-gray-800"
+              className="flex w-full items-center justify-between p-4 text-left font-medium hover:bg-gray-50 focus-visible:bg-gray-50 focus:outline-none dark:hover:bg-gray-800 dark:focus-visible:bg-gray-800"
               onClick={() => toggle(index)}
               aria-expanded={isOpen}
             >
