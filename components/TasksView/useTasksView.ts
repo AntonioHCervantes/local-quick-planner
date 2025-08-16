@@ -2,11 +2,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '../../lib/store';
 import { loadState } from '../../lib/storage';
+import { Priority } from '../../lib/types';
 
 export default function useTasksView() {
   const store = useStore();
   const [activeTags, setActiveTags] = useState<string[]>([]);
   const [tagToRemove, setTagToRemove] = useState<string | null>(null);
+  const [highlightedId, setHighlightedId] = useState<string | null>(null);
 
   useEffect(() => {
     if (store.tags.length === 0) {
@@ -75,9 +77,24 @@ export default function useTasksView() {
   }, [filteredTasks, store.order]);
 
   return {
-    state: { tasks: orderedTasks, tags: store.tags, activeTags, tagToRemove },
+    state: {
+      tasks: orderedTasks,
+      tags: store.tags,
+      activeTags,
+      tagToRemove,
+      highlightedId,
+    },
     actions: {
-      addTask: store.addTask,
+      addTask: (input: {
+        title: string;
+        tags: string[];
+        priority: Priority;
+      }) => {
+        const id = store.addTask(input);
+        setHighlightedId(id);
+        setTimeout(() => setHighlightedId(null), 3000);
+        return id;
+      },
       addTag: store.addTag,
       toggleTagFilter,
       resetTagFilter,

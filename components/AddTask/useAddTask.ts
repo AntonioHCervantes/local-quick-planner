@@ -7,7 +7,7 @@ export interface UseAddTaskProps {
     title: string;
     tags: string[];
     priority: Priority;
-  }) => void;
+  }) => string;
   tags: Tag[];
   addTag: (tag: Tag) => void;
 }

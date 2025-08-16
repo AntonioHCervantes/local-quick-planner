@@ -7,7 +7,7 @@ import { useI18n } from '../../lib/i18n';
 
 export default function TasksView() {
   const { state, actions } = useTasksView();
-  const { tasks, tags, activeTags, tagToRemove } = state;
+  const { tasks, tags, activeTags, tagToRemove, highlightedId } = state;
   const {
     addTask,
     addTag,
@@ -34,7 +34,10 @@ export default function TasksView() {
         removeTag={removeTag}
         toggleFavorite={toggleFavoriteTag}
       />
-      <TaskList tasks={tasks} />
+      <TaskList
+        tasks={tasks}
+        highlightedId={highlightedId}
+      />
       {tagToRemove && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-sm rounded bg-gray-900 p-6 text-center text-gray-100">

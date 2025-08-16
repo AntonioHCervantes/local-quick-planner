@@ -33,7 +33,7 @@ type Store = PersistedState & {
     title: string;
     tags: string[];
     priority: Priority;
-  }) => void;
+  }) => string;
   addTag: (tag: Tag) => void;
   removeTag: (label: string) => void;
   toggleFavoriteTag: (label: string) => void;
@@ -145,6 +145,7 @@ export const useStore = create<Store>((set, get) => ({
       };
     });
     saveState(get());
+    return id;
   },
   addTag: tag => {
     set(state => {

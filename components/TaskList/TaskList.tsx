@@ -8,9 +8,12 @@ import TaskItem from '../TaskItem/TaskItem';
 import { useI18n } from '../../lib/i18n';
 import useTaskList, { UseTaskListProps } from './useTaskList';
 
-export default function TaskList(props: UseTaskListProps) {
-  const { tasks } = props;
-  const { state, actions } = useTaskList(props);
+interface TaskListProps extends UseTaskListProps {
+  highlightedId?: string | null;
+}
+
+export default function TaskList({ tasks, highlightedId }: TaskListProps) {
+  const { state, actions } = useTaskList({ tasks });
   const { sensors } = state;
   const { handleDragEnd } = actions;
   const { t } = useI18n();
@@ -28,6 +31,7 @@ export default function TaskList(props: UseTaskListProps) {
             <TaskItem
               key={task.id}
               taskId={task.id}
+              highlighted={task.id === highlightedId}
             />
           ))}
           {tasks.length === 0 && (
