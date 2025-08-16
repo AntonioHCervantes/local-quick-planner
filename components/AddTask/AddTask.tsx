@@ -65,7 +65,7 @@ export default function AddTask(props: UseAddTaskProps) {
                 onClick={() => removeTag(tag)}
                 aria-label={t('actions.removeTag')}
                 title={t('actions.removeTag')}
-                className="ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-white text-black hover:bg-black/20 dark:bg-white dark:text-black"
+                className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20"
               >
                 ×
               </button>
