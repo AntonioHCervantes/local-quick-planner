@@ -1,28 +1,34 @@
 'use client';
-import { useMemo } from 'react';
+import { useCallback } from 'react';
+import {
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
 import { Task } from '../../lib/types';
+import { useStore } from '../../lib/store';
 
 export interface UseTaskListProps {
   tasks: Task[];
 }
 
 export default function useTaskList({ tasks }: UseTaskListProps) {
-  const sorted = useMemo(() => {
-    const priorityOrder: Record<Task['priority'], number> = {
-      low: 0,
-      medium: 1,
-      high: 2,
-    };
-    return [...tasks].sort((a, b) => {
-      const priorityDiff =
-        priorityOrder[b.priority] - priorityOrder[a.priority];
-      if (priorityDiff !== 0) return priorityDiff;
-      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-    });
-  }, [tasks]);
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+  );
+  const { reorderMyTasks } = useStore();
 
-  return {
-    state: { sorted },
-    actions: {},
-  } as const;
+  const handleDragEnd = useCallback(
+    (event: DragEndEvent) => {
+      const { active, over } = event;
+      if (!over) return;
+      if (active.id === over.id) return;
+      const overIndex = tasks.findIndex(t => t.id === over.id);
+      reorderMyTasks(active.id as string, overIndex);
+    },
+    [tasks, reorderMyTasks]
+  );
+
+  return { state: { sensors }, actions: { handleDragEnd } } as const;
 }
