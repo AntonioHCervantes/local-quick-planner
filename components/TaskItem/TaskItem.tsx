@@ -6,7 +6,11 @@ import useTaskItem, { UseTaskItemProps } from './useTaskItem';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-export default function TaskItem({ taskId }: UseTaskItemProps) {
+interface TaskItemProps extends UseTaskItemProps {
+  highlighted?: boolean;
+}
+
+export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
   const { state, actions } = useTaskItem({ taskId });
   const { task, isEditing, title, allTags } = state;
   const {
@@ -52,7 +56,7 @@ export default function TaskItem({ taskId }: UseTaskItemProps) {
           task.plannedFor
             ? 'bg-yellow-100 dark:bg-[#bb871e]'
             : 'bg-gray-100 dark:bg-gray-800'
-        }`}
+        } ${highlighted ? 'ring-2 ring-blue-500' : ''}`}
       >
         <div className="flex items-center gap-2">
           {isEditing ? (
