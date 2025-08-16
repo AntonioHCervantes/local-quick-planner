@@ -54,20 +54,20 @@ export default function AddTask(props: UseAddTaskProps) {
             />
           ))}
         </datalist>
-        <div className="flex gap-1">
+        <div className="flex flex-wrap gap-1">
           {tags.map(tag => (
             <span
               key={tag}
-              className="rounded bg-gray-300 p-1 text-xs dark:bg-gray-700"
+              className="flex items-center rounded-full bg-gray-300 pl-2 pr-1 py-1 text-xs dark:bg-gray-700"
             >
-              {tag}
+              <span className="mr-1 select-none">{tag}</span>
               <button
                 onClick={() => removeTag(tag)}
                 aria-label={t('actions.removeTag')}
                 title={t('actions.removeTag')}
-                className="ml-1 text-red-500"
+                className="ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-white text-black hover:bg-black/20 dark:bg-white dark:text-black"
               >
-                x
+                ×
               </button>
             </span>
           ))}
