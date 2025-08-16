@@ -44,6 +44,7 @@ const translations: Record<Language, any> = {
       addButton: 'Add',
     },
     taskCard: {
+      markInProgress: 'Move to In Progress',
       markDone: 'Mark as done',
       deleteTask: 'Delete task',
     },
@@ -103,6 +104,7 @@ const translations: Record<Language, any> = {
       addButton: 'Añadir',
     },
     taskCard: {
+      markInProgress: 'Mover a En progreso',
       markDone: 'Marcar como completada',
       deleteTask: 'Eliminar tarea',
     },

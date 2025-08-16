@@ -29,6 +29,12 @@ export default function useTaskCard({
   const { moveTask, removeTask, tags: allTags } = useStore();
   const { t } = useI18n();
 
+  const markInProgress = () => {
+    if (task.dayStatus !== 'doing') {
+      moveTask(task.id, { dayStatus: 'doing' });
+    }
+  };
+
   const markDone = () => {
     if (task.dayStatus !== 'done') {
       moveTask(task.id, { dayStatus: 'done' });
@@ -46,6 +52,6 @@ export default function useTaskCard({
 
   return {
     state: { attributes, listeners, setNodeRef, style, t, allTags },
-    actions: { markDone, getTagColor, deleteTask },
+    actions: { markInProgress, markDone, getTagColor, deleteTask },
   } as const;
 }
