@@ -30,7 +30,7 @@ export default function AddTask(props: UseAddTaskProps) {
         id="task-title"
         value={title}
         onChange={e => setTitle(e.target.value)}
-        className="flex-1 rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800"
+        className="flex-1 rounded bg-[hsl(var(--surface-3))] p-2 text-sm focus:ring"
         placeholder={t('addTask.titlePlaceholder')}
         autoComplete="off"
       />
@@ -44,7 +44,7 @@ export default function AddTask(props: UseAddTaskProps) {
         <input
           id="task-tags"
           onKeyDown={handleTagInputChange}
-          className="rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800"
+          className="rounded bg-[hsl(var(--surface-3))] p-2 text-sm focus:ring"
           placeholder={t('addTask.tagsPlaceholder')}
           list="existing-tags"
         />
@@ -60,7 +60,7 @@ export default function AddTask(props: UseAddTaskProps) {
           {tags.map(tag => (
             <span
               key={tag}
-              className="flex items-center rounded-full bg-gray-300 pl-2 pr-1 py-1 text-xs dark:bg-gray-700"
+              className="flex items-center rounded-full bg-[hsl(var(--surface-3))] pl-2 pr-1 py-1 text-xs"
             >
               <span className="mr-1 select-none">{tag}</span>
               <button
@@ -85,7 +85,7 @@ export default function AddTask(props: UseAddTaskProps) {
         id="task-priority"
         value={priority}
         onChange={e => setPriority(e.target.value as Priority)}
-        className="rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800"
+        className="rounded bg-[hsl(var(--surface-3))] p-2 text-sm focus:ring"
       >
         <option value="low">{t('priority.low')}</option>
         <option value="medium">{t('priority.medium')}</option>
@@ -93,7 +93,7 @@ export default function AddTask(props: UseAddTaskProps) {
       </select>
       <button
         type="submit"
-        className="flex items-center gap-1 rounded bg-blue-600 px-3 py-2 text-sm hover:bg-blue-700 focus:ring"
+        className="btn-primary flex items-center gap-1"
       >
         <Plus className="h-4 w-4" /> {t('addTask.addButton')}
       </button>
