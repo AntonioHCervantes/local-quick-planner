@@ -14,8 +14,7 @@ export default function useHeader() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [showLang, setShowLang] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-  const today = new Date().toISOString().slice(0, 10);
-  const myDayCount = tasks.filter(t => t.plannedFor === today).length;
+  const myDayCount = tasks.filter(t => t.plannedFor !== null).length;
 
   useEffect(() => {
     const stored = localStorage.getItem('theme');
