@@ -60,8 +60,22 @@ export default function useTasksView() {
     });
   }, [store.tasks, activeTags]);
 
+  const orderedTasks = useMemo(() => {
+    const ids = [
+      ...(store.order['priority-high'] || []),
+      ...(store.order['priority-medium'] || []),
+      ...(store.order['priority-low'] || []),
+    ];
+    const map = new Map(filteredTasks.map(t => [t.id, t]));
+    const list = ids
+      .map(id => map.get(id))
+      .filter((t): t is (typeof filteredTasks)[number] => !!t);
+    const remaining = filteredTasks.filter(t => !ids.includes(t.id));
+    return [...list, ...remaining];
+  }, [filteredTasks, store.order]);
+
   return {
-    state: { tasks: filteredTasks, tags: store.tags, activeTags, tagToRemove },
+    state: { tasks: orderedTasks, tags: store.tags, activeTags, tagToRemove },
     actions: {
       addTask: store.addTask,
       addTag: store.addTag,

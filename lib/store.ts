@@ -14,6 +14,9 @@ const defaultState: PersistedState = {
   lists: defaultLists,
   tags: [],
   order: {
+    'priority-high': [],
+    'priority-medium': [],
+    'priority-low': [],
     'list-ideas': [],
     'list-backlog': [],
     'list-inprogress': [],
@@ -22,7 +25,7 @@ const defaultState: PersistedState = {
     'day-doing': [],
     'day-done': [],
   },
-  version: 4,
+  version: 5,
 };
 
 type Store = PersistedState & {
@@ -46,6 +49,7 @@ type Store = PersistedState & {
     newIndex: number,
     scope: 'my-day' | 'kanban'
   ) => void;
+  reorderMyTasks: (id: string, newIndex: number) => void;
   toggleMyDay: (id: string) => void;
   exportData: () => void;
   importData: (data: PersistedState) => void;
@@ -76,6 +80,23 @@ if (persisted) {
       }
     });
     persisted.version = 4;
+  }
+  if (persisted.version < 5) {
+    const newOrder = { ...persisted.order };
+    (['high', 'medium', 'low'] as Priority[]).forEach(p => {
+      const key = `priority-${p}`;
+      if (!newOrder[key]) {
+        newOrder[key] = persisted.tasks
+          .filter(t => t.priority === p)
+          .sort(
+            (a, b) =>
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          )
+          .map(t => t.id);
+      }
+    });
+    persisted.order = newOrder;
+    persisted.version = 5;
   }
 }
 
@@ -111,6 +132,8 @@ export const useStore = create<Store>((set, get) => ({
         id,
         ...ids.slice(insertIndex),
       ];
+      const priorityKey = `priority-${priority}`;
+      newOrder[priorityKey] = [...(newOrder[priorityKey] || []), id];
       const lastTag = tags[tags.length - 1];
       const updatedTags = state.tags.map(t =>
         t.label === lastTag ? { ...t, favorite: true } : t
@@ -153,9 +176,26 @@ export const useStore = create<Store>((set, get) => ({
     saveState(get());
   },
   updateTask: (id, patch) => {
-    set(state => ({
-      tasks: state.tasks.map(t => (t.id === id ? { ...t, ...patch } : t)),
-    }));
+    set(state => {
+      const tasks = state.tasks.map(t =>
+        t.id === id ? { ...t, ...patch } : t
+      );
+      let newOrder = state.order;
+      if (patch.priority) {
+        const oldTask = state.tasks.find(t => t.id === id);
+        if (oldTask && oldTask.priority !== patch.priority) {
+          const oldKey = `priority-${oldTask.priority}`;
+          const newKey = `priority-${patch.priority}`;
+          const orderCopy = { ...state.order };
+          orderCopy[oldKey] = (orderCopy[oldKey] || []).filter(
+            tid => tid !== id
+          );
+          orderCopy[newKey] = [...(orderCopy[newKey] || []), id];
+          newOrder = orderCopy;
+        }
+      }
+      return { tasks, order: newOrder };
+    });
     saveState(get());
   },
   removeTask: id => {
@@ -213,6 +253,40 @@ export const useStore = create<Store>((set, get) => ({
       items.splice(oldIndex, 1);
       items.splice(newIndex, 0, id);
       return { order: { ...state.order, [key]: items } };
+    });
+    saveState(get());
+  },
+  reorderMyTasks: (id, newIndex) => {
+    set(state => {
+      const high = Array.from(state.order['priority-high'] || []);
+      const medium = Array.from(state.order['priority-medium'] || []);
+      const low = Array.from(state.order['priority-low'] || []);
+      [high, medium, low].forEach(arr => {
+        const idx = arr.indexOf(id);
+        if (idx !== -1) arr.splice(idx, 1);
+      });
+      const highCount = high.length;
+      const mediumCount = medium.length;
+      let priority: Priority;
+      if (newIndex < highCount) {
+        priority = 'high';
+        high.splice(newIndex, 0, id);
+      } else if (newIndex < highCount + mediumCount) {
+        priority = 'medium';
+        medium.splice(newIndex - highCount, 0, id);
+      } else {
+        priority = 'low';
+        low.splice(newIndex - highCount - mediumCount, 0, id);
+      }
+      return {
+        tasks: state.tasks.map(t => (t.id === id ? { ...t, priority } : t)),
+        order: {
+          ...state.order,
+          'priority-high': high,
+          'priority-medium': medium,
+          'priority-low': low,
+        },
+      };
     });
     saveState(get());
   },
