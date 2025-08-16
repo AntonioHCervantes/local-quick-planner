@@ -19,6 +19,8 @@ const translations: Record<Language, any> = {
       toggleTheme: 'Toggle theme',
       language: 'Select language',
       removeTag: 'Remove tag',
+      favoriteTag: 'Add tag to favorites',
+      unfavoriteTag: 'Remove tag from favorites',
     },
     confirmDelete: {
       message:
@@ -76,6 +78,8 @@ const translations: Record<Language, any> = {
       toggleTheme: 'Cambiar tema',
       language: 'Seleccionar idioma',
       removeTag: 'Eliminar etiqueta',
+      favoriteTag: 'Marcar etiqueta como favorita',
+      unfavoriteTag: 'Quitar etiqueta de favoritas',
     },
     confirmDelete: {
       message:

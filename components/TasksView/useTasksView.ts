@@ -68,6 +68,7 @@ export default function useTasksView() {
       toggleTagFilter,
       resetTagFilter,
       removeTag,
+      toggleFavoriteTag: store.toggleFavoriteTag,
       confirmRemoveTag,
       cancelRemoveTag,
     },

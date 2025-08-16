@@ -14,6 +14,7 @@ export default function TasksView() {
     toggleTagFilter,
     resetTagFilter,
     removeTag,
+    toggleFavoriteTag,
     confirmRemoveTag,
     cancelRemoveTag,
   } = actions;
@@ -31,6 +32,7 @@ export default function TasksView() {
         toggleTag={toggleTagFilter}
         showAll={resetTagFilter}
         removeTag={removeTag}
+        toggleFavorite={toggleFavoriteTag}
       />
       <TaskList tasks={tasks} />
       {tagToRemove && (

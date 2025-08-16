@@ -22,7 +22,7 @@ const defaultState: PersistedState = {
     'day-doing': [],
     'day-done': [],
   },
-  version: 2,
+  version: 4,
 };
 
 type Store = PersistedState & {
@@ -33,6 +33,7 @@ type Store = PersistedState & {
   }) => void;
   addTag: (tag: Tag) => void;
   removeTag: (label: string) => void;
+  toggleFavoriteTag: (label: string) => void;
   updateTask: (id: string, patch: Partial<Task>) => void;
   removeTask: (id: string) => void;
   moveTask: (
@@ -68,6 +69,14 @@ if (persisted) {
     });
     persisted.version = 3;
   }
+  if (persisted.version < 4) {
+    persisted.tags.forEach(tag => {
+      if (tag.favorite === undefined) {
+        tag.favorite = false;
+      }
+    });
+    persisted.version = 4;
+  }
 }
 
 export const useStore = create<Store>((set, get) => ({
@@ -102,7 +111,15 @@ export const useStore = create<Store>((set, get) => ({
         id,
         ...ids.slice(insertIndex),
       ];
-      return { tasks: [...state.tasks, task], order: newOrder };
+      const lastTag = tags[tags.length - 1];
+      const updatedTags = state.tags.map(t =>
+        t.label === lastTag ? { ...t, favorite: true } : t
+      );
+      return {
+        tasks: [...state.tasks, task],
+        order: newOrder,
+        tags: updatedTags,
+      };
     });
     saveState(get());
   },
@@ -111,7 +128,9 @@ export const useStore = create<Store>((set, get) => ({
       if (state.tags.find(t => t.label === tag.label)) {
         return state;
       }
-      return { tags: [...state.tags, tag] };
+      return {
+        tags: [...state.tags, { ...tag, favorite: tag.favorite ?? false }],
+      };
     });
     saveState(get());
   },
@@ -122,6 +141,14 @@ export const useStore = create<Store>((set, get) => ({
         ...task,
         tags: task.tags.filter(t => t !== label),
       })),
+    }));
+    saveState(get());
+  },
+  toggleFavoriteTag: label => {
+    set(state => ({
+      tags: state.tags.map(t =>
+        t.label === label ? { ...t, favorite: !t.favorite } : t
+      ),
     }));
     saveState(get());
   },

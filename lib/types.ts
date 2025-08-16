@@ -4,6 +4,7 @@ export type Tag = {
   id: string;
   label: string;
   color: string;
+  favorite?: boolean;
 };
 
 export type Task = {
