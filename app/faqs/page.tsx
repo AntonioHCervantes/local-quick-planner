@@ -1,31 +1,27 @@
 'use client';
 
 import Link from 'next/link';
+import Accordion from '../../components/Accordion/Accordion';
 import { useI18n } from '../../lib/i18n';
 
 export default function FAQsPage() {
   const { t } = useI18n();
   const faqs = [
-    { q: t('faqs.q1.question'), a: t('faqs.q1.answer') },
-    { q: t('faqs.q2.question'), a: t('faqs.q2.answer') },
-    { q: t('faqs.q3.question'), a: t('faqs.q3.answer') },
-    { q: t('faqs.q4.question'), a: t('faqs.q4.answer') },
-    { q: t('faqs.q5.question'), a: t('faqs.q5.answer') },
-    { q: t('faqs.q6.question'), a: t('faqs.q6.answer') },
-    { q: t('faqs.q7.question'), a: t('faqs.q7.answer') },
-    { q: t('faqs.q8.question'), a: t('faqs.q8.answer') },
-    { q: t('faqs.q9.question'), a: t('faqs.q9.answer') },
+    { question: t('faqs.q1.question'), answer: t('faqs.q1.answer') },
+    { question: t('faqs.q2.question'), answer: t('faqs.q2.answer') },
+    { question: t('faqs.q3.question'), answer: t('faqs.q3.answer') },
+    { question: t('faqs.q4.question'), answer: t('faqs.q4.answer') },
+    { question: t('faqs.q5.question'), answer: t('faqs.q5.answer') },
+    { question: t('faqs.q6.question'), answer: t('faqs.q6.answer') },
+    { question: t('faqs.q7.question'), answer: t('faqs.q7.answer') },
+    { question: t('faqs.q8.question'), answer: t('faqs.q8.answer') },
+    { question: t('faqs.q9.question'), answer: t('faqs.q9.answer') },
   ];
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
       <h1 className="text-2xl font-bold">{t('faqs.title')}</h1>
-      {faqs.map((item, index) => (
-        <div key={index}>
-          <h2 className="font-semibold">{item.q}</h2>
-          <p>{item.a}</p>
-        </div>
-      ))}
+      <Accordion items={faqs} />
       <div>
         <h2 className="font-semibold">{t('faqs.supportTitle')}</h2>
         <p>
