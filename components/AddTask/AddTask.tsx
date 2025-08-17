@@ -93,7 +93,7 @@ export default function AddTask(props: UseAddTaskProps) {
       </select>
       <button
         type="submit"
-        className="flex items-center gap-1 rounded bg-emerald-700 px-3 py-2 text-sm hover:bg-emerald-800 focus:ring"
+        className="flex items-center gap-1 rounded bg-emerald-700 px-3 py-2 text-sm hover:bg-emerald-800 focus:ring dark:bg-[#57886C] dark:hover:brightness-110"
       >
         <Plus className="h-4 w-4" /> {t('addTask.addButton')}
       </button>

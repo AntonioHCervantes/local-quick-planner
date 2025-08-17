@@ -26,7 +26,7 @@ export default function Header() {
             className="flex items-center hover:underline focus:underline"
           >
             {t('nav.myDay')}
-            <span className="ml-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs text-current dark:bg-[#bb871e]">
+            <span className="ml-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs text-current dark:bg-[rgb(62,74,113)]">
               {myDayCount}
             </span>
           </Link>
@@ -119,7 +119,7 @@ export default function Header() {
               </button>
               <button
                 onClick={handleDelete}
-                className="rounded bg-red-700 px-3 py-1 hover:bg-red-800 focus:bg-red-800"
+                className="rounded bg-red-700 px-3 py-1 hover:bg-red-800 focus:bg-red-800 dark:bg-[rgb(184,75,79)] dark:hover:brightness-110 dark:focus:brightness-110"
               >
                 {t('confirmDelete.delete')}
               </button>
