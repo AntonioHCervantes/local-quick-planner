@@ -51,7 +51,7 @@ export default function TasksView() {
               </button>
               <button
                 onClick={confirmRemoveTag}
-                className="rounded bg-red-600 px-3 py-1 hover:bg-red-500 focus:bg-red-500"
+                className="rounded bg-[rgb(184,75,79)] px-3 py-1 text-white hover:brightness-110 focus:brightness-110"
               >
                 {t('confirmDelete.delete')}
               </button>
