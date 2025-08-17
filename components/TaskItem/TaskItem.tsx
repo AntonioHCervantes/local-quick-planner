@@ -103,8 +103,8 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
             }
             className={`rounded p-1 focus:ring ${
               task.plannedFor
-                ? 'bg-yellow-500 text-white hover:bg-yellow-600 dark:bg-[rgb(187,135,30)] dark:hover:brightness-110'
-                : 'bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-[#57886C] dark:hover:brightness-110'
+                ? 'bg-[rgb(187,135,30)] text-white hover:brightness-110'
+                : 'bg-[#57886C] text-white hover:brightness-110'
             }`}
           >
             {task.plannedFor ? (
@@ -117,7 +117,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
             onClick={() => removeTask(task.id)}
             aria-label={t('taskItem.deleteTask')}
             title={t('taskItem.deleteTask')}
-            className="rounded bg-red-700 p-1 text-white hover:bg-red-800 focus:ring dark:bg-[rgb(184,75,79)] dark:hover:brightness-110"
+            className="rounded bg-[rgb(184,75,79)] p-1 text-white hover:brightness-110 focus:ring"
           >
             <Trash2 className="h-4 w-4" />
           </button>
