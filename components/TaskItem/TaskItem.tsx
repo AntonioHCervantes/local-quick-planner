@@ -103,7 +103,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
             }
             className={`rounded p-1 focus:ring ${
               task.plannedFor
-                ? 'bg-yellow-500 text-black hover:bg-yellow-600 dark:bg-[rgb(187,135,30)] dark:hover:brightness-110'
+                ? 'bg-yellow-500 text-white hover:bg-yellow-600 dark:bg-[rgb(187,135,30)] dark:hover:brightness-110'
                 : 'bg-emerald-700 text-white hover:bg-emerald-800 dark:bg-[#57886C] dark:hover:brightness-110'
             }`}
           >
