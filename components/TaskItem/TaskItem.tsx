@@ -144,7 +144,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
           </div>
           <input
             onKeyDown={handleTagInputChange}
-            className="flex-1 rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
+            className="w-[200px] rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
             placeholder={t('taskItem.tagPlaceholder')}
             list="existing-tags"
           />
