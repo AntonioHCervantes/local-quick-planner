@@ -101,11 +101,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
                 ? t('taskItem.removeMyDay')
                 : t('taskItem.addMyDay')
             }
-            className={`rounded p-1 focus:ring ${
-              task.plannedFor
-                ? 'bg-[rgb(187,135,30)] text-white hover:brightness-110'
-                : 'bg-[#57886C] text-white hover:brightness-110'
-            }`}
+            className="rounded bg-transparent p-1 text-black focus:ring dark:text-white"
           >
             {task.plannedFor ? (
               <CalendarX className="h-4 w-4" />
@@ -117,7 +113,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
             onClick={() => removeTask(task.id)}
             aria-label={t('taskItem.deleteTask')}
             title={t('taskItem.deleteTask')}
-            className="rounded bg-[rgb(184,75,79)] p-1 text-white hover:brightness-110 focus:ring"
+            className="rounded bg-transparent p-1 text-black focus:ring dark:text-white"
           >
             <Trash2 className="h-4 w-4" />
           </button>
