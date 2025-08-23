@@ -141,6 +141,53 @@ const translations: Record<Language, any> = {
         'Need more help? Use our GitHub issues to report problems or suggestions.',
       supportLink: 'Open an issue',
     },
+
+    privacyPage: {
+      title: 'Privacy Policy',
+      intro:
+        'Local Quick Planner is a client-side application. We respect your privacy and do not collect personal data.',
+      localData: {
+        title: 'Local Data',
+        description:
+          'All tasks and settings are stored locally in your browser and never sent to a server.',
+      },
+      analytics: {
+        title: 'Analytics',
+        description:
+          'The application does not use analytics or tracking cookies.',
+      },
+      contact: {
+        title: 'Contact',
+        description: 'If you have questions, reach out through GitHub issues.',
+      },
+    },
+    termsPage: {
+      title: 'Terms of Service',
+      intro: 'By using Local Quick Planner, you agree to the following terms.',
+      usage: {
+        title: 'Use of the Application',
+        description:
+          'The app is provided “as is” without warranties. You are responsible for your data.',
+      },
+      privacy: {
+        title: 'Privacy',
+        description: 'For information about data handling, please review our',
+      },
+      liability: {
+        title: 'Limitation of Liability',
+        description:
+          'We are not liable for any damages or data loss resulting from the use of the app.',
+      },
+      changes: {
+        title: 'Changes to These Terms',
+        description:
+          'We may update these terms at any time. Continued use of the app constitutes acceptance of the new terms.',
+      },
+      contact: {
+        title: 'Contact',
+        description: 'If you have questions, reach out through GitHub issues.',
+      },
+    },
     lang: { en: 'English', es: 'Spanish' },
   },
   es: {
@@ -275,6 +322,56 @@ const translations: Record<Language, any> = {
       support:
         '¿Necesitas más ayuda? Usa las issues de GitHub para reportar incidencias o sugerencias.',
       supportLink: 'Abrir un issue',
+    },
+
+    privacyPage: {
+      title: 'Política de privacidad',
+      intro:
+        'Local Quick Planner es una aplicación que se ejecuta en tu dispositivo. Respetamos tu privacidad y no recopilamos datos personales.',
+      localData: {
+        title: 'Datos locales',
+        description:
+          'Todas las tareas y ajustes se guardan localmente en tu navegador y nunca se envían a un servidor.',
+      },
+      analytics: {
+        title: 'Analítica',
+        description:
+          'La aplicación no utiliza analítica ni cookies de seguimiento.',
+      },
+      contact: {
+        title: 'Contacto',
+        description:
+          'Si tienes preguntas, contáctanos mediante las issues de GitHub.',
+      },
+    },
+    termsPage: {
+      title: 'Términos del servicio',
+      intro: 'Al usar Local Quick Planner, aceptas los siguientes términos.',
+      usage: {
+        title: 'Uso de la aplicación',
+        description:
+          'La aplicación se proporciona “tal cual” sin garantías. Eres responsable de tus datos.',
+      },
+      privacy: {
+        title: 'Privacidad',
+        description:
+          'Para obtener información sobre el tratamiento de datos, consulta nuestra',
+      },
+      liability: {
+        title: 'Limitación de responsabilidad',
+        description:
+          'No somos responsables de ningún daño o pérdida de datos resultante del uso de la aplicación.',
+      },
+      changes: {
+        title: 'Cambios en estos términos',
+        description:
+          'Podemos actualizar estos términos en cualquier momento. El uso continuado de la aplicación implica la aceptación de los nuevos términos.',
+      },
+      contact: {
+        title: 'Contacto',
+        description:
+          'Si tienes preguntas, contáctanos mediante las issues de GitHub.',
+      },
     },
     lang: { en: 'Inglés', es: 'Español' },
   },
