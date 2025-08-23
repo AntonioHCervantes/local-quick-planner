@@ -42,6 +42,7 @@ const translations: Record<Language, any> = {
       tagsPlaceholder: 'Add tags (press Enter)',
       priorityLabel: 'Priority',
       addButton: 'Add',
+      voiceInput: 'Add by voice',
     },
     taskCard: {
       markInProgress: 'Move to In Progress',
@@ -174,6 +175,7 @@ const translations: Record<Language, any> = {
       tagsPlaceholder: 'Añade etiquetas (presiona Enter)',
       priorityLabel: 'Prioridad',
       addButton: 'Añadir',
+      voiceInput: 'Añadir por voz',
     },
     taskCard: {
       markInProgress: 'Mover a En progreso',
