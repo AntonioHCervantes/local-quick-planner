@@ -54,7 +54,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
       <div
         className={`flex flex-col gap-2 rounded p-2 flex-1 ${
           task.plannedFor
-            ? 'bg-yellow-100 dark:bg-[rgb(62,74,113)]'
+            ? 'bg-blue-100 dark:bg-[rgb(62,74,113)]'
             : 'bg-gray-100 dark:bg-gray-800'
         } ${highlighted ? 'ring-2 ring-blue-500' : ''}`}
       >
