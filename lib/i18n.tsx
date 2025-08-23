@@ -159,7 +159,6 @@ const translations: Record<Language, any> = {
         title: 'Contact',
         description: 'If you have questions, reach out through GitHub issues.',
       },
-      effectiveDate: 'This policy is effective as of July 1, 2024.',
     },
     termsPage: {
       title: 'Terms of Service',
@@ -187,7 +186,6 @@ const translations: Record<Language, any> = {
         title: 'Contact',
         description: 'If you have questions, reach out through GitHub issues.',
       },
-      effectiveDate: 'These terms are effective as of July 1, 2024.',
     },
     lang: { en: 'English', es: 'Spanish' },
   },
@@ -343,7 +341,6 @@ const translations: Record<Language, any> = {
         description:
           'Si tienes preguntas, contáctanos mediante las issues de GitHub.',
       },
-      effectiveDate: 'Esta política es efectiva desde el 1 de julio de 2024.',
     },
     termsPage: {
       title: 'Términos del servicio',
@@ -373,8 +370,6 @@ const translations: Record<Language, any> = {
         description:
           'Si tienes preguntas, contáctanos mediante las issues de GitHub.',
       },
-      effectiveDate:
-        'Estos términos son efectivos desde el 1 de julio de 2024.',
     },
     lang: { en: 'Inglés', es: 'Español' },
   },

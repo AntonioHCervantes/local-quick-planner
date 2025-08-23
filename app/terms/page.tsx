@@ -42,9 +42,6 @@ export default function TermsPage() {
         </Link>
         .
       </p>
-      <p className="text-sm text-gray-500 dark:text-gray-400">
-        {t('termsPage.effectiveDate')}
-      </p>
     </div>
   );
 }

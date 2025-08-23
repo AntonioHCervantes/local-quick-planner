@@ -33,9 +33,6 @@ export default function PrivacyPage() {
         </Link>
         .
       </p>
-      <p className="text-sm text-gray-500 dark:text-gray-400">
-        {t('privacyPage.effectiveDate')}
-      </p>
     </div>
   );
 }
