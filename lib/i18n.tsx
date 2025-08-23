@@ -21,6 +21,7 @@ const translations: Record<Language, any> = {
       removeTag: 'Remove tag',
       favoriteTag: 'Add tag to favorites',
       unfavoriteTag: 'Remove tag from favorites',
+      close: 'Close',
     },
     confirmDelete: {
       message:
@@ -156,6 +157,7 @@ const translations: Record<Language, any> = {
       removeTag: 'Eliminar etiqueta',
       favoriteTag: 'Marcar etiqueta como favorita',
       unfavoriteTag: 'Quitar etiqueta de favoritas',
+      close: 'Cerrar',
     },
     confirmDelete: {
       message:
