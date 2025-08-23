@@ -43,6 +43,8 @@ const translations: Record<Language, any> = {
       priorityLabel: 'Priority',
       addButton: 'Add',
       voiceInput: 'Add by voice',
+      voiceInputNoText:
+        'No text was captured. Please try again and make sure to speak in the selected language.',
     },
     taskCard: {
       markInProgress: 'Move to In Progress',
@@ -176,6 +178,8 @@ const translations: Record<Language, any> = {
       priorityLabel: 'Prioridad',
       addButton: 'Añadir',
       voiceInput: 'Añadir por voz',
+      voiceInputNoText:
+        'No se ha capturado texto. Vuelve a intentarlo y asegúrate de hablar en el idioma seleccionado.',
     },
     taskCard: {
       markInProgress: 'Mover a En progreso',

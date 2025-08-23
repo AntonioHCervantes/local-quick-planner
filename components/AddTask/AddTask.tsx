@@ -1,5 +1,5 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Plus, Mic } from 'lucide-react';
 import { Priority } from '../../lib/types';
 import { useI18n, Language } from '../../lib/i18n';
@@ -14,6 +14,12 @@ export default function AddTask(props: UseAddTaskProps) {
   const recognitionRef = useRef<any>(null);
   const [isListening, setIsListening] = useState(false);
   const speechLangMap: Record<Language, string> = { en: 'en-US', es: 'es-ES' };
+  const titleRef = useRef(title);
+  const initialTitleRef = useRef('');
+
+  useEffect(() => {
+    titleRef.current = title;
+  }, [title]);
 
   const handleVoiceInput = () => {
     const SpeechRecognition =
@@ -30,7 +36,12 @@ export default function AddTask(props: UseAddTaskProps) {
         recognition.stop();
       };
       recognition.onspeechend = () => recognition.stop();
-      recognition.onend = () => setIsListening(false);
+      recognition.onend = () => {
+        setIsListening(false);
+        if (initialTitleRef.current === titleRef.current) {
+          alert(t('addTask.voiceInputNoText'));
+        }
+      };
       recognitionRef.current = recognition;
     }
 
@@ -39,6 +50,7 @@ export default function AddTask(props: UseAddTaskProps) {
     if (isListening) {
       recognitionRef.current.stop();
     } else {
+      initialTitleRef.current = titleRef.current;
       recognitionRef.current.start();
     }
     setIsListening(prev => !prev);
