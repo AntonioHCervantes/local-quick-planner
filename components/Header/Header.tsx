@@ -1,14 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
-import {
-  Download,
-  Upload,
-  Trash2,
-  Sun,
-  Moon,
-  MoreVertical,
-} from 'lucide-react';
+import { Download, Upload, Trash2, Sun, Moon } from 'lucide-react';
 import { Language } from '../../lib/i18n';
 import useHeader from './useHeader';
 
@@ -24,7 +16,6 @@ export default function Header() {
     setLanguage,
     handleImport,
   } = actions;
-  const [showActions, setShowActions] = useState(false);
 
   return (
     <>
@@ -47,156 +38,74 @@ export default function Header() {
           </Link>
         </nav>
         <div className="flex items-center gap-2">
-          <div className="hidden items-center gap-2 md:flex">
-            <button
-              onClick={exportData}
-              aria-label={t('actions.export')}
-              title={t('actions.export')}
-              className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
-            >
-              <Download className="h-4 w-4" />
-            </button>
-            <label
-              aria-label={t('actions.import')}
-              title={t('actions.import')}
-              className="cursor-pointer rounded p-2 hover:bg-gray-200 focus-within:bg-gray-200 dark:hover:bg-gray-800 dark:focus-within:bg-gray-800"
-            >
-              <Upload className="h-4 w-4" />
-              <input
-                type="file"
-                accept="application/json"
-                onChange={handleImport}
-                className="sr-only"
-              />
-            </label>
-            <button
-              onClick={() => setShowConfirm(true)}
-              aria-label={t('actions.clearAll')}
-              title={t('actions.clearAll')}
-              className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
-            >
-              <Trash2 className="h-4 w-4" />
-            </button>
-            <button
-              onClick={toggleTheme}
-              aria-label={t('actions.toggleTheme')}
-              title={t('actions.toggleTheme')}
-              className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
-            >
-              {theme === 'dark' ? (
-                <Sun className="h-4 w-4" />
-              ) : (
-                <Moon className="h-4 w-4" />
-              )}
-            </button>
-            <div className="relative">
-              <button
-                onClick={() => setShowLang(v => !v)}
-                aria-label={t('actions.language')}
-                className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
-              >
-                {language.toUpperCase()}
-              </button>
-              {showLang && (
-                <div className="absolute right-0 mt-2 rounded bg-gray-100 shadow dark:bg-gray-800">
-                  {(['en', 'es'] as Language[]).map(code => (
-                    <button
-                      key={code}
-                      onClick={() => {
-                        setLanguage(code);
-                        setShowLang(false);
-                      }}
-                      className="block w-full px-4 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-700"
-                    >
-                      {code.toUpperCase()} - {t(`lang.${code}`)}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
           <button
-            onClick={() => setShowActions(true)}
-            aria-label={t('actions.more')}
-            className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800 md:hidden"
+            onClick={exportData}
+            aria-label={t('actions.export')}
+            title={t('actions.export')}
+            className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
           >
-            <MoreVertical className="h-4 w-4" />
+            <Download className="h-4 w-4" />
           </button>
-        </div>
-      </header>
-      {showActions && (
-        <div
-          className="fixed inset-0 z-50 flex justify-end bg-black/50"
-          onClick={() => setShowActions(false)}
-        >
-          <div
-            className="h-full w-64 bg-gray-100 p-4 dark:bg-gray-900"
-            onClick={e => e.stopPropagation()}
+          <label
+            aria-label={t('actions.import')}
+            title={t('actions.import')}
+            className="cursor-pointer rounded p-2 hover:bg-gray-200 focus-within:bg-gray-200 dark:hover:bg-gray-800 dark:focus-within:bg-gray-800"
           >
-            <div className="flex flex-col gap-2">
-              <button
-                onClick={() => {
-                  exportData();
-                  setShowActions(false);
-                }}
-                className="flex items-center gap-2 rounded px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800"
-              >
-                <Download className="h-4 w-4" /> {t('actions.export')}
-              </button>
-              <label className="flex cursor-pointer items-center gap-2 rounded px-2 py-2 hover:bg-gray-200 focus-within:bg-gray-200 dark:hover:bg-gray-800 dark:focus-within:bg-gray-800">
-                <Upload className="h-4 w-4" /> {t('actions.import')}
-                <input
-                  type="file"
-                  accept="application/json"
-                  onChange={e => {
-                    handleImport(e);
-                    setShowActions(false);
-                  }}
-                  className="sr-only"
-                />
-              </label>
-              <button
-                onClick={() => {
-                  setShowConfirm(true);
-                  setShowActions(false);
-                }}
-                className="flex items-center gap-2 rounded px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800"
-              >
-                <Trash2 className="h-4 w-4" /> {t('actions.clearAll')}
-              </button>
-              <button
-                onClick={() => {
-                  toggleTheme();
-                  setShowActions(false);
-                }}
-                className="flex items-center gap-2 rounded px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800"
-              >
-                {theme === 'dark' ? (
-                  <Sun className="h-4 w-4" />
-                ) : (
-                  <Moon className="h-4 w-4" />
-                )}
-                {t('actions.toggleTheme')}
-              </button>
-              <div className="mt-2 border-t pt-2">
-                <p className="mb-2 text-sm">{t('actions.language')}</p>
+            <Upload className="h-4 w-4" />
+            <input
+              type="file"
+              accept="application/json"
+              onChange={handleImport}
+              className="sr-only"
+            />
+          </label>
+          <button
+            onClick={() => setShowConfirm(true)}
+            aria-label={t('actions.clearAll')}
+            title={t('actions.clearAll')}
+            className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
+          >
+            <Trash2 className="h-4 w-4" />
+          </button>
+          <button
+            onClick={toggleTheme}
+            aria-label={t('actions.toggleTheme')}
+            title={t('actions.toggleTheme')}
+            className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
+          >
+            {theme === 'dark' ? (
+              <Sun className="h-4 w-4" />
+            ) : (
+              <Moon className="h-4 w-4" />
+            )}
+          </button>
+          <div className="relative">
+            <button
+              onClick={() => setShowLang(v => !v)}
+              aria-label={t('actions.language')}
+              className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
+            >
+              {language.toUpperCase()}
+            </button>
+            {showLang && (
+              <div className="absolute right-0 mt-2 rounded bg-gray-100 shadow dark:bg-gray-800">
                 {(['en', 'es'] as Language[]).map(code => (
                   <button
                     key={code}
                     onClick={() => {
                       setLanguage(code);
-                      setShowActions(false);
+                      setShowLang(false);
                     }}
-                    className="flex w-full items-center gap-2 rounded px-2 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-800"
+                    className="block w-full px-4 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-700"
                   >
                     {code.toUpperCase()} - {t(`lang.${code}`)}
                   </button>
                 ))}
               </div>
-            </div>
+            )}
           </div>
         </div>
-      )}
+      </header>
       {showConfirm && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-sm rounded bg-gray-900 p-6 text-center text-gray-100">
