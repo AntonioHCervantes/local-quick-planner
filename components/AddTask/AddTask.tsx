@@ -2,7 +2,7 @@
 import { useRef, useState } from 'react';
 import { Plus, Mic } from 'lucide-react';
 import { Priority } from '../../lib/types';
-import { useI18n } from '../../lib/i18n';
+import { useI18n, Language } from '../../lib/i18n';
 import useAddTask, { UseAddTaskProps } from './useAddTask';
 
 export default function AddTask(props: UseAddTaskProps) {
@@ -13,6 +13,7 @@ export default function AddTask(props: UseAddTaskProps) {
   const { t, language } = useI18n();
   const recognitionRef = useRef<any>(null);
   const [isListening, setIsListening] = useState(false);
+  const speechLangMap: Record<Language, string> = { en: 'en-US', es: 'es-ES' };
 
   const handleVoiceInput = () => {
     const SpeechRecognition =
@@ -22,7 +23,6 @@ export default function AddTask(props: UseAddTaskProps) {
 
     if (!recognitionRef.current) {
       const recognition = new SpeechRecognition();
-      recognition.lang = language === 'es' ? 'es-ES' : 'en-US';
       recognition.interimResults = false;
       recognition.onresult = (e: any) => {
         const transcript = e.results[0][0].transcript;
@@ -33,6 +33,8 @@ export default function AddTask(props: UseAddTaskProps) {
       recognition.onend = () => setIsListening(false);
       recognitionRef.current = recognition;
     }
+
+    recognitionRef.current.lang = speechLangMap[language] || language;
 
     if (isListening) {
       recognitionRef.current.stop();
