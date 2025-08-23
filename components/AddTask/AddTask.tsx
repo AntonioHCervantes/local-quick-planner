@@ -27,7 +27,9 @@ export default function AddTask(props: UseAddTaskProps) {
       recognition.onresult = (e: any) => {
         const transcript = e.results[0][0].transcript;
         setTitle(prev => (prev ? `${prev} ${transcript}` : transcript));
+        recognition.stop();
       };
+      recognition.onspeechend = () => recognition.stop();
       recognition.onend = () => setIsListening(false);
       recognitionRef.current = recognition;
     }
