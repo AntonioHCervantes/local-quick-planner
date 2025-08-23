@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Check } from 'lucide-react';
 import { useStore } from '../../lib/store';
+import { useI18n } from '../../lib/i18n';
 
 const WELCOME_KEY = 'localquickplanner:welcome';
 
@@ -11,6 +12,7 @@ export default function WelcomeModal() {
   const { tasks } = useStore();
   const router = useRouter();
   const [show, setShow] = useState(false);
+  const { t } = useI18n();
 
   useEffect(() => {
     if (tasks.length === 0 && typeof window !== 'undefined') {
@@ -32,18 +34,18 @@ export default function WelcomeModal() {
   if (!show) return null;
 
   const items = [
-    'Mejora tu productividad, planificaca tus tareas y organiza tu trabajo diario.',
-    'Tus datos se almacenan en local, no se envían a ningún servidor.',
-    'Exporta tus datos para hacer copias de seguridad en local cada cierto tiempo.',
-    'Diseñado para uso personal, no para equipos.',
-    '100% gratis e ilimitado, open source.',
+    t('welcomeModal.item1'),
+    t('welcomeModal.item2'),
+    t('welcomeModal.item3'),
+    t('welcomeModal.item4'),
+    t('welcomeModal.item5'),
   ];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
       <div className="w-full max-w-md rounded bg-white p-6 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
         <h2 className="mb-4 text-center text-2xl font-bold">
-          Local Quick Planner
+          {t('welcomeModal.title')}
         </h2>
         <ul className="mb-6 space-y-2">
           {items.map(text => (
@@ -61,7 +63,7 @@ export default function WelcomeModal() {
             onClick={close}
             className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-500 focus:bg-blue-500"
           >
-            Let&apos;s go!
+            {t('welcomeModal.cta')}
           </button>
         </div>
       </div>

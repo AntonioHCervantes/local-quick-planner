@@ -188,6 +188,16 @@ const translations: Record<Language, any> = {
         description: 'If you have questions, reach out through GitHub issues.',
       },
     },
+    welcomeModal: {
+      title: 'Local Quick Planner',
+      item1:
+        'Boost your productivity, plan your tasks and organize your daily work.',
+      item2: 'Your data is stored locally, never sent to any server.',
+      item3: 'Export your data periodically to make local backups.',
+      item4: 'Designed for personal use, not for teams.',
+      item5: '100% free and unlimited, open source.',
+      cta: "Let's go!",
+    },
     lang: { en: 'English', es: 'Spanish' },
   },
   es: {
@@ -372,6 +382,17 @@ const translations: Record<Language, any> = {
         description:
           'Si tienes preguntas, contáctanos mediante las issues de GitHub.',
       },
+    },
+    welcomeModal: {
+      title: 'Local Quick Planner',
+      item1:
+        'Mejora tu productividad, planifica tus tareas y organiza tu trabajo diario.',
+      item2: 'Tus datos se almacenan en local, no se envían a ningún servidor.',
+      item3:
+        'Exporta tus datos para hacer copias de seguridad en local cada cierto tiempo.',
+      item4: 'Diseñado para uso personal, no para equipos.',
+      item5: '100% gratis e ilimitado, open source.',
+      cta: '¡Vamos!',
     },
     lang: { en: 'Inglés', es: 'Español' },
   },
