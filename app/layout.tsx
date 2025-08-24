@@ -1,10 +1,11 @@
 import './globals.css';
 import type { ReactNode } from 'react';
 import type { Metadata } from 'next';
+import { Toaster } from 'react-hot-toast';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import { I18nProvider } from '../lib/i18n';
-import { Toaster } from 'react-hot-toast';
+import WelcomeModal from '../components/WelcomeModal/WelcomeModal';
 
 export const metadata: Metadata = {
   title: 'Local Quick Planner',
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <main className="flex-1">{children}</main>
           <Footer />
           <Toaster />
+          <WelcomeModal />
         </I18nProvider>
       </body>
     </html>
