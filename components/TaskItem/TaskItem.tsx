@@ -6,7 +6,7 @@ import {
   GripVertical,
   Plus,
 } from 'lucide-react';
-import { Priority } from '../../lib/types';
+import { Priority, Tag } from '../../lib/types';
 import { useI18n } from '../../lib/i18n';
 import useTaskItem, { UseTaskItemProps } from './useTaskItem';
 import { useSortable } from '@dnd-kit/sortable';
@@ -45,6 +45,48 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
     return null;
   }
 
+  const Actions = () => (
+    <>
+      <select
+        value={task.priority ?? ''}
+        onChange={e =>
+          updateTask(task.id, {
+            priority: e.target.value as Priority,
+          })
+        }
+        className="rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700 flex-1 md:flex-none"
+      >
+        <option value="low">{t('priority.low')}</option>
+        <option value="medium">{t('priority.medium')}</option>
+        <option value="high">{t('priority.high')}</option>
+      </select>
+      <button
+        onClick={() => toggleMyDay(task.id)}
+        aria-label={
+          task.plannedFor ? t('taskItem.removeMyDay') : t('taskItem.addMyDay')
+        }
+        title={
+          task.plannedFor ? t('taskItem.removeMyDay') : t('taskItem.addMyDay')
+        }
+        className="rounded bg-transparent p-1 text-black focus:ring dark:text-white"
+      >
+        {task.plannedFor ? (
+          <CalendarX className="h-4 w-4" />
+        ) : (
+          <CalendarPlus className="h-4 w-4" />
+        )}
+      </button>
+      <button
+        onClick={() => removeTask(task.id)}
+        aria-label={t('taskItem.deleteTask')}
+        title={t('taskItem.deleteTask')}
+        className="rounded bg-transparent p-1 text-black focus:ring dark:text-white"
+      >
+        <Trash2 className="h-4 w-4" />
+      </button>
+    </>
+  );
+
   return (
     <div
       ref={setNodeRef}
@@ -65,69 +107,31 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
             : 'bg-gray-100 dark:bg-gray-800'
         } ${highlighted ? 'ring-2 ring-[#57886C] bg-[#57886C] text-white' : ''}`}
       >
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center">
           {isEditing ? (
             <input
               value={title}
               onChange={e => setTitle(e.target.value)}
               onBlur={saveTitle}
               onKeyDown={handleTitleKeyDown}
-              className="flex-1 rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
+              className="w-full md:flex-1 rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
               autoFocus
             />
           ) : (
             <p
-              className="flex-1"
+              className="w-full md:flex-1"
               onClick={startEditing}
             >
               {task.title}
             </p>
           )}
-          <select
-            value={task.priority ?? ''}
-            onChange={e =>
-              updateTask(task.id, {
-                priority: e.target.value as Priority,
-              })
-            }
-            className="rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
-          >
-            <option value="low">{t('priority.low')}</option>
-            <option value="medium">{t('priority.medium')}</option>
-            <option value="high">{t('priority.high')}</option>
-          </select>
-          <button
-            onClick={() => toggleMyDay(task.id)}
-            aria-label={
-              task.plannedFor
-                ? t('taskItem.removeMyDay')
-                : t('taskItem.addMyDay')
-            }
-            title={
-              task.plannedFor
-                ? t('taskItem.removeMyDay')
-                : t('taskItem.addMyDay')
-            }
-            className="rounded bg-transparent p-1 text-black focus:ring dark:text-white"
-          >
-            {task.plannedFor ? (
-              <CalendarX className="h-4 w-4" />
-            ) : (
-              <CalendarPlus className="h-4 w-4" />
-            )}
-          </button>
-          <button
-            onClick={() => removeTask(task.id)}
-            aria-label={t('taskItem.deleteTask')}
-            title={t('taskItem.deleteTask')}
-            className="rounded bg-transparent p-1 text-black focus:ring dark:text-white"
-          >
-            <Trash2 className="h-4 w-4" />
-          </button>
+          <div className="hidden md:flex items-center gap-2">
+            <Actions />
+          </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center">
           <div className="flex flex-wrap gap-1 items-center">
-            {task.tags.map(tag => (
+            {task.tags.map((tag: string) => (
               <span
                 key={tag}
                 style={{ backgroundColor: getTagColor(tag) }}
@@ -159,13 +163,13 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
             <>
               <input
                 onKeyDown={handleTagInputChange}
-                className="w-[200px] rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
+                className="w-full md:w-[200px] rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
                 placeholder={t('taskItem.tagPlaceholder')}
                 list="existing-tags"
                 autoFocus={task.tags.length > 0}
               />
               <datalist id="existing-tags">
-                {allTags.map(tag => (
+                {allTags.map((tag: Tag) => (
                   <option
                     key={tag.id}
                     value={tag.label}
@@ -174,6 +178,9 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
               </datalist>
             </>
           )}
+        </div>
+        <div className="flex items-center gap-2 md:hidden">
+          <Actions />
         </div>
       </div>
     </div>
