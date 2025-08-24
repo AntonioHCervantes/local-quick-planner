@@ -124,6 +124,7 @@ export default function AddTask(props: UseAddTaskProps) {
               >
                 <span className="mr-1 select-none">{tag}</span>
                 <button
+                  type="button"
                   onClick={() => removeTag(tag)}
                   aria-label={t('actions.removeTag')}
                   title={t('actions.removeTag')}
