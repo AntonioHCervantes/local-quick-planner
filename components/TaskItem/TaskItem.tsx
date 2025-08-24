@@ -1,5 +1,11 @@
 'use client';
-import { CalendarPlus, CalendarX, Trash2, GripVertical } from 'lucide-react';
+import {
+  CalendarPlus,
+  CalendarX,
+  Trash2,
+  GripVertical,
+  Plus,
+} from 'lucide-react';
 import { Priority } from '../../lib/types';
 import { useI18n } from '../../lib/i18n';
 import useTaskItem, { UseTaskItemProps } from './useTaskItem';
@@ -12,7 +18,7 @@ interface TaskItemProps extends UseTaskItemProps {
 
 export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
   const { state, actions } = useTaskItem({ taskId });
-  const { task, isEditing, title, allTags } = state;
+  const { task, isEditing, title, allTags, showTagInput } = state as any;
   const {
     setTitle,
     handleTagInputChange,
@@ -24,6 +30,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
     updateTask,
     toggleMyDay,
     removeTask,
+    toggleTagInput,
   } = actions as any; // when task undefined, actions is empty
   const { t } = useI18n();
 
@@ -119,7 +126,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
           </button>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex flex-wrap gap-1">
+          <div className="flex flex-wrap gap-1 items-center">
             {task.tags.map(tag => (
               <span
                 key={tag}
@@ -137,21 +144,36 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
                 </button>
               </span>
             ))}
+            {task.tags.length > 0 && (
+              <button
+                onClick={toggleTagInput}
+                aria-label={t('actions.addTag')}
+                title={t('actions.addTag')}
+                className="flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20 text-black dark:text-white"
+              >
+                <Plus className="h-4 w-4" />
+              </button>
+            )}
           </div>
-          <input
-            onKeyDown={handleTagInputChange}
-            className="w-[200px] rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
-            placeholder={t('taskItem.tagPlaceholder')}
-            list="existing-tags"
-          />
-          <datalist id="existing-tags">
-            {allTags.map(tag => (
-              <option
-                key={tag.id}
-                value={tag.label}
+          {(showTagInput || task.tags.length === 0) && (
+            <>
+              <input
+                onKeyDown={handleTagInputChange}
+                className="w-[200px] rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
+                placeholder={t('taskItem.tagPlaceholder')}
+                list="existing-tags"
+                autoFocus={task.tags.length > 0}
               />
-            ))}
-          </datalist>
+              <datalist id="existing-tags">
+                {allTags.map(tag => (
+                  <option
+                    key={tag.id}
+                    value={tag.label}
+                  />
+                ))}
+              </datalist>
+            </>
+          )}
         </div>
       </div>
     </div>
