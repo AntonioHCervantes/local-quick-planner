@@ -1,5 +1,6 @@
 'use client';
 import { Check, Trash2, Play } from 'lucide-react';
+import Timer from './Timer';
 import useTaskCard, { UseTaskCardProps } from './useTaskCard';
 
 const priorityColors = {
@@ -91,6 +92,9 @@ export default function TaskCard(props: UseTaskCardProps) {
           </span>
         ))}
       </div>
+      {mode === 'my-day' && task.dayStatus === 'doing' && (
+        <Timer taskTitle={task.title} />
+      )}
     </div>
   );
 }

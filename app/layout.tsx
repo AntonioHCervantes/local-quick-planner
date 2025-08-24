@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import Header from '../components/Header/Header';
 import Footer from '../components/Footer/Footer';
 import { I18nProvider } from '../lib/i18n';
+import { Toaster } from 'react-hot-toast';
 
 export const metadata: Metadata = {
   title: 'Local Quick Planner',
@@ -17,6 +18,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          <Toaster />
         </I18nProvider>
       </body>
     </html>
