@@ -56,7 +56,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
           task.plannedFor
             ? 'bg-blue-100 dark:bg-[rgb(62,74,113)]'
             : 'bg-gray-100 dark:bg-gray-800'
-        } ${highlighted ? 'ring-2 ring-blue-100 dark:ring-[rgb(62,74,113)]' : ''}`}
+        } ${highlighted ? 'ring-2 ring-[#57886C]' : ''}`}
       >
         <div className="flex items-center gap-2">
           {isEditing ? (
