@@ -22,6 +22,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
   const {
     setTitle,
     handleTagInputChange,
+    handleExistingTagSelect,
     removeTag,
     getTagColor,
     startEditing,
@@ -159,6 +160,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
             <>
               <input
                 onKeyDown={handleTagInputChange}
+                onChange={handleExistingTagSelect}
                 className="w-[200px] rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
                 placeholder={t('taskItem.tagPlaceholder')}
                 list="existing-tags"

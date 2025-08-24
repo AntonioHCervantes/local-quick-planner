@@ -44,23 +44,35 @@ export default function useAddTask({
     setTags(newTags);
   };
 
+  const addTagFromValue = (value: string) => {
+    const newTag = value.trim();
+    if (newTag && !tags.includes(newTag)) {
+      setTags([...tags, newTag]);
+      if (!existingTags.find(t => t.label === newTag)) {
+        const color = `hsl(${Math.random() * 360}, 70%, 50%)`;
+        addTag({
+          id: crypto.randomUUID(),
+          label: newTag,
+          color,
+          favorite: false,
+        });
+      }
+    }
+  };
+
   const handleTagInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' || e.key === ',') {
       e.preventDefault();
-      const newTag = e.currentTarget.value.trim();
-      if (newTag && !tags.includes(newTag)) {
-        setTags([...tags, newTag]);
-        if (!existingTags.find(t => t.label === newTag)) {
-          const color = `hsl(${Math.random() * 360}, 70%, 50%)`;
-          addTag({
-            id: crypto.randomUUID(),
-            label: newTag,
-            color,
-            favorite: false,
-          });
-        }
-      }
+      addTagFromValue(e.currentTarget.value);
       e.currentTarget.value = '';
+    }
+  };
+
+  const handleExistingTagSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (existingTags.some(tag => tag.label === value)) {
+      addTagFromValue(value);
+      e.target.value = '';
     }
   };
 
@@ -75,6 +87,7 @@ export default function useAddTask({
       setPriority,
       handleAdd,
       handleTagInputChange,
+      handleExistingTagSelect,
       removeTag,
     },
   } as const;

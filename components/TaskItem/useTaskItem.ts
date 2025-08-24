@@ -27,25 +27,37 @@ export default function useTaskItem({ taskId }: UseTaskItemProps) {
     } as const;
   }
 
+  const addTagFromValue = (value: string) => {
+    const newTag = value.trim();
+    if (newTag && !task.tags.includes(newTag)) {
+      const newTags = [...task.tags, newTag];
+      updateTask(task.id, { tags: newTags });
+      if (!allTags.find(t => t.label === newTag)) {
+        const color = `hsl(${Math.random() * 360}, 70%, 50%)`;
+        addTag({
+          id: crypto.randomUUID(),
+          label: newTag,
+          color,
+          favorite: false,
+        });
+      }
+      setShowTagInput(false);
+    }
+  };
+
   const handleTagInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' || e.key === ',') {
       e.preventDefault();
-      const newTag = e.currentTarget.value.trim();
-      if (newTag && !task.tags.includes(newTag)) {
-        const newTags = [...task.tags, newTag];
-        updateTask(task.id, { tags: newTags });
-        if (!allTags.find(t => t.label === newTag)) {
-          const color = `hsl(${Math.random() * 360}, 70%, 50%)`;
-          addTag({
-            id: crypto.randomUUID(),
-            label: newTag,
-            color,
-            favorite: false,
-          });
-        }
-        setShowTagInput(false);
-      }
+      addTagFromValue(e.currentTarget.value);
       e.currentTarget.value = '';
+    }
+  };
+
+  const handleExistingTagSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (allTags.some(tag => tag.label === value)) {
+      addTagFromValue(value);
+      e.target.value = '';
     }
   };
 
@@ -95,6 +107,7 @@ export default function useTaskItem({ taskId }: UseTaskItemProps) {
       setTitle,
       setIsEditing,
       handleTagInputChange,
+      handleExistingTagSelect,
       removeTag,
       getTagColor,
       startEditing,
