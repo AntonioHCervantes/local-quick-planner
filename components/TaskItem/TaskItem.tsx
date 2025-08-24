@@ -5,11 +5,8 @@ import {
   Trash2,
   GripVertical,
   Plus,
-  ArrowDown,
-  Minus,
-  ArrowUp,
 } from 'lucide-react';
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
 import { Priority, Tag } from '../../lib/types';
 import { useI18n } from '../../lib/i18n';
 import useTaskItem, { UseTaskItemProps } from './useTaskItem';
@@ -39,12 +36,6 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
   } = actions as any; // when task undefined, actions is empty
   const { t } = useI18n();
   const [isPriorityEditing, setIsPriorityEditing] = useState(false);
-
-  const priorityIcons: Record<Priority, ReactNode> = {
-    low: <ArrowDown className="h-4 w-4 text-green-500" />,
-    medium: <Minus className="h-4 w-4 text-yellow-500" />,
-    high: <ArrowUp className="h-4 w-4 text-red-500" />,
-  };
 
   const priorityLabels: Record<Priority, string> = {
     low: t('priority.low'),
@@ -85,9 +76,8 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
           type="button"
           onClick={() => setIsPriorityEditing(true)}
           onFocus={() => setIsPriorityEditing(true)}
-          className="flex items-center gap-1 rounded bg-transparent p-1 text-sm focus:ring dark:text-white cursor-pointer flex-1 md:flex-none"
+          className="flex items-center rounded bg-transparent p-1 text-sm focus:ring dark:text-white cursor-pointer flex-1 md:flex-none"
         >
-          {priorityIcons[task.priority as Priority]}
           <span>{priorityLabels[task.priority as Priority]}</span>
         </button>
       )}
