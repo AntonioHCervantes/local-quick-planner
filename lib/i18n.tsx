@@ -422,14 +422,17 @@ function getTranslation(lang: Language, key: string): string {
 }
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>('en');
-
-  useEffect(() => {
-    const stored = localStorage.getItem('lang');
-    if (stored === 'en' || stored === 'es') {
-      setLanguage(stored);
+  const [language, setLanguage] = useState<Language>(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('lang');
+      if (stored === 'en' || stored === 'es') {
+        return stored;
+      }
+      const browser = navigator.language.split('-')[0];
+      return browser === 'es' ? 'es' : 'en';
     }
-  }, []);
+    return 'en';
+  });
 
   useEffect(() => {
     document.documentElement.lang = language;
