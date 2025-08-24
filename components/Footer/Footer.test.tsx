@@ -1,0 +1,13 @@
+import Footer from './Footer';
+import { render, screen } from '../../tests/test-utils';
+
+describe('Footer', () => {
+  it('renders navigation links', () => {
+    render(<Footer />);
+    expect(screen.getByRole('link', { name: /about/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /open source/i })).toHaveAttribute(
+      'href',
+      'https://github.com/AntonioHCervantes/local-quick-planner'
+    );
+  });
+});
