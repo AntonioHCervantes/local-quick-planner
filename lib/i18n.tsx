@@ -71,6 +71,15 @@ const translations: Record<Language, any> = {
       confirmDelete:
         'Some tasks are using this tag. If you remove it, those tasks will lose the tag. Continue?',
     },
+    welcomeModal: {
+      title: 'Local Quick Planner',
+      p1: 'Improve your productivity, plan your tasks and organize your daily work.',
+      p2: 'Your data is stored locally, nothing is sent to any server.',
+      p3: 'Export your data to make local backups from time to time.',
+      p4: 'Designed for personal use, not for teams.',
+      p5: '100% free and unlimited, open source.',
+      cta: "Let's go!",
+    },
     footer: {
       about: 'About',
       openSource: 'Open Source',
@@ -259,6 +268,15 @@ const translations: Record<Language, any> = {
       showAll: 'Mostrar todas las tareas',
       confirmDelete:
         'Algunas tareas usan esta etiqueta. Si la eliminas, esas tareas perderán la etiqueta. ¿Continuar?',
+    },
+    welcomeModal: {
+      title: 'Local Quick Planner',
+      p1: 'Mejora tu productividad, planifica tus tareas y organiza tu trabajo diario.',
+      p2: 'Tus datos se almacenan en local, no se envían a ningún servidor.',
+      p3: 'Exporta tus datos para hacer copias de seguridad en local cada cierto tiempo.',
+      p4: 'Diseñado para uso personal, no para equipos.',
+      p5: '100% gratis e ilimitado, open source.',
+      cta: '¡Vamos!',
     },
     footer: {
       about: 'Acerca de',
