@@ -6,6 +6,7 @@ import {
   GripVertical,
   Plus,
 } from 'lucide-react';
+import { useState } from 'react';
 import { Priority, Tag } from '../../lib/types';
 import { useI18n } from '../../lib/i18n';
 import useTaskItem, { UseTaskItemProps } from './useTaskItem';
@@ -34,6 +35,13 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
     toggleTagInput,
   } = actions as any; // when task undefined, actions is empty
   const { t } = useI18n();
+  const [isPriorityEditing, setIsPriorityEditing] = useState(false);
+
+  const priorityLabels: Record<Priority, string> = {
+    low: t('priority.low'),
+    medium: t('priority.medium'),
+    high: t('priority.high'),
+  };
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: taskId, disabled: !task });
@@ -48,19 +56,31 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
 
   const Actions = () => (
     <>
-      <select
-        value={task.priority ?? ''}
-        onChange={e =>
-          updateTask(task.id, {
-            priority: e.target.value as Priority,
-          })
-        }
-        className="rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700 flex-1 md:flex-none"
-      >
-        <option value="low">{t('priority.low')}</option>
-        <option value="medium">{t('priority.medium')}</option>
-        <option value="high">{t('priority.high')}</option>
-      </select>
+      {isPriorityEditing ? (
+        <select
+          value={task.priority ?? ''}
+          onChange={e => {
+            updateTask(task.id, { priority: e.target.value as Priority });
+            setIsPriorityEditing(false);
+          }}
+          onBlur={() => setIsPriorityEditing(false)}
+          className="rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700 flex-1 md:flex-none"
+          autoFocus
+        >
+          <option value="low">{t('priority.low')}</option>
+          <option value="medium">{t('priority.medium')}</option>
+          <option value="high">{t('priority.high')}</option>
+        </select>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setIsPriorityEditing(true)}
+          onFocus={() => setIsPriorityEditing(true)}
+          className="flex items-center rounded bg-transparent p-1 text-sm focus:ring dark:text-white cursor-pointer flex-1 md:flex-none"
+        >
+          <span>{priorityLabels[task.priority as Priority]}</span>
+        </button>
+      )}
       <button
         onClick={() => toggleMyDay(task.id)}
         aria-label={
