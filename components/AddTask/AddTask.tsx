@@ -8,8 +8,14 @@ import useAddTask, { UseAddTaskProps } from './useAddTask';
 export default function AddTask(props: UseAddTaskProps) {
   const { state, actions } = useAddTask(props);
   const { title, tags, priority, existingTags } = state;
-  const { setTitle, setPriority, handleAdd, handleTagInputChange, removeTag } =
-    actions;
+  const {
+    setTitle,
+    setPriority,
+    handleAdd,
+    handleTagInputChange,
+    handleExistingTagSelect,
+    removeTag,
+  } = actions;
   const { t, language } = useI18n();
   const recognitionRef = useRef<any>(null);
   const [isListening, setIsListening] = useState(false);
@@ -104,6 +110,7 @@ export default function AddTask(props: UseAddTaskProps) {
           <input
             id="task-tags"
             onKeyDown={handleTagInputChange}
+            onChange={handleExistingTagSelect}
             className="rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800"
             placeholder={t('addTask.tagsPlaceholder')}
             list="existing-tags"
