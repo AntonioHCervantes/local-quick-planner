@@ -71,9 +71,9 @@ export default function AddTask(props: UseAddTaskProps) {
           handleAdd();
         }}
         autoComplete="off"
-        className="flex flex-wrap items-center gap-2 p-4"
+        className="flex flex-col gap-2 p-4 sm:flex-row sm:flex-wrap sm:items-center"
       >
-        <div className="relative flex-1">
+        <div className="relative w-full sm:flex-1">
           <label
             htmlFor="task-title"
             className="sr-only"
@@ -100,7 +100,7 @@ export default function AddTask(props: UseAddTaskProps) {
             <Mic className="h-4 w-4" />
           </button>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
           <label
             htmlFor="task-tags"
             className="sr-only"
@@ -111,7 +111,7 @@ export default function AddTask(props: UseAddTaskProps) {
             id="task-tags"
             onKeyDown={handleTagInputChange}
             onChange={handleExistingTagSelect}
-            className="rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800"
+            className="w-full rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800 sm:w-auto"
             placeholder={t('addTask.tagsPlaceholder')}
             list="existing-tags"
           />
@@ -143,28 +143,32 @@ export default function AddTask(props: UseAddTaskProps) {
             ))}
           </div>
         </div>
-        <label
-          htmlFor="task-priority"
-          className="sr-only"
-        >
-          {t('addTask.priorityLabel')}
-        </label>
-        <select
-          id="task-priority"
-          value={priority}
-          onChange={e => setPriority(e.target.value as Priority)}
-          className="rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800"
-        >
-          <option value="low">{t('priority.low')}</option>
-          <option value="medium">{t('priority.medium')}</option>
-          <option value="high">{t('priority.high')}</option>
-        </select>
-        <button
-          type="submit"
-          className="flex items-center gap-1 rounded bg-[#57886C] px-3 py-2 text-sm text-white hover:brightness-110 focus:ring"
-        >
-          <Plus className="h-4 w-4" /> {t('addTask.addButton')}
-        </button>
+        <div className="flex w-full gap-2 sm:w-auto">
+          <div className="flex-1 sm:flex-none">
+            <label
+              htmlFor="task-priority"
+              className="sr-only"
+            >
+              {t('addTask.priorityLabel')}
+            </label>
+            <select
+              id="task-priority"
+              value={priority}
+              onChange={e => setPriority(e.target.value as Priority)}
+              className="w-full rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800 sm:w-auto"
+            >
+              <option value="low">{t('priority.low')}</option>
+              <option value="medium">{t('priority.medium')}</option>
+              <option value="high">{t('priority.high')}</option>
+            </select>
+          </div>
+          <button
+            type="submit"
+            className="flex flex-1 items-center justify-center gap-1 rounded bg-[#57886C] px-3 py-2 text-sm text-white hover:brightness-110 focus:ring sm:flex-none sm:w-auto"
+          >
+            <Plus className="h-4 w-4" /> {t('addTask.addButton')}
+          </button>
+        </div>
       </form>
       {showVoiceWarning && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50">
