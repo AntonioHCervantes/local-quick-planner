@@ -18,6 +18,7 @@ export default function useTaskItem({ taskId }: UseTaskItemProps) {
   const task = tasks.find(t => t.id === taskId);
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(task?.title ?? '');
+  const [showTagInput, setShowTagInput] = useState(task?.tags.length === 0);
 
   if (!task) {
     return {
@@ -42,6 +43,7 @@ export default function useTaskItem({ taskId }: UseTaskItemProps) {
             favorite: false,
           });
         }
+        setShowTagInput(false);
       }
       e.currentTarget.value = '';
     }
@@ -50,7 +52,12 @@ export default function useTaskItem({ taskId }: UseTaskItemProps) {
   const removeTag = (tagToRemove: string) => {
     const newTags = task.tags.filter(tag => tag !== tagToRemove);
     updateTask(task.id, { tags: newTags });
+    if (newTags.length === 0) {
+      setShowTagInput(true);
+    }
   };
+
+  const toggleTagInput = () => setShowTagInput(prev => !prev);
 
   const getTagColor = (tagLabel: string) => {
     const tag = allTags.find(t => t.label === tagLabel);
@@ -83,7 +90,7 @@ export default function useTaskItem({ taskId }: UseTaskItemProps) {
   };
 
   return {
-    state: { task, isEditing, title, allTags },
+    state: { task, isEditing, title, allTags, showTagInput },
     actions: {
       setTitle,
       setIsEditing,
@@ -96,6 +103,7 @@ export default function useTaskItem({ taskId }: UseTaskItemProps) {
       updateTask,
       toggleMyDay,
       removeTask,
+      toggleTagInput,
     },
   } as const;
 }
