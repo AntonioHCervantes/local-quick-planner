@@ -59,6 +59,11 @@ const translations: Record<Language, any> = {
       deleteTask: 'Delete task',
       tagPlaceholder: 'Add tag',
     },
+    timer: {
+      start: 'Start timer',
+      pause: 'Pause timer',
+      finished: 'Time for "{task}" finished',
+    },
     priority: { low: 'Low', medium: 'Medium', high: 'High' },
     taskList: { noTasks: 'No tasks' },
     tagFilter: {
@@ -242,6 +247,11 @@ const translations: Record<Language, any> = {
       addMyDay: 'Agregar a Mi Día',
       deleteTask: 'Eliminar tarea',
       tagPlaceholder: 'Añadir etiqueta',
+    },
+    timer: {
+      start: 'Iniciar temporizador',
+      pause: 'Pausar temporizador',
+      finished: 'Tiempo para "{task}" terminado',
     },
     priority: { low: 'Baja', medium: 'Media', high: 'Alta' },
     taskList: { noTasks: 'No hay tareas' },
