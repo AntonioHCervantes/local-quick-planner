@@ -1,14 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import {
-  Download,
-  Upload,
-  Trash2,
-  Sun,
-  Moon,
-  MoreVertical,
-} from 'lucide-react';
+import { Download, Upload, Trash2, Sun, Moon, Settings } from 'lucide-react';
 import { Language } from '../../lib/i18n';
 import Icon from '../Icon/Icon';
 import useHeader from './useHeader';
@@ -53,35 +46,6 @@ export default function Header() {
         <div className="flex items-center gap-2">
           <div className="hidden items-center gap-2 md:flex">
             <button
-              onClick={exportData}
-              aria-label={t('actions.export')}
-              title={t('actions.export')}
-              className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
-            >
-              <Download className="h-4 w-4" />
-            </button>
-            <label
-              aria-label={t('actions.import')}
-              title={t('actions.import')}
-              className="cursor-pointer rounded p-2 hover:bg-gray-200 focus-within:bg-gray-200 dark:hover:bg-gray-800 dark:focus-within:bg-gray-800"
-            >
-              <Upload className="h-4 w-4" />
-              <input
-                type="file"
-                accept="application/json"
-                onChange={handleImport}
-                className="sr-only"
-              />
-            </label>
-            <button
-              onClick={() => setShowConfirm(true)}
-              aria-label={t('actions.clearAll')}
-              title={t('actions.clearAll')}
-              className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
-            >
-              <Trash2 className="h-4 w-4" />
-            </button>
-            <button
               onClick={toggleTheme}
               aria-label={t('actions.toggleTheme')}
               title={t('actions.toggleTheme')}
@@ -97,6 +61,7 @@ export default function Header() {
               <button
                 onClick={() => setShowLang(v => !v)}
                 aria-label={t('actions.language')}
+                title={t('actions.language')}
                 className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
               >
                 {language.toUpperCase()}
@@ -121,10 +86,11 @@ export default function Header() {
           </div>
           <button
             onClick={() => setShowActions(true)}
-            aria-label={t('actions.more')}
-            className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800 md:hidden"
+            aria-label={t('actions.settings')}
+            title={t('actions.settings')}
+            className="rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
           >
-            <MoreVertical className="h-4 w-4" />
+            <Settings className="h-4 w-4" />
           </button>
         </div>
       </header>
