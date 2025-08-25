@@ -10,6 +10,7 @@ import {
   MoreVertical,
 } from 'lucide-react';
 import { Language } from '../../lib/i18n';
+import Icon from '../Icon/Icon';
 import useHeader from './useHeader';
 
 export default function Header() {
@@ -29,23 +30,26 @@ export default function Header() {
   return (
     <>
       <header className="flex items-center justify-between bg-gray-100 px-4 py-2 dark:bg-gray-950">
-        <nav className="flex gap-4">
-          <Link
-            href="/my-day"
-            className="flex items-center hover:underline focus:underline"
-          >
-            {t('nav.myDay')}
-            <span className="ml-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs text-current dark:bg-[rgb(62,74,113)]">
-              {myDayCount}
-            </span>
-          </Link>
-          <Link
-            href="/my-tasks"
-            className="hover:underline focus:underline"
-          >
-            {t('nav.myTasks')}
-          </Link>
-        </nav>
+        <div className="flex items-center gap-4">
+          <Icon />
+          <nav className="flex gap-4">
+            <Link
+              href="/my-day"
+              className="flex items-center hover:underline focus:underline"
+            >
+              {t('nav.myDay')}
+              <span className="ml-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs text-current dark:bg-[rgb(62,74,113)]">
+                {myDayCount}
+              </span>
+            </Link>
+            <Link
+              href="/my-tasks"
+              className="hover:underline focus:underline"
+            >
+              {t('nav.myTasks')}
+            </Link>
+          </nav>
+        </div>
         <div className="flex items-center gap-2">
           <div className="hidden items-center gap-2 md:flex">
             <button
