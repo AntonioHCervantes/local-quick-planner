@@ -10,7 +10,6 @@ export default function Icon() {
       width="40"
       height="40"
     >
-      {/* Contenedor principal */}
       <rect
         width="56"
         height="56"
@@ -30,7 +29,6 @@ export default function Icon() {
         className="stroke-gray-200 dark:stroke-gray-700"
       />
 
-      {/* Lista de tareas con jerarquía de color atenuada */}
       <g transform="translate(14, 18)">
         <rect
           width="36"
