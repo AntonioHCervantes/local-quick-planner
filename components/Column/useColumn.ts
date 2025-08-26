@@ -9,7 +9,9 @@ export interface UseColumnProps {
 export default function useColumn({ id, mode }: UseColumnProps) {
   const { setNodeRef } = useDroppable({ id });
   const containerClasses =
-    mode === 'my-day' ? 'flex-1 min-w-0' : 'w-80 flex-shrink-0';
+    mode === 'my-day'
+      ? 'flex-1 flex-shrink-0 min-w-[18rem] snap-start'
+      : 'w-80 flex-shrink-0';
   const listClasses =
     mode === 'my-day' ? 'space-y-4 min-h-4' : 'space-y-2 min-h-4';
 

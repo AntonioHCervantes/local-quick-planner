@@ -23,7 +23,9 @@ export default function NotificationCard({ notification }: Props) {
         <Icon className="mt-1 h-6 w-6 flex-shrink-0" />
         <div className="flex-1">
           <h2 className="text-lg font-semibold">{t(notification.titleKey)}</h2>
-          <p className="text-base mt-1 w-full">{t(notification.descriptionKey)}</p>
+          <p className="text-base mt-1 w-full">
+            {t(notification.descriptionKey)}
+          </p>
           {notification.actionUrl && notification.actionLabelKey && (
             <a
               href={notification.actionUrl}
