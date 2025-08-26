@@ -67,7 +67,7 @@ export default function Header() {
                 {language.toUpperCase()}
               </button>
               {showLang && (
-                <div className="absolute right-0 mt-2 rounded bg-gray-100 shadow dark:bg-gray-800">
+                <div className="absolute right-0 mt-2 w-48 rounded bg-gray-100 shadow dark:bg-gray-800">
                   {(['en', 'es'] as Language[]).map(code => (
                     <button
                       key={code}
@@ -75,7 +75,11 @@ export default function Header() {
                         setLanguage(code);
                         setShowLang(false);
                       }}
-                      className="block w-full px-4 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-700"
+                      className={`block w-full px-4 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-700 ${
+                        code === language
+                          ? 'bg-gray-200 dark:bg-gray-700 font-semibold'
+                          : ''
+                      }`}
                     >
                       {code.toUpperCase()} - {t(`lang.${code}`)}
                     </button>
