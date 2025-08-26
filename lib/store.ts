@@ -1,5 +1,12 @@
 import { create } from 'zustand';
-import { PersistedState, Task, List, Tag, Priority } from './types';
+import {
+  PersistedState,
+  Task,
+  List,
+  Tag,
+  Priority,
+  Notification,
+} from './types';
 import { loadState, saveState } from './storage';
 
 const defaultLists: List[] = [
@@ -25,7 +32,17 @@ const defaultState: PersistedState = {
     'day-doing': [],
     'day-done': [],
   },
-  version: 5,
+  notifications: [
+    {
+      id: 'welcome',
+      type: 'info',
+      titleKey: 'notifications.welcome.title',
+      descriptionKey: 'notifications.welcome.description',
+      read: false,
+      createdAt: new Date().toISOString(),
+    },
+  ],
+  version: 6,
 };
 
 type Store = PersistedState & {
@@ -54,6 +71,9 @@ type Store = PersistedState & {
   exportData: () => void;
   importData: (data: PersistedState) => void;
   clearAll: () => void;
+  addNotification: (n: Notification) => void;
+  markNotificationRead: (id: string) => void;
+  markAllNotificationsRead: () => void;
 };
 
 const persisted = loadState();
@@ -97,6 +117,19 @@ if (persisted) {
     });
     persisted.order = newOrder;
     persisted.version = 5;
+  }
+  if (persisted.version < 6) {
+    persisted.notifications = [
+      {
+        id: 'welcome',
+        type: 'info',
+        titleKey: 'notifications.welcome.title',
+        descriptionKey: 'notifications.welcome.description',
+        read: false,
+        createdAt: new Date().toISOString(),
+      },
+    ];
+    persisted.version = 6;
   }
 }
 
@@ -211,6 +244,7 @@ export const useStore = create<Store>((set, get) => ({
         lists: state.lists,
         tags: state.tags,
         order: newOrder,
+        notifications: state.notifications,
         version: state.version,
       };
       saveState(persisted);
@@ -336,5 +370,23 @@ export const useStore = create<Store>((set, get) => ({
   clearAll: () => {
     set(() => defaultState);
     saveState(defaultState);
+  },
+  addNotification: n => {
+    set(state => ({ notifications: [n, ...state.notifications] }));
+    saveState(get());
+  },
+  markNotificationRead: id => {
+    set(state => ({
+      notifications: state.notifications.map(n =>
+        n.id === id ? { ...n, read: true } : n
+      ),
+    }));
+    saveState(get());
+  },
+  markAllNotificationsRead: () => {
+    set(state => ({
+      notifications: state.notifications.map(n => ({ ...n, read: true })),
+    }));
+    saveState(get());
   },
 }));
