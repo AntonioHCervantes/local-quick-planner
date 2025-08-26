@@ -299,7 +299,7 @@ const translations: Record<Language, any> = {
       title: 'Notificaciones',
       empty: 'Sin notificaciones',
       welcome: {
-        title: 'Bienvenido a Local Quick Planner',
+        title: '¡Hola! Te damos la bienvenida a Local Quick Planner',
         description:
           'Usa el tablero "Mis Tareas" para reunir y priorizar todo lo que debes hacer. Pasa los elementos a "Mi Día" cuando quieras enfocarte en ellos. Abre los ajustes para cambiar el tema, exportar tus datos y más.',
       },

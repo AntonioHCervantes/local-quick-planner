@@ -18,18 +18,18 @@ export default function NotificationCard({ notification }: Props) {
         : Info;
 
   return (
-    <div className="rounded border border-gray-200 p-4 dark:border-gray-700">
-      <div className="flex items-start gap-3">
-        <Icon className="mt-1 h-5 w-5 flex-shrink-0" />
+    <div className="rounded border border-gray-200 p-6 dark:border-gray-700">
+      <div className="flex items-start gap-4">
+        <Icon className="mt-1 h-6 w-6 flex-shrink-0" />
         <div className="flex-1">
-          <h2 className="font-semibold">{t(notification.titleKey)}</h2>
-          <p className="text-sm">{t(notification.descriptionKey)}</p>
+          <h2 className="text-lg font-semibold">{t(notification.titleKey)}</h2>
+          <p className="text-base mt-1 w-full">{t(notification.descriptionKey)}</p>
           {notification.actionUrl && notification.actionLabelKey && (
             <a
               href={notification.actionUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-2 inline-block rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-500"
+              className="mt-3 inline-block rounded bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-500"
             >
               {t(notification.actionLabelKey)}
             </a>
