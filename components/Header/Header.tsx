@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { Download, Upload, Trash2, Sun, Moon, Settings } from 'lucide-react';
-import { Language } from '../../lib/i18n';
+import { Language, LANGUAGES } from '../../lib/i18n';
 import Icon from '../Icon/Icon';
 import useHeader from './useHeader';
 
@@ -68,7 +68,7 @@ export default function Header() {
               </button>
               {showLang && (
                 <div className="absolute right-0 mt-2 w-48 rounded bg-gray-100 shadow dark:bg-gray-800">
-                  {(['en', 'es'] as Language[]).map(code => (
+                  {LANGUAGES.map(code => (
                     <button
                       key={code}
                       onClick={() => {
@@ -153,19 +153,30 @@ export default function Header() {
                 {t('actions.toggleTheme')}
               </button>
               <div className="mt-2 border-t pt-2">
-                <p className="mb-2 text-sm">{t('actions.language')}</p>
-                {(['en', 'es'] as Language[]).map(code => (
-                  <button
-                    key={code}
-                    onClick={() => {
-                      setLanguage(code);
-                      setShowActions(false);
-                    }}
-                    className="flex w-full items-center gap-2 rounded px-2 py-2 text-left hover:bg-gray-200 dark:hover:bg-gray-800"
-                  >
-                    {code.toUpperCase()} - {t(`lang.${code}`)}
-                  </button>
-                ))}
+                <label
+                  htmlFor="language-select"
+                  className="mb-2 block text-sm"
+                >
+                  {t('actions.language')}
+                </label>
+                <select
+                  id="language-select"
+                  value={language}
+                  onChange={e => {
+                    setLanguage(e.target.value as Language);
+                    setShowActions(false);
+                  }}
+                  className="w-full rounded px-2 py-2 bg-gray-200 dark:bg-gray-800"
+                >
+                  {LANGUAGES.map(code => (
+                    <option
+                      key={code}
+                      value={code}
+                    >
+                      {code.toUpperCase()} - {t(`lang.${code}`)}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
