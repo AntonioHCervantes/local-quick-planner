@@ -9,6 +9,8 @@ import {
 
 export type Language = 'en' | 'es';
 
+export const LANGUAGES: Language[] = ['en', 'es'];
+
 const translations: Record<Language, any> = {
   en: {
     nav: { myDay: 'My Day', myTasks: 'My Tasks' },
