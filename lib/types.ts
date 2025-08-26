@@ -27,5 +27,17 @@ export type PersistedState = {
   lists: List[];
   tags: Tag[];
   order: Record<string, string[]>;
+  notifications: Notification[];
   version: number;
+};
+
+export type Notification = {
+  id: string;
+  type: 'info' | 'tip' | 'alert';
+  titleKey: string;
+  descriptionKey: string;
+  read: boolean;
+  createdAt: string;
+  actionUrl?: string;
+  actionLabelKey?: string;
 };

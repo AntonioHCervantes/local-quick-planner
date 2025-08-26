@@ -1,14 +1,30 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import { Download, Upload, Trash2, Sun, Moon, Settings } from 'lucide-react';
+import {
+  Download,
+  Upload,
+  Trash2,
+  Sun,
+  Moon,
+  Settings,
+  Bell,
+} from 'lucide-react';
 import { Language, LANGUAGES } from '../../lib/i18n';
 import Icon from '../Icon/Icon';
 import useHeader from './useHeader';
 
 export default function Header() {
   const { state, actions } = useHeader();
-  const { showConfirm, showLang, theme, t, language, myDayCount } = state;
+  const {
+    showConfirm,
+    showLang,
+    theme,
+    t,
+    language,
+    myDayCount,
+    unreadNotifications,
+  } = state;
   const {
     exportData,
     setShowConfirm,
@@ -88,6 +104,19 @@ export default function Header() {
               )}
             </div>
           </div>
+          <Link
+            href="/notifications"
+            aria-label={t('actions.notifications')}
+            title={t('actions.notifications')}
+            className="relative rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
+          >
+            <Bell className="h-4 w-4" />
+            {unreadNotifications > 0 && (
+              <span className="absolute -right-1 -top-1 min-w-[16px] rounded-full bg-red-500 px-1 text-center text-[10px] leading-4 text-white">
+                {unreadNotifications}
+              </span>
+            )}
+          </Link>
           <button
             onClick={() => setShowActions(true)}
             aria-label={t('actions.settings')}

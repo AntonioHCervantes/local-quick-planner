@@ -27,6 +27,7 @@ const translations: Record<Language, any> = {
       favoriteTag: 'Add tag to favorites',
       unfavoriteTag: 'Remove tag from favorites',
       close: 'Close',
+      notifications: 'Notifications',
     },
     confirmDelete: {
       message:
@@ -83,6 +84,15 @@ const translations: Record<Language, any> = {
       p4: 'Designed for personal use, not for teams.',
       p5: '100% free and unlimited, open source.',
       cta: "Let's go!",
+    },
+    notifications: {
+      title: 'Notifications',
+      empty: 'No notifications',
+      welcome: {
+        title: 'Welcome to Local Quick Planner',
+        description:
+          'Use the "My Tasks" board to collect and prioritize everything you need to do. Move items into "My Day" when you are ready to focus on them. Open settings to switch theme, export your data and more.',
+      },
     },
     footer: {
       about: 'About',
@@ -227,6 +237,7 @@ const translations: Record<Language, any> = {
       favoriteTag: 'Marcar etiqueta como favorita',
       unfavoriteTag: 'Quitar etiqueta de favoritas',
       close: 'Cerrar',
+      notifications: 'Notificaciones',
     },
     confirmDelete: {
       message:
@@ -283,6 +294,15 @@ const translations: Record<Language, any> = {
       p4: 'Diseñado para uso personal, no para equipos.',
       p5: '100% gratis e ilimitado, open source.',
       cta: '¡Vamos!',
+    },
+    notifications: {
+      title: 'Notificaciones',
+      empty: 'Sin notificaciones',
+      welcome: {
+        title: 'Bienvenido a Local Quick Planner',
+        description:
+          'Usa el tablero "Mis Tareas" para reunir y priorizar todo lo que debes hacer. Pasa los elementos a "Mi Día" cuando quieras enfocarte en ellos. Abre los ajustes para cambiar el tema, exportar tus datos y más.',
+      },
     },
     footer: {
       about: 'Acerca de',
