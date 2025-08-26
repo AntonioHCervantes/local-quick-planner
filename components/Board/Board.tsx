@@ -18,7 +18,7 @@ export default function Board(props: UseBoardProps) {
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex gap-4 overflow-x-auto p-4">
+      <div className="flex gap-4 overflow-x-auto p-4 touch-pan-x snap-x snap-mandatory">
         {columns.map(col => (
           <Column
             key={col.id}
