@@ -64,6 +64,10 @@ const translations: Record<Language, any> = {
       deleteTask: 'Delete task',
       tagPlaceholder: 'Add tag',
     },
+    myDayPage: {
+      empty: 'No tasks added to My Day',
+      goToMyTasks: 'Go to My Tasks',
+    },
     timer: {
       start: 'Start timer',
       pause: 'Pause timer',
@@ -273,6 +277,10 @@ const translations: Record<Language, any> = {
       addMyDay: 'Agregar a Mi Día',
       deleteTask: 'Eliminar tarea',
       tagPlaceholder: 'Añadir etiqueta',
+    },
+    myDayPage: {
+      empty: 'No hay tareas añadidas a Mi Día',
+      goToMyTasks: 'Ir a Mis Tareas',
     },
     timer: {
       start: 'Iniciar temporizador',
