@@ -36,6 +36,15 @@ Your privacy is paramount: all data is stored locally in your browser's `localSt
 
 Then open http://localhost:3000 in your browser.
 
+## 📱 PWA Icons
+
+Binary icons are omitted from the repository. Create the following PNG files in the `public/` directory before building to enable proper installation and splash screens:
+
+- `icon-192.png` — 192×192, maskable
+- `icon-512.png` — 512×512, maskable
+
+The 192px icon also serves as the Apple touch icon. Both files are referenced by `public/manifest.webmanifest` and `app/layout.tsx`.
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please see the [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to get started.
