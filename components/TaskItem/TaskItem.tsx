@@ -12,6 +12,7 @@ import { useI18n } from '../../lib/i18n';
 import useTaskItem, { UseTaskItemProps } from './useTaskItem';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import LinkifiedText from '../LinkifiedText/LinkifiedText';
 
 interface TaskItemProps extends UseTaskItemProps {
   highlighted?: boolean;
@@ -143,7 +144,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
               className="w-full md:flex-1"
               onClick={startEditing}
             >
-              {task.title}
+              <LinkifiedText text={task.title} />
             </p>
           )}
           <div className="hidden md:flex items-center gap-2">
