@@ -2,6 +2,7 @@
 import { Check, Trash2, Play } from 'lucide-react';
 import Timer from './Timer';
 import useTaskCard, { UseTaskCardProps } from './useTaskCard';
+import LinkifiedText from '../LinkifiedText/LinkifiedText';
 
 const priorityColors = {
   low: 'border-l-green-500',
@@ -28,7 +29,9 @@ export default function TaskCard(props: UseTaskCardProps) {
           mode === 'my-day' ? 'items-start' : 'items-center'
         }`}
       >
-        <span className="flex-1 mr-2">{task.title}</span>
+        <span className="flex-1 mr-2">
+          <LinkifiedText text={task.title} />
+        </span>
         <div
           className={`flex gap-2 ${
             mode === 'my-day' ? 'items-start' : 'items-center'
