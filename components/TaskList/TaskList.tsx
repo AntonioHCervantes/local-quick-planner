@@ -40,7 +40,7 @@ export default function TaskList({ tasks, highlightedId }: TaskListProps) {
               <p className="text-center text-sm text-gray-500 dark:text-gray-400">
                 {t('taskList.noTasks')}
               </p>
-              <NoTasksIllustration className="mt-4 h-32 w-32 text-gray-400 dark:text-gray-500" />
+              <NoTasksIllustration className="mt-4 text-gray-400 dark:text-gray-500" />
             </div>
           )}
         </div>

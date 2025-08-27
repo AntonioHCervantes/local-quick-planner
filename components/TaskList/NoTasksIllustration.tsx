@@ -5,145 +5,78 @@ import type { SVGProps } from 'react';
 export default function NoTasksIllustration(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      viewBox="0 0 64 64"
+      viewBox="0 0 100 100"
       fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
       aria-hidden="true"
+      width="50%"
+      height="50%"
       {...props}
     >
-      <g id="person">
-        <circle
-          cx="32"
-          cy="20"
-          r="5"
-        />
-        <path d="M20 48c4-8 8-12 12-12s8 4 12 12" />
-        <path d="M20 48l-6 6" />
-        <path d="M44 48l6 6" />
-        <path d="M24 32l-4 8" />
-        <path d="M40 32l4 8" />
-      </g>
-      <g id="thought">
-        <circle
-          cx="36"
-          cy="14"
-          r="2"
-        />
-        <circle
-          cx="42"
-          cy="10"
-          r="3"
+      <style>
+        {`
+          @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+          }
+          @keyframes slideInFromLeft {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+          }
+          .board-outline {
+            animation: fadeIn 0.5s ease-out forwards;
+          }
+          .task-line {
+            animation: slideInFromLeft 0.5s ease-out forwards;
+          }
+          .task-line-1 { animation-delay: 0s; }
+          .task-line-2 { animation-delay: 0.2s; }
+          .task-line-3 { animation-delay: 0.4s; }
+          .task-line-4 { animation-delay: 0.6s; }
+          .task-line-5 { animation-delay: 0.8s; }
+        `}
+      </style>
+
+      {/* Tareas apareciendo en cascada */}
+      <g transform="translate(25, 5)">
+        <rect
+          width="50"
+          height="1"
+          rx="0.5"
+          className="task-line task-line-1 fill-gray-500 dark:fill-gray-400"
+          style={{ opacity: 0 }}
         />
         <rect
-          x="48"
-          y="2"
-          width="14"
-          height="12"
-          rx="3"
-          ry="3"
+          y="4"
+          width="45"
+          height="1"
+          rx="0.5"
+          className="task-line task-line-2 fill-gray-400 dark:fill-gray-500"
+          style={{ opacity: 0 }}
         />
-        <g id="tasks">
-          <g>
-            <circle
-              cx="52"
-              cy="6"
-              r="1"
-              opacity="0"
-              fill="currentColor"
-              stroke="none"
-            >
-              <animate
-                attributeName="opacity"
-                values="0;1;0"
-                dur="3s"
-                repeatCount="indefinite"
-              />
-            </circle>
-            <line
-              x1="55"
-              y1="6"
-              x2="60"
-              y2="6"
-              opacity="0"
-            >
-              <animate
-                attributeName="opacity"
-                values="0;1;0"
-                dur="3s"
-                repeatCount="indefinite"
-              />
-            </line>
-          </g>
-          <g>
-            <circle
-              cx="52"
-              cy="10"
-              r="1"
-              opacity="0"
-              fill="currentColor"
-              stroke="none"
-            >
-              <animate
-                attributeName="opacity"
-                values="0;1;0"
-                dur="3s"
-                begin="1s"
-                repeatCount="indefinite"
-              />
-            </circle>
-            <line
-              x1="55"
-              y1="10"
-              x2="60"
-              y2="10"
-              opacity="0"
-            >
-              <animate
-                attributeName="opacity"
-                values="0;1;0"
-                dur="3s"
-                begin="1s"
-                repeatCount="indefinite"
-              />
-            </line>
-          </g>
-          <g>
-            <circle
-              cx="52"
-              cy="14"
-              r="1"
-              opacity="0"
-              fill="currentColor"
-              stroke="none"
-            >
-              <animate
-                attributeName="opacity"
-                values="0;1;0"
-                dur="3s"
-                begin="2s"
-                repeatCount="indefinite"
-              />
-            </circle>
-            <line
-              x1="55"
-              y1="14"
-              x2="60"
-              y2="14"
-              opacity="0"
-            >
-              <animate
-                attributeName="opacity"
-                values="0;1;0"
-                dur="3s"
-                begin="2s"
-                repeatCount="indefinite"
-              />
-            </line>
-          </g>
-        </g>
+        <rect
+          y="8"
+          width="40"
+          height="1"
+          rx="0.5"
+          className="task-line task-line-3 fill-gray-300 dark:fill-gray-600"
+          style={{ opacity: 0 }}
+        />
+        <rect
+          y="12"
+          width="35"
+          height="1"
+          rx="0.5"
+          className="task-line task-line-4 fill-gray-200 dark:fill-gray-700"
+          style={{ opacity: 0 }}
+        />
+        <rect
+          y="16"
+          width="30"
+          height="1"
+          rx="0.5"
+          className="task-line task-line-5 fill-gray-100 dark:fill-gray-800"
+          style={{ opacity: 0 }}
+        />
       </g>
     </svg>
   );
