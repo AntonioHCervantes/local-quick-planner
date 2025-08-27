@@ -12,13 +12,12 @@ import {
 import { Task } from '../../lib/types';
 import { useStore } from '../../lib/store';
 import { useI18n } from '../../lib/i18n';
-import confetti from 'canvas-confetti';
-
 export interface UseBoardProps {
   mode: 'my-day' | 'kanban';
+  onDone?: () => void;
 }
 
-export default function useBoard({ mode }: UseBoardProps) {
+export default function useBoard({ mode, onDone }: UseBoardProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
@@ -93,7 +92,7 @@ export default function useBoard({ mode }: UseBoardProps) {
       over.data.current?.sortable?.index ?? getTasks(overContainer).length;
 
     if (overContainer === 'done' && activeContainer !== 'done') {
-      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      onDone?.();
     }
 
     reorderTask(activeId, overContainer, overIndex, mode);
