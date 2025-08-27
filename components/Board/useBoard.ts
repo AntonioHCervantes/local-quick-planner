@@ -12,6 +12,7 @@ import {
 import { Task } from '../../lib/types';
 import { useStore } from '../../lib/store';
 import { useI18n } from '../../lib/i18n';
+import confetti from 'canvas-confetti';
 
 export interface UseBoardProps {
   mode: 'my-day' | 'kanban';
@@ -79,15 +80,21 @@ export default function useBoard({ mode }: UseBoardProps) {
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
-    setActiveTask(null);
     const { active, over } = event;
+    setActiveTask(null);
     if (!over) return;
     const activeId = active.id as string;
+    const activeContainer =
+      active.data.current?.sortable.containerId as string;
     const overContainer =
       (over.data.current?.sortable?.containerId as string) ||
       (over.id as string);
     const overIndex =
       over.data.current?.sortable?.index ?? getTasks(overContainer).length;
+
+    if (overContainer === 'done' && activeContainer !== 'done') {
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    }
 
     reorderTask(activeId, overContainer, overIndex, mode);
   };
