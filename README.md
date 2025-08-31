@@ -1,8 +1,7 @@
 # Local Quick Planner
 
 Local Quick Planner is a simple, fast, and free tool to organize your tasks and
-boost your productivity. It's a lightweight, Microsoft Planner-style board that
-runs entirely in your browser.
+boost your productivity.
 
 Your privacy is paramount: all data is stored locally in your browser's
 `localStorage`, ensuring your tasks stay on your machine.
