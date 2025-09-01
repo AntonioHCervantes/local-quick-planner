@@ -89,7 +89,7 @@ export default function TaskCard(props: UseTaskCardProps) {
           <span
             key={tag}
             style={{ backgroundColor: getTagColor(tag) }}
-            className="text-xs px-2 py-1 rounded-full"
+            className="text-xs px-2 py-1 rounded-full text-white"
           >
             {tag}
           </span>

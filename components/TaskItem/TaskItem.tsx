@@ -157,7 +157,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
               <span
                 key={tag}
                 style={{ backgroundColor: getTagColor(tag) }}
-                className="flex items-center rounded-full pl-2 pr-1 py-1 text-xs"
+                className="flex items-center rounded-full pl-2 pr-1 py-1 text-xs text-white"
               >
                 <span className="mr-1 select-none">{tag}</span>
                 <button
