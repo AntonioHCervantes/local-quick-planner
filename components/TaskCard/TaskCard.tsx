@@ -29,7 +29,7 @@ export default function TaskCard(props: UseTaskCardProps) {
           mode === 'my-day' ? 'items-start' : 'items-center'
         }`}
       >
-        <span className="flex-1 mr-2">
+        <span className="flex-1 mr-2 min-w-0">
           <LinkifiedText text={task.title} />
         </span>
         <div

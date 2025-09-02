@@ -141,7 +141,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
             />
           ) : (
             <p
-              className="w-full md:flex-1"
+              className="w-full md:flex-1 min-w-0"
               onClick={startEditing}
             >
               <LinkifiedText text={task.title} />
