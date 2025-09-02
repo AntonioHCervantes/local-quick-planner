@@ -90,7 +90,7 @@ export default function useBoard({ mode }: UseBoardProps) {
     const overIndex =
       over.data.current?.sortable?.index ?? getTasks(overContainer).length;
 
-    if (overContainer === 'done' && activeContainer !== 'done') {
+    if (overContainer === 'done' && activeContainer === 'done') {
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
 
