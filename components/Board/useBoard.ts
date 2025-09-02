@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import confetti from 'canvas-confetti';
 import {
   closestCorners,
   PointerSensor,
@@ -14,10 +15,9 @@ import { useStore } from '../../lib/store';
 import { useI18n } from '../../lib/i18n';
 export interface UseBoardProps {
   mode: 'my-day' | 'kanban';
-  onDone?: () => void;
 }
 
-export default function useBoard({ mode, onDone }: UseBoardProps) {
+export default function useBoard({ mode }: UseBoardProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
@@ -83,8 +83,7 @@ export default function useBoard({ mode, onDone }: UseBoardProps) {
     setActiveTask(null);
     if (!over) return;
     const activeId = active.id as string;
-    const activeContainer =
-      active.data.current?.sortable.containerId as string;
+    const activeContainer = active.data.current?.sortable.containerId as string;
     const overContainer =
       (over.data.current?.sortable?.containerId as string) ||
       (over.id as string);
@@ -92,7 +91,7 @@ export default function useBoard({ mode, onDone }: UseBoardProps) {
       over.data.current?.sortable?.index ?? getTasks(overContainer).length;
 
     if (overContainer === 'done' && activeContainer !== 'done') {
-      onDone?.();
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
 
     reorderTask(activeId, overContainer, overIndex, mode);
