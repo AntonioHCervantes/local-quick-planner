@@ -123,7 +123,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
         <GripVertical className="h-4 w-4 text-gray-500" />
       </div>
       <div
-        className={`flex flex-col gap-2 rounded p-2 flex-1 ${
+        className={`flex flex-col gap-2 rounded p-2 flex-1 min-w-0 ${
           task.plannedFor
             ? 'bg-blue-100 dark:bg-[rgb(62,74,113)]'
             : 'bg-gray-100 dark:bg-gray-800'
