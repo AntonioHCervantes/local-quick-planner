@@ -4,6 +4,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { Task } from '../../lib/types';
 import { useStore } from '../../lib/store';
 import { useI18n } from '../../lib/i18n';
+import confetti from 'canvas-confetti';
 
 export interface UseTaskCardProps {
   task: Task;
@@ -38,6 +39,7 @@ export default function useTaskCard({
   const markDone = () => {
     if (task.dayStatus !== 'done') {
       moveTask(task.id, { dayStatus: 'done' });
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
   };
 
