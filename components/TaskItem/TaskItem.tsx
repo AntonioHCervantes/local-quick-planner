@@ -113,7 +113,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
     <div
       ref={setNodeRef}
       style={style}
-      className="flex"
+      className="flex w-full"
     >
       <div
         {...attributes}
