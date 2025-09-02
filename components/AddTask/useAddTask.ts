@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Priority, Tag } from '../../lib/types';
+import { getNextTagColor } from '../../lib/tagColors';
 
 export interface UseAddTaskProps {
   addTask: (input: {
@@ -49,7 +50,7 @@ export default function useAddTask({
     if (newTag && !tags.includes(newTag)) {
       setTags([...tags, newTag]);
       if (!existingTags.find(t => t.label === newTag)) {
-        const color = `hsl(${Math.random() * 360}, 70%, 50%)`;
+        const color = getNextTagColor(existingTags.map(t => t.color));
         addTag({
           id: crypto.randomUUID(),
           label: newTag,

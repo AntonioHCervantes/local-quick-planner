@@ -38,8 +38,8 @@ export default function TagFilter({
             }}
             role="button"
             tabIndex={0}
-            style={{ backgroundColor: isActive ? tag.color : '#ccc' }}
-            className="flex items-center rounded-full pl-2 pr-1 py-1 text-xs cursor-pointer"
+            style={{ backgroundColor: tag.color, opacity: isActive ? 1 : 0.5 }}
+            className="flex items-center rounded-full pl-2 pr-1 py-1 text-xs cursor-pointer text-white"
           >
             <span className="mr-1 select-none">{tag.label}</span>
             <button

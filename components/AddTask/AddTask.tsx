@@ -24,6 +24,11 @@ export default function AddTask(props: UseAddTaskProps) {
   const titleRef = useRef(title);
   const initialTitleRef = useRef('');
 
+  const getTagColor = (tagLabel: string) => {
+    const tag = existingTags.find(t => t.label === tagLabel);
+    return tag ? tag.color : '#ccc';
+  };
+
   useEffect(() => {
     titleRef.current = title;
   }, [title]);
@@ -127,7 +132,8 @@ export default function AddTask(props: UseAddTaskProps) {
             {tags.map(tag => (
               <span
                 key={tag}
-                className="flex items-center rounded-full bg-gray-300 pl-2 pr-1 py-1 text-xs dark:bg-gray-700"
+                style={{ backgroundColor: getTagColor(tag) }}
+                className="flex items-center rounded-full pl-2 pr-1 py-1 text-xs text-white"
               >
                 <span className="mr-1 select-none">{tag}</span>
                 <button

@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useStore } from '../../lib/store';
+import { getNextTagColor } from '../../lib/tagColors';
 
 export interface UseTaskItemProps {
   taskId: string;
@@ -33,7 +34,7 @@ export default function useTaskItem({ taskId }: UseTaskItemProps) {
       const newTags = [...task.tags, newTag];
       updateTask(task.id, { tags: newTags });
       if (!allTags.find(t => t.label === newTag)) {
-        const color = `hsl(${Math.random() * 360}, 70%, 50%)`;
+        const color = getNextTagColor(allTags.map(t => t.color));
         addTag({
           id: crypto.randomUUID(),
           label: newTag,
