@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Check, Trash2, Play, Clock } from 'lucide-react';
+import Link from '../Link/Link';
 import Timer from './Timer';
 import useTaskCard, { UseTaskCardProps } from './useTaskCard';
 import LinkifiedText from '../LinkifiedText/LinkifiedText';
@@ -97,20 +98,20 @@ export default function TaskCard(props: UseTaskCardProps) {
           </span>
         ))}
       </div>
-      {mode === 'my-day' &&
-        task.dayStatus === 'doing' &&
-        (showTimer ? (
-          <Timer taskTitle={task.title} />
-        ) : (
-          <button
-            onClick={() => setShowTimer(true)}
+      {mode === 'my-day' && task.dayStatus === 'doing' && (
+        <>
+          <Link
+            onClick={() => setShowTimer(s => !s)}
             aria-label={t('taskCard.showTimer')}
             title={t('taskCard.showTimer')}
-            className="mt-2 flex items-center text-blue-500 hover:underline"
+            icon={Clock}
+            className="mt-2"
           >
-            <Clock className="h-4 w-4" />
-          </button>
-        ))}
+            {t('taskCard.showTimer')}
+          </Link>
+          {showTimer && <Timer taskTitle={task.title} />}
+        </>
+      )}
     </div>
   );
 }
