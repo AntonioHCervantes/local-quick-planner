@@ -1,5 +1,7 @@
 'use client';
-import { Check, Trash2, Play } from 'lucide-react';
+import { useState } from 'react';
+import { Check, Trash2, Play, Clock } from 'lucide-react';
+import Link from '../Link/Link';
 import Timer from './Timer';
 import useTaskCard, { UseTaskCardProps } from './useTaskCard';
 import LinkifiedText from '../LinkifiedText/LinkifiedText';
@@ -15,6 +17,7 @@ export default function TaskCard(props: UseTaskCardProps) {
   const { attributes, listeners, setNodeRef, style, t } = state;
   const { markInProgress, markDone, getTagColor, deleteTask } = actions;
   const { task, mode } = props;
+  const [showTimer, setShowTimer] = useState(false);
 
   return (
     <div
@@ -84,7 +87,7 @@ export default function TaskCard(props: UseTaskCardProps) {
           )}
         </div>
       </div>
-      <div className="mt-2 flex flex-wrap gap-1">
+      <div className="mt-4 flex flex-wrap gap-1">
         {task.tags?.map(tag => (
           <span
             key={tag}
@@ -96,7 +99,18 @@ export default function TaskCard(props: UseTaskCardProps) {
         ))}
       </div>
       {mode === 'my-day' && task.dayStatus === 'doing' && (
-        <Timer taskTitle={task.title} />
+        <>
+          <Link
+            onClick={() => setShowTimer(s => !s)}
+            aria-label={t('taskCard.showTimer')}
+            title={t('taskCard.showTimer')}
+            icon={Clock}
+            className="mt-4"
+          >
+            {t('taskCard.showTimer')}
+          </Link>
+          {showTimer && <Timer taskTitle={task.title} />}
+        </>
       )}
     </div>
   );
