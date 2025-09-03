@@ -57,6 +57,7 @@ const translations: Record<Language, any> = {
       markInProgress: 'Move to In Progress',
       markDone: 'Mark as done',
       deleteTask: 'Delete task',
+      showTimer: 'Plan time',
     },
     taskItem: {
       removeMyDay: 'Remove from My Day',
@@ -271,6 +272,7 @@ const translations: Record<Language, any> = {
       markInProgress: 'Mover a En progreso',
       markDone: 'Marcar como completada',
       deleteTask: 'Eliminar tarea',
+      showTimer: 'Planificar tiempo',
     },
     taskItem: {
       removeMyDay: 'Quitar de Mi Día',
