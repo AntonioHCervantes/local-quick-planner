@@ -14,6 +14,7 @@ export default function AddTask(props: UseAddTaskProps) {
     handleAdd,
     handleTagInputChange,
     handleExistingTagSelect,
+    handleTagInputBlur,
     removeTag,
   } = actions;
   const { t, language } = useI18n();
@@ -23,6 +24,7 @@ export default function AddTask(props: UseAddTaskProps) {
   const speechLangMap: Record<Language, string> = { en: 'en-US', es: 'es-ES' };
   const titleRef = useRef(title);
   const initialTitleRef = useRef('');
+  const tagInputRef = useRef<HTMLInputElement>(null);
 
   const getTagColor = (tagLabel: string) => {
     const tag = existingTags.find(t => t.label === tagLabel);
@@ -73,7 +75,8 @@ export default function AddTask(props: UseAddTaskProps) {
       <form
         onSubmit={e => {
           e.preventDefault();
-          handleAdd();
+          handleAdd(tagInputRef.current?.value);
+          if (tagInputRef.current) tagInputRef.current.value = '';
         }}
         autoComplete="off"
         className="flex flex-col gap-2 p-4 sm:flex-row sm:flex-wrap sm:items-center"
@@ -114,8 +117,10 @@ export default function AddTask(props: UseAddTaskProps) {
           </label>
           <input
             id="task-tags"
+            ref={tagInputRef}
             onKeyDown={handleTagInputChange}
             onChange={handleExistingTagSelect}
+            onBlur={handleTagInputBlur}
             className="w-full rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800 sm:w-auto"
             placeholder={t('addTask.tagsPlaceholder')}
             list="existing-tags"

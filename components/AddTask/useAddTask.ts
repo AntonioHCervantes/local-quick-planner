@@ -34,10 +34,14 @@ export default function useAddTask({
     });
   }, [existingTags]);
 
-  const handleAdd = () => {
+  const handleAdd = (pendingTag?: string) => {
     if (!title.trim()) return;
-    const lastTag = tags[tags.length - 1];
-    addTask({ title: title.trim(), tags, priority });
+    let currentTags = tags;
+    if (pendingTag?.trim()) {
+      currentTags = addTagFromValue(pendingTag);
+    }
+    const lastTag = currentTags[currentTags.length - 1];
+    addTask({ title: title.trim(), tags: currentTags, priority });
     setTitle('');
     const favs = existingTags.filter(t => t.favorite).map(t => t.label);
     const newTags =
@@ -48,7 +52,7 @@ export default function useAddTask({
   const addTagFromValue = (value: string) => {
     const newTag = value.trim();
     if (newTag && !tags.includes(newTag)) {
-      setTags([...tags, newTag]);
+      const updatedTags = [...tags, newTag];
       if (!existingTags.find(t => t.label === newTag)) {
         const color = getNextTagColor(existingTags.map(t => t.color));
         addTag({
@@ -58,7 +62,10 @@ export default function useAddTask({
           favorite: false,
         });
       }
+      setTags(updatedTags);
+      return updatedTags;
     }
+    return tags;
   };
 
   const handleTagInputChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -77,6 +84,13 @@ export default function useAddTask({
     }
   };
 
+  const handleTagInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (e.target.value.trim()) {
+      addTagFromValue(e.target.value);
+      e.target.value = '';
+    }
+  };
+
   const removeTag = (tagToRemove: string) => {
     setTags(tags.filter(t => t !== tagToRemove));
   };
@@ -89,6 +103,7 @@ export default function useAddTask({
       handleAdd,
       handleTagInputChange,
       handleExistingTagSelect,
+      handleTagInputBlur,
       removeTag,
     },
   } as const;
