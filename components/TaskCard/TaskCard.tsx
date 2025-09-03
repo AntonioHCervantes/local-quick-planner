@@ -87,7 +87,7 @@ export default function TaskCard(props: UseTaskCardProps) {
           )}
         </div>
       </div>
-      <div className="mt-2 flex flex-wrap gap-1">
+      <div className="mt-4 flex flex-wrap gap-1">
         {task.tags?.map(tag => (
           <span
             key={tag}
@@ -105,7 +105,7 @@ export default function TaskCard(props: UseTaskCardProps) {
             aria-label={t('taskCard.showTimer')}
             title={t('taskCard.showTimer')}
             icon={Clock}
-            className="mt-2"
+            className="mt-4"
           >
             {t('taskCard.showTimer')}
           </Link>
