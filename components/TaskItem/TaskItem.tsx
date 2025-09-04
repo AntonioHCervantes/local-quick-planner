@@ -208,7 +208,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
               aria-label={t('actions.addTag')}
               title={t('actions.addTag')}
               icon={Plus}
-              className="text-white"
+              className="text-xs text-white"
             >
               {t('actions.addTag')}
             </Link>
