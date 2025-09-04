@@ -181,7 +181,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
               </button>
             )}
           </div>
-          {(showTagInput || task.tags.length === 0) && (
+          {showTagInput && (
             <>
               <input
                 onKeyDown={handleTagInputChange}
@@ -200,6 +200,17 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
                 ))}
               </datalist>
             </>
+          )}
+          {!showTagInput && task.tags.length === 0 && (
+            <button
+              onClick={toggleTagInput}
+              aria-label={t('actions.addTag')}
+              title={t('actions.addTag')}
+              className="flex items-center gap-1 text-sm text-blue-600 hover:underline dark:text-blue-400"
+            >
+              {t('actions.addTag')}
+              <Plus className="h-4 w-4" />
+            </button>
           )}
         </div>
         <div className="flex items-center gap-2 md:hidden">
