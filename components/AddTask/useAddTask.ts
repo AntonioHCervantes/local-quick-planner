@@ -24,13 +24,9 @@ export default function useAddTask({
   const [priority, setPriority] = useState<Priority>('medium');
 
   useEffect(() => {
-    const favs = existingTags.filter(t => t.favorite).map(t => t.label);
     setTags(prev => {
       const existingLabels = existingTags.map(t => t.label);
-      const nonFavs = prev.filter(
-        t => !favs.includes(t) && existingLabels.includes(t)
-      );
-      return [...favs, ...nonFavs];
+      return prev.filter(t => existingLabels.includes(t));
     });
   }, [existingTags]);
 
