@@ -13,6 +13,7 @@ import useTaskItem, { UseTaskItemProps } from './useTaskItem';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import LinkifiedText from '../LinkifiedText/LinkifiedText';
+import Link from '../Link/Link';
 
 interface TaskItemProps extends UseTaskItemProps {
   highlighted?: boolean;
@@ -202,15 +203,15 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
             </>
           )}
           {!showTagInput && task.tags.length === 0 && (
-            <button
+            <Link
               onClick={toggleTagInput}
               aria-label={t('actions.addTag')}
               title={t('actions.addTag')}
-              className="flex items-center gap-1 text-sm text-blue-600 hover:underline dark:text-blue-400"
+              icon={Plus}
+              className="text-white"
             >
               {t('actions.addTag')}
-              <Plus className="h-4 w-4" />
-            </button>
+            </Link>
           )}
         </div>
         <div className="flex items-center gap-2 md:hidden">
