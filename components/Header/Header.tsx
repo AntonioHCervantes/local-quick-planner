@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import {
   Download,
   Upload,
@@ -35,31 +36,40 @@ export default function Header() {
     handleImport,
   } = actions;
   const [showActions, setShowActions] = useState(false);
+  const pathname = usePathname();
 
   return (
     <>
-      <header className="flex items-center justify-between bg-gray-100 px-4 py-2 dark:bg-gray-950">
-        <div className="flex items-center gap-4">
+      <header className="relative grid grid-cols-3 items-center bg-gray-100 px-4 py-3 dark:bg-gray-950 md:py-4 lg:py-5">
+        <div className="flex items-center">
           <Icon />
-          <nav className="flex gap-4">
-            <Link
-              href="/my-day"
-              className="flex items-center hover:underline focus:underline"
-            >
-              {t('nav.myDay')}
-              <span className="ml-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs text-current dark:bg-[rgb(62,74,113)]">
-                {myDayCount}
-              </span>
-            </Link>
-            <Link
-              href="/my-tasks"
-              className="hover:underline focus:underline"
-            >
-              {t('nav.myTasks')}
-            </Link>
-          </nav>
         </div>
-        <div className="flex items-center gap-2">
+        <nav className="flex h-full items-center justify-center gap-4">
+          <Link
+            href="/my-day"
+            className={`relative flex h-full items-center hover:underline focus:underline ${
+              pathname === '/my-day'
+                ? 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black dark:after:bg-white'
+                : ''
+            }`}
+          >
+            {t('nav.myDay')}
+            <span className="ml-1 rounded-full bg-blue-100 px-2 py-0.5 text-xs text-current dark:bg-[rgb(62,74,113)]">
+              {myDayCount}
+            </span>
+          </Link>
+          <Link
+            href="/my-tasks"
+            className={`relative flex h-full items-center hover:underline focus:underline ${
+              pathname === '/my-tasks'
+                ? 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black dark:after:bg-white'
+                : ''
+            }`}
+          >
+            {t('nav.myTasks')}
+          </Link>
+        </nav>
+        <div className="flex items-center justify-self-end gap-2">
           <div className="hidden items-center gap-2 md:flex">
             <button
               onClick={toggleTheme}
