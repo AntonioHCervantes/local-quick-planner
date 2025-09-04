@@ -13,6 +13,7 @@ import useTaskItem, { UseTaskItemProps } from './useTaskItem';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import LinkifiedText from '../LinkifiedText/LinkifiedText';
+import Link from '../Link/Link';
 
 interface TaskItemProps extends UseTaskItemProps {
   highlighted?: boolean;
@@ -151,26 +152,26 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
             <Actions />
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="flex flex-wrap gap-1 items-center">
-            {task.tags.map((tag: string) => (
-              <span
-                key={tag}
-                style={{ backgroundColor: getTagColor(tag) }}
-                className="flex items-center rounded-full pl-2 pr-1 py-1 text-xs text-white"
-              >
-                <span className="mr-1 select-none">{tag}</span>
-                <button
-                  onClick={() => removeTag(tag)}
-                  aria-label={t('actions.removeTag')}
-                  title={t('actions.removeTag')}
-                  className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20"
+        <div className="flex items-center gap-2 mt-2">
+          {task.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1 items-center">
+              {task.tags.map((tag: string) => (
+                <span
+                  key={tag}
+                  style={{ backgroundColor: getTagColor(tag) }}
+                  className="flex items-center rounded-full pl-2 pr-1 py-1 text-xs text-white"
                 >
-                  ×
-                </button>
-              </span>
-            ))}
-            {task.tags.length > 0 && (
+                  <span className="mr-1 select-none">{tag}</span>
+                  <button
+                    onClick={() => removeTag(tag)}
+                    aria-label={t('actions.removeTag')}
+                    title={t('actions.removeTag')}
+                    className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20"
+                  >
+                    ×
+                  </button>
+                </span>
+              ))}
               <button
                 onClick={toggleTagInput}
                 aria-label={t('actions.addTag')}
@@ -179,9 +180,9 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
               >
                 <Plus className="h-4 w-4" />
               </button>
-            )}
-          </div>
-          {(showTagInput || task.tags.length === 0) && (
+            </div>
+          )}
+          {showTagInput && (
             <>
               <input
                 onKeyDown={handleTagInputChange}
@@ -200,6 +201,17 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
                 ))}
               </datalist>
             </>
+          )}
+          {!showTagInput && task.tags.length === 0 && (
+            <Link
+              onClick={toggleTagInput}
+              aria-label={t('actions.addTag')}
+              title={t('actions.addTag')}
+              icon={Plus}
+              className="text-xs text-white"
+            >
+              {t('actions.addTag')}
+            </Link>
           )}
         </div>
         <div className="flex items-center gap-2 md:hidden">

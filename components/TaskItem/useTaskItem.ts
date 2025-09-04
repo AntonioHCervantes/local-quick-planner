@@ -19,7 +19,7 @@ export default function useTaskItem({ taskId }: UseTaskItemProps) {
   const task = tasks.find(t => t.id === taskId);
   const [isEditing, setIsEditing] = useState(false);
   const [title, setTitle] = useState(task?.title ?? '');
-  const [showTagInput, setShowTagInput] = useState(task?.tags.length === 0);
+  const [showTagInput, setShowTagInput] = useState(false);
 
   if (!task) {
     return {
@@ -66,7 +66,7 @@ export default function useTaskItem({ taskId }: UseTaskItemProps) {
     const newTags = task.tags.filter(tag => tag !== tagToRemove);
     updateTask(task.id, { tags: newTags });
     if (newTags.length === 0) {
-      setShowTagInput(true);
+      setShowTagInput(false);
     }
   };
 
