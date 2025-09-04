@@ -47,7 +47,7 @@ export default function Header() {
         <nav className="flex h-full items-center justify-center gap-4">
           <Link
             href="/my-day"
-            className={`relative flex h-full items-center hover:underline focus:underline ${
+            className={`relative flex h-full min-w-[80px] items-center justify-center whitespace-nowrap no-underline hover:no-underline focus:no-underline ${
               pathname === '/my-day'
                 ? 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black dark:after:bg-white'
                 : ''
@@ -60,7 +60,7 @@ export default function Header() {
           </Link>
           <Link
             href="/my-tasks"
-            className={`relative flex h-full items-center hover:underline focus:underline ${
+            className={`relative flex h-full min-w-[80px] items-center justify-center whitespace-nowrap no-underline hover:no-underline focus:no-underline ${
               pathname === '/my-tasks'
                 ? 'after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-black dark:after:bg-white'
                 : ''
