@@ -81,10 +81,14 @@ export default function useAddTask({
   };
 
   const handleTagInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (e.target.value.trim()) {
-      addTagFromValue(e.target.value);
-      e.target.value = '';
+    const value = e.target.value.trim();
+    if (!value) return;
+    const next = e.relatedTarget as HTMLElement | null;
+    if (next instanceof HTMLButtonElement && next.type === 'submit') {
+      return;
     }
+    addTagFromValue(value);
+    e.target.value = '';
   };
 
   const removeTag = (tagToRemove: string) => {
