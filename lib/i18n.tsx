@@ -68,6 +68,12 @@ const translations: Record<Language, any> = {
     myDayPage: {
       empty: 'No tasks added to My Day',
       goToMyTasks: 'Go to My Tasks',
+      progress: {
+        full: "Big day ahead—let's get started!",
+        medium: "You're making progress—keep going!",
+        low: 'Almost there—keep it up!',
+        done: 'All tasks completed! Great job!',
+      },
     },
     timer: {
       start: 'Start timer',
@@ -283,6 +289,12 @@ const translations: Record<Language, any> = {
     myDayPage: {
       empty: 'No hay tareas añadidas a Mi Día',
       goToMyTasks: 'Ir a Mis Tareas',
+      progress: {
+        full: '¡Qué gran día, a por ello!',
+        medium: '¡Buen progreso, sigue así!',
+        low: '¡Ánimo, ya falta poco!',
+        done: '¡Todo hecho, gran trabajo!',
+      },
     },
     timer: {
       start: 'Iniciar temporizador',
