@@ -79,7 +79,7 @@ export default function AddTask(props: UseAddTaskProps) {
           if (tagInputRef.current) tagInputRef.current.value = '';
         }}
         autoComplete="off"
-        className="flex flex-col gap-2 p-4 sm:flex-row sm:flex-wrap sm:items-center lg:my-4 lg:py-6"
+        className="flex flex-col gap-2 p-4 sm:flex-row sm:flex-wrap sm:items-center lg:my-2 lg:py-6"
       >
         <div className="relative w-full sm:flex-1">
           <label
