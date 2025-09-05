@@ -79,7 +79,7 @@ export default function AddTask(props: UseAddTaskProps) {
           if (tagInputRef.current) tagInputRef.current.value = '';
         }}
         autoComplete="off"
-        className="flex flex-col gap-2 p-4 sm:flex-row sm:flex-wrap sm:items-center"
+        className="flex flex-col gap-2 p-4 sm:flex-row sm:flex-wrap sm:items-center lg:my-2 lg:py-6"
       >
         <div className="relative w-full sm:flex-1">
           <label
@@ -121,7 +121,7 @@ export default function AddTask(props: UseAddTaskProps) {
             onKeyDown={handleTagInputChange}
             onChange={handleExistingTagSelect}
             onBlur={handleTagInputBlur}
-            className="w-full rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800 sm:w-auto"
+            className="w-full min-w-[245px] rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800 sm:w-auto"
             placeholder={t('addTask.tagsPlaceholder')}
             list="existing-tags"
           />
@@ -154,8 +154,8 @@ export default function AddTask(props: UseAddTaskProps) {
             ))}
           </div>
         </div>
-        <div className="flex w-full gap-2 sm:w-auto">
-          <div className="flex-1 sm:flex-none">
+        <div className="flex w-full gap-2 lg:w-auto">
+          <div className="flex-1 lg:flex-none">
             <label
               htmlFor="task-priority"
               className="sr-only"
@@ -166,7 +166,7 @@ export default function AddTask(props: UseAddTaskProps) {
               id="task-priority"
               value={priority}
               onChange={e => setPriority(e.target.value as Priority)}
-              className="w-full rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800 sm:w-auto"
+              className="w-full rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800 lg:w-auto"
             >
               <option value="low">{t('priority.low')}</option>
               <option value="medium">{t('priority.medium')}</option>
@@ -175,7 +175,7 @@ export default function AddTask(props: UseAddTaskProps) {
           </div>
           <button
             type="submit"
-            className="flex flex-1 items-center justify-center gap-1 rounded bg-[#57886C] px-3 py-2 text-sm text-white hover:brightness-110 focus:ring sm:flex-none sm:w-auto"
+            className="flex flex-1 items-center justify-center gap-1 rounded bg-[#57886C] px-3 py-2 text-sm text-white hover:brightness-110 focus:ring lg:flex-none lg:w-auto"
           >
             <Plus className="h-4 w-4" /> {t('addTask.addButton')}
           </button>
