@@ -23,14 +23,16 @@ export default function ProgressBar({ percent }: ProgressBarProps) {
   }
 
   return (
-    <div className="p-4 opacity-30">
-      <div className="h-[3px] w-full rounded bg-gray-200 dark:bg-gray-700">
+    <div className="p-4">
+      <div className="h-[3px] w-full rounded bg-gray-200 opacity-30 dark:bg-gray-700">
         <div
           className={`h-full rounded ${colorClass}`}
           style={{ width: `${percent}%` }}
         />
       </div>
-      <p className="mt-4 text-center text-sm">{message}</p>
+      <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
+        {message}
+      </p>
     </div>
   );
 }
