@@ -7,8 +7,8 @@ export default function Icon() {
       viewBox="0 0 80 80"
       role="img"
       aria-label="Local Quick Planner"
-      width="40"
-      height="40"
+      width="80"
+      height="80"
     >
       <rect
         x="15"
@@ -20,31 +20,31 @@ export default function Icon() {
       />
       <rect
         x="25"
-        y="25"
+        y="25.25"
         width="30"
-        height="5"
+        height="3"
         rx="2"
         className="fill-white dark:fill-gray-800"
       />
       <rect
         x="25"
-        y="35"
+        y="38.5"
         width="30"
-        height="5"
+        height="3"
         rx="2"
         className="fill-white dark:fill-gray-800"
       />
       <rect
         x="25"
-        y="45"
-        width="20"
-        height="5"
+        y="51.5"
+        width="12"
+        height="3"
         rx="2"
         className="fill-white dark:fill-gray-800"
       />
       <path
-        d="M45 50L49 54L57 46"
-        strokeWidth="4"
+        d="M44 53L47 56L54 49"
+        strokeWidth="3"
         strokeLinecap="round"
         strokeLinejoin="round"
         className="stroke-white dark:stroke-gray-800"

@@ -40,7 +40,7 @@ export default function Header() {
 
   return (
     <>
-      <header className="relative grid grid-cols-3 items-center bg-gray-100 px-4 py-3 dark:bg-gray-950 md:py-4 lg:py-5">
+      <header className="relative grid grid-cols-3 items-center bg-gray-100 px-4 py-2 dark:bg-gray-950 md:py-3 lg:py-4">
         <div className="flex items-center">
           <Icon />
         </div>
