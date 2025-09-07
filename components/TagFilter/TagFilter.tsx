@@ -2,6 +2,7 @@
 import { Tag } from '../../lib/types';
 import { useI18n } from '../../lib/i18n';
 import { Star } from 'lucide-react';
+import Link from '../Link/Link';
 
 interface TagFilterProps {
   tags: Tag[];
@@ -23,7 +24,7 @@ export default function TagFilter({
   const { t } = useI18n();
   if (tags.length === 0) return null;
   return (
-    <div className="flex flex-wrap items-center gap-2 px-4 pb-2">
+    <div className="mt-4 flex flex-wrap items-center gap-2 px-4 pb-2">
       {tags.map(tag => {
         const isActive = activeTags.includes(tag.label);
         return (
@@ -78,12 +79,12 @@ export default function TagFilter({
           </div>
         );
       })}
-      <button
+      <Link
         onClick={showAll}
-        className="text-xs underline"
+        className="text-xs"
       >
         {t('tagFilter.showAll')}
-      </button>
+      </Link>
     </div>
   );
 }
