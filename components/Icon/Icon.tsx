@@ -7,8 +7,7 @@ export default function Icon() {
       viewBox="0 0 80 80"
       role="img"
       aria-label="Local Quick Planner"
-      width="80"
-      height="80"
+      className="h-10 w-10 md:h-20 md:w-20"
     >
       <rect
         x="15"
