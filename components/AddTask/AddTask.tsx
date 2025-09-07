@@ -108,7 +108,11 @@ export default function AddTask(props: UseAddTaskProps) {
             <Mic className="h-4 w-4" />
           </button>
         </div>
-        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+        <div
+          className={`flex w-full flex-wrap items-center sm:w-auto${
+            tags.length ? ' gap-2' : ''
+          }`}
+        >
           <label
             htmlFor="task-tags"
             className="sr-only"
