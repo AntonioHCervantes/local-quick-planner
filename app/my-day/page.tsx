@@ -10,8 +10,11 @@ export default function MyDayPage() {
   const tasks = useStore(state => state.tasks);
   const plannedTasks = tasks.filter(task => task.plannedFor !== null);
   const remainingTasks = plannedTasks.filter(task => task.dayStatus !== 'done');
-  const remainingPercent = plannedTasks.length
-    ? Math.round((remainingTasks.length / plannedTasks.length) * 100)
+  const progressPercent = plannedTasks.length
+    ? Math.round(
+        ((plannedTasks.length - remainingTasks.length) / plannedTasks.length) *
+          100
+      )
     : 0;
   const hasMyDayTasks = plannedTasks.length > 0;
 
@@ -25,7 +28,7 @@ export default function MyDayPage() {
     >
       {hasMyDayTasks ? (
         <>
-          <ProgressBar percent={remainingPercent} />
+          <ProgressBar percent={progressPercent} />
           <Board mode="my-day" />
         </>
       ) : (

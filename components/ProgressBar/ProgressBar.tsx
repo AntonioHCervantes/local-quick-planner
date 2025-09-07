@@ -9,17 +9,18 @@ interface ProgressBarProps {
 export default function ProgressBar({ percent }: ProgressBarProps) {
   const { t } = useI18n();
 
-  let colorClass = 'bg-green-500';
-  let message = t('myDayPage.progress.done');
+  let colorClass = 'bg-red-500';
+  let message = t('myDayPage.progress.full');
 
-  if (percent > 0 && percent <= 33) {
+  if (percent >= 100) {
+    colorClass = 'bg-green-500';
+    message = t('myDayPage.progress.done');
+  } else if (percent >= 67) {
+    colorClass = 'bg-green-500';
     message = t('myDayPage.progress.low');
-  } else if (percent > 33 && percent <= 66) {
+  } else if (percent >= 33) {
     colorClass = 'bg-yellow-500';
     message = t('myDayPage.progress.medium');
-  } else if (percent > 66) {
-    colorClass = 'bg-red-500';
-    message = t('myDayPage.progress.full');
   }
 
   return (
