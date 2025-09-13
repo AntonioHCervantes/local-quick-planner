@@ -1,5 +1,5 @@
-import Footer from './Footer';
-import { render, screen } from '../../tests/test-utils';
+import Footer from '../Footer';
+import { render, screen } from '../../../test/test-utils';
 
 describe('Footer', () => {
   it('renders navigation links', () => {

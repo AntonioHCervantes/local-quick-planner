@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
-import LinkifiedText from '../components/LinkifiedText/LinkifiedText';
+import { render, screen } from '../../../test/test-utils';
+import LinkifiedText from '../LinkifiedText';
 
 describe('LinkifiedText', () => {
   it('renders links that open in a new tab', () => {
