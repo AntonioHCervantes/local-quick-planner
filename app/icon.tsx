@@ -21,52 +21,50 @@ export default function Icon() {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 64 64"
+          viewBox="0 0 80 80"
           width="32"
           height="32"
         >
           <rect
-            width="56"
-            height="56"
-            x="4"
-            y="4"
+            x="15"
+            y="15"
+            width="50"
+            height="50"
             rx="10"
             fill="#ffffff"
           />
           <rect
-            width="56"
-            height="56"
-            x="4"
-            y="4"
-            rx="10"
-            fill="none"
-            strokeWidth="2"
-            stroke="#9ca3af"
+            x="25"
+            y="25.25"
+            width="30"
+            height="3"
+            rx="2"
+            fill="#1f2937"
           />
-          <g transform="translate(14, 18)">
-            <rect
-              width="36"
-              height="4"
-              rx="2"
-              fill="#9ca3af"
-            />
-            <rect
-              x="0"
-              y="12"
-              width="28"
-              height="4"
-              rx="2"
-              fill="#d1d5db"
-            />
-            <rect
-              x="0"
-              y="24"
-              width="16"
-              height="4"
-              rx="2"
-              fill="#d1d5db"
-            />
-          </g>
+          <rect
+            x="25"
+            y="38.5"
+            width="30"
+            height="3"
+            rx="2"
+            fill="#1f2937"
+          />
+          <rect
+            x="25"
+            y="51.5"
+            width="12"
+            height="3"
+            rx="2"
+            fill="#1f2937"
+          />
+          <path
+            d="M44 53L47 56L54 49"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            stroke="#1f2937"
+            fill="none"
+          />
         </svg>
       </div>
     ),
