@@ -22,10 +22,10 @@ describe('TaskCard', () => {
   beforeEach(() => {
     mockUseTaskCard.mockReturnValue({
       state: {
-        attributes: {},
-        listeners: {},
+        attributes: {} as any,
+        listeners: {} as any,
         setNodeRef: jest.fn(),
-        style: {},
+        style: {} as any,
         t: (k: string) => k,
         allTags: [],
       },

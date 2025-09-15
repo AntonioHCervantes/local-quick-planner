@@ -70,22 +70,22 @@ export default function Timer({ taskTitle }: TimerProps) {
   const progress = duration > 0 ? ((duration - timeLeft) / duration) * 100 : 0;
 
   return (
-    <div className="mt-2 space-y-2">
-      <div className="flex items-center gap-2">
-        <select
-          value={duration}
-          onChange={handleDurationChange}
-          className="rounded bg-gray-200 p-1 text-sm dark:bg-gray-700"
-        >
-          {options.map(o => (
-            <option
-              key={o.value}
-              value={o.value}
-            >
-              {o.label}
-            </option>
-          ))}
-        </select>
+    <div className="mt-2 flex items-center gap-2">
+      <select
+        value={duration}
+        onChange={handleDurationChange}
+        className="rounded bg-gray-200 p-1 text-sm dark:bg-gray-700"
+      >
+        {options.map(o => (
+          <option
+            key={o.value}
+            value={o.value}
+          >
+            {o.label}
+          </option>
+        ))}
+      </select>
+      <div className="flex items-center gap-1">
         <button
           onClick={toggle}
           aria-label={running ? t('timer.pause') : t('timer.start')}
@@ -103,7 +103,7 @@ export default function Timer({ taskTitle }: TimerProps) {
           {(timeLeft % 60).toString().padStart(2, '0')}
         </span>
       </div>
-      <div className="h-2 w-full rounded bg-gray-300 dark:bg-gray-700">
+      <div className="h-2 flex-1 rounded bg-gray-300 dark:bg-gray-700">
         <div
           className="h-2 rounded bg-blue-500 dark:bg-blue-400"
           style={{ width: `${progress}%` }}
