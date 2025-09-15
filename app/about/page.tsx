@@ -11,23 +11,23 @@ export default function AboutPage() {
       <h1 className="text-2xl font-bold">{t('aboutPage.title')}</h1>
       <p>{t('aboutPage.intro')}</p>
       <ul className="list-disc space-y-1 pl-6">
-        <li>{t('aboutPage.features.myDay')}</li>
-        <li>{t('aboutPage.features.myTasks')}</li>
-        <li>{t('aboutPage.features.dragDrop')}</li>
-        <li>{t('aboutPage.features.export')}</li>
+        <li>{t('aboutPage.features.freeOpenSource')}</li>
         <li>{t('aboutPage.features.privacy')}</li>
+        <li>{t('aboutPage.features.fast')}</li>
+        <li>{t('aboutPage.features.personal')}</li>
+        <li>{t('aboutPage.features.export')}</li>
+        <li>{t('aboutPage.features.myTasks')}</li>
+        <li>{t('aboutPage.features.myDay')}</li>
       </ul>
-      <p>{t('aboutPage.personal')}</p>
-      <p>{t('aboutPage.productivity')}</p>
       <p>
-        {t('aboutPage.freeOpenSource')}{' '}
+        {t('aboutPage.sourceCode')}{' '}
         <a
           href="https://github.com/AntonioHCervantes/local-quick-planner"
           target="_blank"
           rel="noopener noreferrer"
           className="underline hover:no-underline"
         >
-          {t('footer.openSource')}
+          GitHub
         </a>
         .
       </p>
