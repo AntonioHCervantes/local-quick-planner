@@ -8,8 +8,12 @@ import { I18nProvider } from '../lib/i18n';
 import WelcomeModal from '../components/WelcomeModal/WelcomeModal';
 import ServiceWorker from '../components/ServiceWorker';
 
+const description =
+  'Local Quick Planner is a free, fast, private, and open source task manager that boosts your productivity and personal organization at work.';
+
 export const metadata: Metadata = {
   title: 'Local Quick Planner',
+  description,
   manifest: '/manifest.webmanifest',
   icons: {
     icon: [
@@ -17,6 +21,19 @@ export const metadata: Metadata = {
       { url: '/icon-512.png', sizes: '512x512', type: 'image/png' },
     ],
     apple: [{ url: '/icon-192.png', sizes: '192x192', type: 'image/png' }],
+  },
+  openGraph: {
+    title: 'Local Quick Planner',
+    description,
+    siteName: 'Local Quick Planner',
+    images: [
+      {
+        url: '/icon-512.png',
+        width: 512,
+        height: 512,
+        alt: 'Local Quick Planner logo',
+      },
+    ],
   },
 };
 
