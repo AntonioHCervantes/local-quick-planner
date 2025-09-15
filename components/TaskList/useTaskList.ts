@@ -1,7 +1,8 @@
 'use client';
 import { useCallback } from 'react';
 import {
-  PointerSensor,
+  MouseSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   DragEndEvent,
@@ -15,7 +16,10 @@ export interface UseTaskListProps {
 
 export default function useTaskList({ tasks }: UseTaskListProps) {
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+    useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 100, tolerance: 5 },
+    })
   );
   const { reorderMyTasks } = useStore();
 
