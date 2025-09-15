@@ -115,20 +115,21 @@ const translations: Record<Language, any> = {
     aboutPage: {
       title: 'About Local Quick Planner',
       intro:
-        'Local Quick Planner is a simple, fast, and free tool to organize your tasks right in your browser.',
+        'Local Quick Planner is a free app built to boost your personal productivity at work.',
       features: {
-        myDay: 'Plan your daily priorities with the "My Day" view.',
-        myTasks: 'Organize projects with the "My Tasks" Kanban board.',
-        dragDrop: 'Move tasks effortlessly with drag and drop.',
-        export: 'Back up or transfer your data with export and import options.',
+        freeOpenSource: '100% free and open source.',
         privacy:
-          'Keep all your data on your device; nothing is sent to a server.',
+          'All information stays local; nothing is sent to servers or third parties. Use it only on your private devices.',
+        fast: 'Fast and registration-free; everything is stored in your browser and no data is shared.',
+        personal: 'Focused on personal use—no accounts or team features.',
+        export:
+          'Export and import your data to create backups or move to another device.',
+        myTasks:
+          'Add tasks in an organized way, tagging them as needed and assigning priorities.',
+        myDay:
+          'Plan your daily work by selecting which tasks you want to do each day.',
       },
-      personal:
-        'This tool is focused on personal planning and is not intended for teams or multi-user workflows.',
-      productivity:
-        'It helps you stay organized and improve your productivity.',
-      freeOpenSource: 'Local Quick Planner is completely free and open source.',
+      sourceCode: 'The source code is available on',
       learnMore: 'Learn more in our',
       and: 'and',
     },
@@ -336,23 +337,23 @@ const translations: Record<Language, any> = {
     aboutPage: {
       title: 'Acerca de Local Quick Planner',
       intro:
-        'Local Quick Planner es una herramienta simple, rápida y gratuita para organizar tus tareas directamente en tu navegador.',
+        'Local Quick Planner es una aplicación gratuita creada para impulsar tu productividad personal en el trabajo.',
       features: {
-        myDay: 'Planifica tus prioridades diarias con la vista "Mi Día".',
-        myTasks: 'Organiza tus proyectos con el tablero Kanban "Mis Tareas".',
-        dragDrop: 'Mueve las tareas fácilmente con drag and drop.',
-        export:
-          'Haz copias de seguridad o traslada tus datos con las opciones de exportar e importar.',
+        freeOpenSource: '100% gratuita y de código abierto.',
         privacy:
-          'Mantén todos tus datos en tu dispositivo; nada se envía a servidores.',
+          'Toda la información se guarda localmente; no se envía nada a servidores ni terceros. Úsalo solo en tus dispositivos privados.',
+        fast: 'Rápido y sin registros: todo se almacena en tu navegador y no se comparte ningún dato.',
+        personal:
+          'Enfocada en el uso personal, sin cuentas ni funciones para equipos.',
+        export:
+          'Exporta e importa tus datos para crear copias de seguridad o moverlos a otro dispositivo.',
+        myTasks:
+          'Añade tus tareas de forma organizada etiquetándolas como necesites y asignando una prioridad.',
+        myDay:
+          'Planifica tu trabajo diario seleccionando qué tareas quieres realizar cada día.',
       },
-      personal:
-        'Esta herramienta está enfocada en la planificación personal y no está pensada para equipos ni flujos multiusuario.',
-      productivity:
-        'Te ayuda a mantener el enfoque y mejorar tu productividad.',
-      freeOpenSource:
-        'Local Quick Planner es totalmente gratuito y de código abierto.',
-      learnMore: 'Obtén más información en nuestras',
+      sourceCode: 'El código fuente está disponible en',
+      learnMore: 'Para conocer más, visita nuestras',
       and: 'y',
     },
     faqs: {
