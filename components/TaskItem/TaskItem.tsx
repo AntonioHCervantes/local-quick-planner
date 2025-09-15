@@ -120,6 +120,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
         {...attributes}
         {...listeners}
         className="flex items-center pr-2 cursor-grab"
+        style={{ touchAction: 'none' }}
       >
         <GripVertical className="h-4 w-4 text-gray-500" />
       </div>
