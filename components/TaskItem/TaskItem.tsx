@@ -126,7 +126,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
       <div
         className={`flex flex-col gap-2 rounded p-2 flex-1 min-w-0 bg-gray-100 dark:bg-gray-800 ${
           task.plannedFor
-            ? 'pl-4 md:pl-6 border-l-[8px] md:border-l-[16px] border-blue-100 dark:border-[rgb(62,74,113)]'
+            ? 'pl-4 md:pl-5 border-l-[8px] md:border-l-[16px] border-blue-100 dark:border-[rgb(62,74,113)]'
             : ''
         } ${highlighted ? 'ring-2 ring-[#57886C] bg-[#57886C] text-white' : ''}`}
       >
