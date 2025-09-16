@@ -7,17 +7,46 @@ import { useStore } from '../../lib/store';
 
 function playSound() {
   try {
-    const Ctx = window.AudioContext || (window as any).webkitAudioContext;
-    const ctx = new Ctx();
+    const AudioContextConstructor =
+      window.AudioContext || (window as any).webkitAudioContext;
+    const ctx = new AudioContextConstructor();
     const oscillator = ctx.createOscillator();
     const gain = ctx.createGain();
-    oscillator.type = 'sine';
-    oscillator.frequency.setValueAtTime(880, ctx.currentTime);
-    gain.gain.setValueAtTime(0.05, ctx.currentTime);
+
+    oscillator.type = 'triangle';
     oscillator.connect(gain);
     gain.connect(ctx.destination);
-    oscillator.start();
-    oscillator.stop(ctx.currentTime + 0.5);
+
+    const start = ctx.currentTime;
+    const notes = [
+      { frequency: 523.25, duration: 0.35 },
+      { frequency: 659.25, duration: 0.35 },
+      { frequency: 783.99, duration: 0.45 },
+    ];
+
+    let current = start;
+    notes.forEach(({ frequency, duration }) => {
+      oscillator.frequency.setValueAtTime(frequency, current);
+      current += duration;
+    });
+
+    const fadeInEnd = start + 0.05;
+    const fadeOutStart = Math.max(start, current - 0.2);
+
+    gain.gain.setValueAtTime(0, start);
+    gain.gain.linearRampToValueAtTime(0.08, fadeInEnd);
+    gain.gain.setValueAtTime(0.08, fadeOutStart);
+    gain.gain.linearRampToValueAtTime(0, current);
+
+    oscillator.start(start);
+    oscillator.stop(current);
+    oscillator.onended = () => {
+      try {
+        ctx.close();
+      } catch (error) {
+        // ignore
+      }
+    };
   } catch (error) {
     // ignore
   }
@@ -47,7 +76,12 @@ export default function TaskTimerManager() {
         if (remaining <= 0) {
           state.completeTimer(taskId);
           const task = state.tasks.find(t => t.id === taskId);
-          toast(t('timer.finished').replace('{task}', task?.title ?? ''));
+          toast.success(
+            t('timer.finished').replace('{task}', task?.title ?? ''),
+            {
+              duration: 10000,
+            }
+          );
           playSound();
         } else if (remaining !== timer.remaining) {
           state.updateTimerRemaining(taskId, remaining);
