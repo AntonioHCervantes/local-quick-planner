@@ -1,8 +1,8 @@
 'use client';
-import { useEffect, useState } from 'react';
+import type { ChangeEvent } from 'react';
 import { Play, Pause } from 'lucide-react';
-import { toast } from 'react-hot-toast';
 import { useI18n } from '../../lib/i18n';
+import { useStore, DEFAULT_TIMER_DURATION } from '../../lib/store';
 
 const options = [
   { label: '5m', value: 5 * 60 },
@@ -12,62 +12,31 @@ const options = [
 ];
 
 interface TimerProps {
-  taskTitle: string;
+  taskId: string;
 }
 
-export default function Timer({ taskTitle }: TimerProps) {
-  const [duration, setDuration] = useState(options[0].value);
-  const [timeLeft, setTimeLeft] = useState(options[0].value);
-  const [running, setRunning] = useState(false);
+export default function Timer({ taskId }: TimerProps) {
+  const timer = useStore(state => state.timers[taskId]);
+  const setTimerDuration = useStore(state => state.setTimerDuration);
+  const toggleTimer = useStore(state => state.toggleTimer);
   const { t } = useI18n();
+  const duration = timer?.duration ?? DEFAULT_TIMER_DURATION;
+  const timeLeft = timer?.remaining ?? duration;
+  const running = timer?.running ?? false;
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-    if (running && timeLeft > 0) {
-      interval = setInterval(() => {
-        setTimeLeft(t => t - 1);
-      }, 1000);
-    } else if (running && timeLeft === 0) {
-      setRunning(false);
-      toast(t('timer.finished').replace('{task}', taskTitle));
-      playSound();
-    }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [running, timeLeft, taskTitle, t]);
-
-  const playSound = () => {
-    try {
-      const ctx = new (window.AudioContext ||
-        (window as any).webkitAudioContext)();
-      const oscillator = ctx.createOscillator();
-      const gain = ctx.createGain();
-      oscillator.type = 'sine';
-      oscillator.frequency.setValueAtTime(880, ctx.currentTime);
-      gain.gain.setValueAtTime(0.05, ctx.currentTime);
-      oscillator.connect(gain);
-      gain.connect(ctx.destination);
-      oscillator.start();
-      oscillator.stop(ctx.currentTime + 0.5);
-    } catch (e) {
-      // ignore
-    }
-  };
-
-  const handleDurationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleDurationChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const newDuration = Number(e.target.value);
-    setDuration(newDuration);
-    setTimeLeft(newDuration);
-    setRunning(false);
+    setTimerDuration(taskId, newDuration);
   };
 
   const toggle = () => {
-    if (timeLeft === 0) setTimeLeft(duration);
-    setRunning(r => !r);
+    toggleTimer(taskId);
   };
 
-  const progress = duration > 0 ? ((duration - timeLeft) / duration) * 100 : 0;
+  const progress = Math.min(
+    100,
+    Math.max(0, duration > 0 ? ((duration - timeLeft) / duration) * 100 : 0)
+  );
 
   return (
     <div className="mt-2 flex items-center gap-2">

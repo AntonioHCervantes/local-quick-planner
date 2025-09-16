@@ -6,6 +6,7 @@ import {
   Tag,
   Priority,
   Notification,
+  TaskTimer,
 } from './types';
 import { loadState, saveState } from './storage';
 
@@ -15,6 +16,8 @@ const defaultLists: List[] = [
   { id: 'inprogress', title: 'In Progress', order: 2 },
   { id: 'done', title: 'Done', order: 3 },
 ];
+
+export const DEFAULT_TIMER_DURATION = 5 * 60;
 
 const defaultState: PersistedState = {
   tasks: [],
@@ -42,7 +45,8 @@ const defaultState: PersistedState = {
       createdAt: new Date().toISOString(),
     },
   ],
-  version: 6,
+  timers: {},
+  version: 7,
 };
 
 type Store = PersistedState & {
@@ -68,6 +72,11 @@ type Store = PersistedState & {
   ) => void;
   reorderMyTasks: (id: string, newIndex: number) => void;
   toggleMyDay: (id: string) => void;
+  setTimerDuration: (id: string, duration: number) => void;
+  toggleTimer: (id: string) => void;
+  updateTimerRemaining: (id: string, remaining: number) => void;
+  completeTimer: (id: string) => void;
+  clearTimer: (id: string) => void;
   exportData: () => void;
   importData: (data: PersistedState) => void;
   clearAll: () => void;
@@ -81,6 +90,9 @@ const persisted = loadState();
 if (persisted) {
   if (!persisted.tags) {
     persisted.tags = [];
+  }
+  if (!persisted.timers) {
+    persisted.timers = {};
   }
   if (persisted.version < 3) {
     persisted.tasks.forEach(task => {
@@ -130,6 +142,10 @@ if (persisted) {
       },
     ];
     persisted.version = 6;
+  }
+  if (persisted.version < 7) {
+    persisted.timers = {};
+    persisted.version = 7;
   }
 }
 
@@ -239,16 +255,19 @@ export const useStore = create<Store>((set, get) => ({
         newOrder[key] = newOrder[key].filter(tid => tid !== id);
       }
       const tasks = state.tasks.filter(t => t.id !== id);
+      const timers = { ...state.timers };
+      delete timers[id];
       const persisted = {
         tasks,
         lists: state.lists,
         tags: state.tags,
         order: newOrder,
         notifications: state.notifications,
+        timers,
         version: state.version,
       };
       saveState(persisted);
-      return { tasks, order: newOrder };
+      return { tasks, order: newOrder, timers };
     });
   },
   moveTask: (id, update) => {
@@ -256,6 +275,7 @@ export const useStore = create<Store>((set, get) => ({
       const task = state.tasks.find(t => t.id === id);
       if (!task) return {};
       const newOrder = { ...state.order };
+      const timers: Record<string, TaskTimer> = { ...state.timers };
       if (update.listId && update.listId !== task.listId) {
         const fromKey = `list-${task.listId}`;
         const toKey = `list-${update.listId}`;
@@ -271,10 +291,45 @@ export const useStore = create<Store>((set, get) => ({
         newOrder[toKey] = [...(newOrder[toKey] || []), id];
         task.dayStatus = update.dayStatus;
         task.plannedFor = new Date().toISOString().slice(0, 10);
+        const existingTimer = timers[id];
+        if (update.dayStatus === 'doing') {
+          if (existingTimer) {
+            timers[id] = {
+              ...existingTimer,
+              running: existingTimer.running,
+              remaining:
+                existingTimer.running && existingTimer.endsAt
+                  ? Math.max(
+                      0,
+                      Math.ceil(
+                        (new Date(existingTimer.endsAt).getTime() -
+                          Date.now()) /
+                          1000
+                      )
+                    )
+                  : existingTimer.remaining || existingTimer.duration,
+            };
+          } else {
+            timers[id] = {
+              duration: DEFAULT_TIMER_DURATION,
+              remaining: DEFAULT_TIMER_DURATION,
+              running: false,
+              endsAt: null,
+            };
+          }
+        } else if (existingTimer) {
+          timers[id] = {
+            ...existingTimer,
+            running: false,
+            remaining: existingTimer.duration,
+            endsAt: null,
+          };
+        }
       }
       return {
         tasks: state.tasks.map(t => (t.id === id ? task : t)),
         order: newOrder,
+        timers,
       };
     });
     saveState(get());
@@ -330,6 +385,7 @@ export const useStore = create<Store>((set, get) => ({
       const task = state.tasks.find(t => t.id === id);
       if (!task) return {};
       const newOrder = { ...state.order };
+      const timers: Record<string, TaskTimer> = { ...state.timers };
       if (task.plannedFor) {
         // remove from My Day
         if (task.dayStatus) {
@@ -338,6 +394,7 @@ export const useStore = create<Store>((set, get) => ({
         }
         task.plannedFor = null;
         task.dayStatus = undefined;
+        delete timers[id];
       } else {
         // add to My Day as todo
         const today = new Date().toISOString().slice(0, 10);
@@ -345,11 +402,123 @@ export const useStore = create<Store>((set, get) => ({
         task.dayStatus = 'todo';
         const key = 'day-todo';
         newOrder[key] = [...(newOrder[key] || []), id];
+        const existingTimer = timers[id];
+        timers[id] = existingTimer
+          ? {
+              ...existingTimer,
+              running: false,
+              remaining: existingTimer.duration,
+              endsAt: null,
+            }
+          : {
+              duration: DEFAULT_TIMER_DURATION,
+              remaining: DEFAULT_TIMER_DURATION,
+              running: false,
+              endsAt: null,
+            };
       }
       return {
         tasks: state.tasks.map(t => (t.id === id ? task : t)),
         order: newOrder,
+        timers,
       };
+    });
+    saveState(get());
+  },
+  setTimerDuration: (id, duration) => {
+    set(state => {
+      const timers = {
+        ...state.timers,
+        [id]: {
+          duration,
+          remaining: duration,
+          running: false,
+          endsAt: null,
+        },
+      };
+      return { timers };
+    });
+    saveState(get());
+  },
+  toggleTimer: id => {
+    set(state => {
+      const timers = { ...state.timers };
+      const now = Date.now();
+      const existing = timers[id];
+      if (!existing) {
+        const duration = DEFAULT_TIMER_DURATION;
+        timers[id] = {
+          duration,
+          remaining: duration,
+          running: true,
+          endsAt: new Date(now + duration * 1000).toISOString(),
+        };
+      } else if (existing.running) {
+        const endsAt = existing.endsAt
+          ? new Date(existing.endsAt).getTime()
+          : now;
+        const remaining = Math.max(0, Math.ceil((endsAt - now) / 1000));
+        timers[id] = {
+          ...existing,
+          running: false,
+          remaining,
+          endsAt: null,
+        };
+      } else {
+        const remaining =
+          existing.remaining > 0 ? existing.remaining : existing.duration;
+        timers[id] = {
+          ...existing,
+          running: true,
+          remaining,
+          endsAt: new Date(now + remaining * 1000).toISOString(),
+        };
+      }
+      return { timers };
+    });
+    saveState(get());
+  },
+  updateTimerRemaining: (id, remaining) => {
+    set(state => {
+      const timer = state.timers[id];
+      if (!timer || timer.remaining === remaining) {
+        return {};
+      }
+      return {
+        timers: {
+          ...state.timers,
+          [id]: {
+            ...timer,
+            remaining,
+          },
+        },
+      };
+    });
+  },
+  completeTimer: id => {
+    set(state => {
+      const timer = state.timers[id];
+      if (!timer) return {};
+      return {
+        timers: {
+          ...state.timers,
+          [id]: {
+            ...timer,
+            running: false,
+            remaining: 0,
+            endsAt: null,
+          },
+        },
+      };
+    });
+    saveState(get());
+  },
+  clearTimer: id => {
+    set(state => {
+      if (!state.timers[id]) return {};
+      const timers = { ...state.timers };
+      delete timers[id];
+      return { timers };
     });
     saveState(get());
   },
@@ -364,8 +533,14 @@ export const useStore = create<Store>((set, get) => ({
     URL.revokeObjectURL(url);
   },
   importData: data => {
-    set(() => data);
-    saveState(data);
+    const sanitized: PersistedState = {
+      ...defaultState,
+      ...data,
+      timers: data.timers ?? {},
+      version: defaultState.version,
+    };
+    set(() => sanitized);
+    saveState(sanitized);
   },
   clearAll: () => {
     set(() => defaultState);
