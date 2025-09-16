@@ -1,10 +1,11 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Check, Trash2, Play, Clock } from 'lucide-react';
 import Link from '../Link/Link';
 import Timer from './Timer';
 import useTaskCard, { UseTaskCardProps } from './useTaskCard';
 import LinkifiedText from '../LinkifiedText/LinkifiedText';
+import { useStore } from '../../lib/store';
 
 const priorityColors = {
   low: 'border-l-green-500',
@@ -17,7 +18,24 @@ export default function TaskCard(props: UseTaskCardProps) {
   const { attributes, listeners, setNodeRef, style, t } = state;
   const { markInProgress, markDone, getTagColor, deleteTask } = actions;
   const { task, mode } = props;
-  const [showTimer, setShowTimer] = useState(false);
+  const timer = useStore(state => state.timers[task.id]);
+  const shouldForceShowTimer =
+    mode === 'my-day' && task.dayStatus === 'doing' && Boolean(timer?.running);
+  const [showTimer, setShowTimer] = useState(() => shouldForceShowTimer);
+  const isTimerVisible = showTimer || shouldForceShowTimer;
+
+  useEffect(() => {
+    if (shouldForceShowTimer) {
+      setShowTimer(true);
+    }
+  }, [shouldForceShowTimer]);
+
+  const handleToggleTimer = () => {
+    if (shouldForceShowTimer) {
+      return;
+    }
+    setShowTimer(s => !s);
+  };
 
   return (
     <div
@@ -101,15 +119,16 @@ export default function TaskCard(props: UseTaskCardProps) {
       {mode === 'my-day' && task.dayStatus === 'doing' && (
         <>
           <Link
-            onClick={() => setShowTimer(s => !s)}
+            onClick={handleToggleTimer}
             aria-label={t('taskCard.showTimer')}
             title={t('taskCard.showTimer')}
             icon={Clock}
             className="mt-4"
+            aria-expanded={isTimerVisible}
           >
             {t('taskCard.showTimer')}
           </Link>
-          {showTimer && <Timer taskId={task.id} />}
+          {isTimerVisible && <Timer taskId={task.id} />}
         </>
       )}
     </div>
