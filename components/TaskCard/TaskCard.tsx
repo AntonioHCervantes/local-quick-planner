@@ -109,7 +109,7 @@ export default function TaskCard(props: UseTaskCardProps) {
           >
             {t('taskCard.showTimer')}
           </Link>
-          {showTimer && <Timer taskTitle={task.title} />}
+          {showTimer && <Timer taskId={task.id} />}
         </>
       )}
     </div>

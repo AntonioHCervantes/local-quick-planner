@@ -7,6 +7,7 @@ import Footer from '../components/Footer/Footer';
 import { I18nProvider } from '../lib/i18n';
 import WelcomeModal from '../components/WelcomeModal/WelcomeModal';
 import ServiceWorker from '../components/ServiceWorker';
+import TaskTimerManager from '../components/TaskTimerManager/TaskTimerManager';
 
 const description =
   'Local Quick Planner is a free, fast, private, and open source task manager that boosts your productivity and personal organization at work.';
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <main className="flex-1">{children}</main>
           <Footer />
           <Toaster />
+          <TaskTimerManager />
           <WelcomeModal />
           <ServiceWorker />
         </I18nProvider>

@@ -22,12 +22,20 @@ export type Task = {
 
 export type List = { id: string; title: string; order: number };
 
+export type TaskTimer = {
+  duration: number;
+  remaining: number;
+  running: boolean;
+  endsAt: string | null;
+};
+
 export type PersistedState = {
   tasks: Task[];
   lists: List[];
   tags: Tag[];
   order: Record<string, string[]>;
   notifications: Notification[];
+  timers: Record<string, TaskTimer>;
   version: number;
 };
 
