@@ -7,7 +7,7 @@ export default function AboutPage() {
   const { t } = useI18n();
 
   return (
-    <main className="mx-auto max-w-2xl space-y-4 p-4">
+    <main className="mx-auto max-w-2xl space-y-4 px-4 py-16">
       <h1 className="text-2xl font-bold">{t('aboutPage.title')}</h1>
       <p>{t('aboutPage.intro')}</p>
       <ul className="list-disc space-y-1 pl-6">

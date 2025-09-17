@@ -21,7 +21,7 @@ export default function NotificationsPage() {
   );
 
   return (
-    <main className="mx-auto max-w-2xl space-y-4 p-4">
+    <main className="mx-auto max-w-2xl space-y-4 px-4 py-16">
       <h1 className="text-2xl font-bold">{t('notifications.title')}</h1>
       {sorted.length === 0 ? (
         <p>{t('notifications.empty')}</p>

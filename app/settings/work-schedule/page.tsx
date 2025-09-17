@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ChangeEvent, KeyboardEvent, PointerEvent } from 'react';
 import { toast } from 'react-hot-toast';
 import { useStore } from '../../../lib/store';
@@ -93,6 +93,7 @@ export default function WorkSchedulePage() {
     setPlanningReminderMinutes: state.setPlanningReminderMinutes,
   }));
   const [dragMode, setDragMode] = useState<DragMode | null>(null);
+  const calendarRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handlePointerEnd = () => setDragMode(null);
@@ -102,6 +103,19 @@ export default function WorkSchedulePage() {
       window.removeEventListener('pointerup', handlePointerEnd);
       window.removeEventListener('pointercancel', handlePointerEnd);
     };
+  }, []);
+
+  useEffect(() => {
+    if (!calendarRef.current) {
+      return;
+    }
+    const targetSlot = 7 * 2;
+    const firstRow = calendarRef.current.querySelector('tbody tr');
+    if (!firstRow) {
+      return;
+    }
+    const rowHeight = firstRow.getBoundingClientRect().height;
+    calendarRef.current.scrollTop = targetSlot * rowHeight;
   }, []);
 
   const selectedSlots = useMemo(() => {
@@ -166,32 +180,32 @@ export default function WorkSchedulePage() {
   };
 
   return (
-    <main className="mx-auto max-w-6xl space-y-6 p-4">
+    <main className="mx-auto max-w-6xl space-y-8 px-4 py-16">
       <h1 className="text-2xl font-bold">{t('workSchedulePage.title')}</h1>
-      <p>{t('workSchedulePage.intro')}</p>
-      <p className="text-sm text-gray-600 dark:text-gray-300">
-        {t('workSchedulePage.helper')}
-      </p>
+      <div className="space-y-3">
+        <p>{t('workSchedulePage.intro')}</p>
+        <p className="text-base font-medium">
+          {t('workSchedulePage.calendar.instructions')}
+        </p>
+      </div>
       <section className="space-y-4">
-        <div className="space-y-1">
-          <h2 className="text-xl font-semibold">
-            {t('workSchedulePage.calendar.title')}
-          </h2>
-          <p className="text-sm text-gray-600 dark:text-gray-300">
-            {t('workSchedulePage.calendar.instructions')}
-          </p>
-        </div>
-        <div className="overflow-x-auto rounded border border-gray-200 dark:border-gray-700">
+        <h2 className="text-xl font-semibold">
+          {t('workSchedulePage.calendar.title')}
+        </h2>
+        <div
+          ref={calendarRef}
+          className="max-h-[520px] overflow-auto rounded border border-gray-200 dark:border-gray-700"
+        >
           <table className="w-full border-collapse text-sm">
             <thead>
               <tr className="bg-gray-50 dark:bg-gray-800">
-                <th className="sticky left-0 top-0 z-10 border border-gray-200 px-2 py-2 text-left font-semibold dark:border-gray-700 dark:bg-gray-800">
+                <th className="sticky left-0 top-0 z-10 border border-gray-200 bg-gray-50 px-2 py-2 text-left font-semibold dark:border-gray-700 dark:bg-gray-800">
                   {t('workSchedulePage.calendar.timeLabel')}
                 </th>
                 {WEEK_DAYS.map(day => (
                   <th
                     key={day}
-                    className="min-w-[120px] border border-gray-200 px-2 py-2 text-left font-semibold capitalize dark:border-gray-700"
+                    className="sticky top-0 z-10 min-w-[120px] border border-gray-200 bg-gray-50 px-2 py-2 text-left font-semibold capitalize dark:border-gray-700 dark:bg-gray-800"
                   >
                     {t(`workSchedulePage.week.${day}`)}
                   </th>

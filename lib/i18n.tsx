@@ -115,8 +115,6 @@ const translations: Record<Language, any> = {
       title: 'Work schedule',
       intro:
         'Save your working hours so Local Quick Planner can adapt to your workday.',
-      helper:
-        'For example, you can set a reminder to arrive 15 minutes before the end of each workday so you can plan the next day.',
       calendar: {
         title: 'Weekly hours',
         instructions:
@@ -389,8 +387,6 @@ const translations: Record<Language, any> = {
       title: 'Jornada laboral',
       intro:
         'Guarda tu horario laboral para que Local Quick Planner se adapte a tu jornada.',
-      helper:
-        'Por ejemplo, puedes configurar un recordatorio para que llegue 15 minutos antes de terminar cada jornada y así planificar el día siguiente.',
       calendar: {
         title: 'Horario semanal',
         instructions:

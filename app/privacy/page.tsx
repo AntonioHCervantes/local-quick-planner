@@ -7,7 +7,7 @@ export default function PrivacyPage() {
   const { t } = useI18n();
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
+    <div className="mx-auto max-w-3xl space-y-6 px-4 py-16">
       <h1 className="text-2xl font-bold">{t('privacyPage.title')}</h1>
       <p>{t('privacyPage.intro')}</p>
       <h2 className="text-xl font-semibold">
