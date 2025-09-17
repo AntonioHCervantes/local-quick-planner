@@ -180,133 +180,134 @@ export default function WorkSchedulePage() {
   };
 
   return (
-    <main className="mx-auto max-w-6xl space-y-8 px-4 py-16">
-      <h1 className="text-2xl font-bold">{t('workSchedulePage.title')}</h1>
-      <div className="space-y-3">
-        <p>{t('workSchedulePage.intro')}</p>
-        <p className="text-base font-medium">
-          {t('workSchedulePage.calendar.instructions')}
-        </p>
-      </div>
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">
-          {t('workSchedulePage.calendar.title')}
-        </h2>
-        <div
-          ref={calendarRef}
-          className="max-h-[520px] overflow-auto rounded border border-gray-200 dark:border-gray-700"
-        >
-          <table className="w-full border-collapse text-sm">
-            <thead>
-              <tr className="bg-gray-50 dark:bg-gray-800">
-                <th className="sticky left-0 top-0 z-10 border border-gray-200 bg-gray-50 px-2 py-2 text-left font-semibold dark:border-gray-700 dark:bg-gray-800">
-                  {t('workSchedulePage.calendar.timeLabel')}
-                </th>
-                {WEEK_DAYS.map(day => (
-                  <th
-                    key={day}
-                    className="sticky top-0 z-10 min-w-[120px] border border-gray-200 bg-gray-50 px-2 py-2 text-left font-semibold capitalize dark:border-gray-700 dark:bg-gray-800"
-                  >
-                    {t(`workSchedulePage.week.${day}`)}
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="mx-auto flex h-full min-h-0 w-full max-w-6xl flex-col gap-8 px-4 py-16">
+        <h1 className="text-2xl font-bold">{t('workSchedulePage.title')}</h1>
+        <div className="space-y-3">
+          <p>{t('workSchedulePage.intro')}</p>
+          <p className="text-base font-medium">
+            {t('workSchedulePage.calendar.instructions')}
+          </p>
+        </div>
+        <section className="flex min-h-0 flex-col gap-4">
+          <div
+            ref={calendarRef}
+            className="max-h-[520px] flex-1 overflow-auto rounded border border-gray-200 dark:border-gray-700"
+          >
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="bg-gray-50 dark:bg-gray-800">
+                  <th className="sticky left-0 top-0 z-10 border border-gray-200 bg-gray-50 px-2 py-2 text-left font-semibold dark:border-gray-700 dark:bg-gray-800">
+                    {t('workSchedulePage.calendar.timeLabel')}
                   </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {SLOT_INDICES.map(slot => (
-                <tr key={slot}>
-                  <th className="sticky left-0 border border-gray-200 bg-gray-50 px-2 py-2 text-left font-normal dark:border-gray-700 dark:bg-gray-800">
-                    {formatSlotStart(slot)}
-                  </th>
-                  {WEEK_DAYS.map(day => {
-                    const isSelected = selectedSlots[day].has(slot);
-                    const rangeLabel = `${t(
-                      `workSchedulePage.week.${day}`
-                    )} ${formatSlotRange(slot)}`;
-                    return (
-                      <td
-                        key={`${day}-${slot}`}
-                        className="border border-gray-200 p-0 dark:border-gray-700"
-                      >
-                        <button
-                          type="button"
-                          aria-label={rangeLabel}
-                          aria-pressed={isSelected}
-                          onPointerDown={handlePointerDown(day, slot)}
-                          onPointerEnter={handlePointerEnter(day, slot)}
-                          onKeyDown={handleKeyDown(day, slot)}
-                          className={`flex h-8 w-full items-center justify-center text-xs transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 ${
-                            isSelected
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-white hover:bg-blue-50 dark:bg-gray-900 dark:hover:bg-gray-800'
-                          }`}
-                        >
-                          <span className="sr-only">{rangeLabel}</span>
-                        </button>
-                      </td>
-                    );
-                  })}
+                  {WEEK_DAYS.map(day => (
+                    <th
+                      key={day}
+                      className="sticky top-0 z-10 min-w-[120px] border border-gray-200 bg-gray-50 px-2 py-2 text-left font-semibold capitalize dark:border-gray-700 dark:bg-gray-800"
+                    >
+                      {t(`workSchedulePage.week.${day}`)}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-      <section className="space-y-4">
-        <h2 className="text-xl font-semibold">
-          {t('workSchedulePage.actions.title')}
-        </h2>
-        <div className="flex flex-col gap-4 rounded border border-gray-200 p-4 dark:border-gray-700 md:flex-row md:items-center md:justify-between">
-          <div className="flex-1 space-y-2">
-            <h3 className="text-lg font-semibold">
-              {t('workSchedulePage.actions.planningReminder.title')}
-            </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              {t('workSchedulePage.actions.planningReminder.description')}
-            </p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              {t('workSchedulePage.actions.planningReminder.selectHelper')}
-            </p>
-          </div>
-          <div className="flex flex-col items-start gap-3 md:flex-row md:items-center md:gap-4">
-            <div className="flex flex-wrap items-center gap-2">
-              <label
-                htmlFor="planning-reminder-minutes"
-                className="text-sm font-medium"
-              >
-                {t('workSchedulePage.actions.planningReminder.selectLabel')}
-              </label>
-              <select
-                id="planning-reminder-minutes"
-                value={planningReminder.minutesBefore}
-                onChange={handleMinutesChange}
-                disabled={!hasSchedule}
-                className="rounded border border-gray-300 bg-white px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-900 disabled:cursor-not-allowed disabled:opacity-60"
-              >
-                {MINUTE_OPTIONS.map(option => (
-                  <option
-                    key={option}
-                    value={option}
-                  >
-                    {t(
-                      `workSchedulePage.actions.planningReminder.minutes.${option}`
-                    )}
-                  </option>
+              </thead>
+              <tbody>
+                {SLOT_INDICES.map(slot => (
+                  <tr key={slot}>
+                    <th className="sticky left-0 border border-gray-200 bg-gray-50 px-2 py-2 text-left font-normal dark:border-gray-700 dark:bg-gray-800">
+                      {formatSlotStart(slot)}
+                    </th>
+                    {WEEK_DAYS.map(day => {
+                      const isSelected = selectedSlots[day].has(slot);
+                      const rangeLabel = `${t(
+                        `workSchedulePage.week.${day}`
+                      )} ${formatSlotRange(slot)}`;
+                      return (
+                        <td
+                          key={`${day}-${slot}`}
+                          className="border border-gray-200 p-0 dark:border-gray-700"
+                        >
+                          <button
+                            type="button"
+                            aria-label={rangeLabel}
+                            aria-pressed={isSelected}
+                            onPointerDown={handlePointerDown(day, slot)}
+                            onPointerEnter={handlePointerEnter(day, slot)}
+                            onKeyDown={handleKeyDown(day, slot)}
+                            className={`flex h-8 w-full items-center justify-center text-xs transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-900 ${
+                              isSelected
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-white hover:bg-blue-50 dark:bg-gray-900 dark:hover:bg-gray-800'
+                            }`}
+                          >
+                            <span className="sr-only">{rangeLabel}</span>
+                          </button>
+                        </td>
+                      );
+                    })}
+                  </tr>
                 ))}
-              </select>
-              <span className="text-sm text-gray-600 dark:text-gray-300">
-                {t('workSchedulePage.actions.planningReminder.selectSuffix')}
-              </span>
-            </div>
-            <ToggleSwitch
-              enabled={planningReminder.enabled}
-              onToggle={handleReminderToggle}
-              disabled={!hasSchedule}
-              label={t('workSchedulePage.actions.planningReminder.switchLabel')}
-            />
+              </tbody>
+            </table>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+        <section className="space-y-4">
+          <h2 className="text-xl font-semibold">
+            {t('workSchedulePage.actions.title')}
+          </h2>
+          <div className="flex flex-col gap-4 rounded border border-gray-200 p-4 dark:border-gray-700 md:flex-row md:items-center md:justify-between">
+            <div className="flex-1 space-y-2">
+              <h3 className="text-lg font-semibold">
+                {t('workSchedulePage.actions.planningReminder.title')}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-300">
+                {t('workSchedulePage.actions.planningReminder.description')}
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">
+                {t('workSchedulePage.actions.planningReminder.selectHelper')}
+              </p>
+            </div>
+            <div className="flex flex-col items-start gap-3 md:flex-row md:items-center md:gap-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <label
+                  htmlFor="planning-reminder-minutes"
+                  className="text-sm font-medium"
+                >
+                  {t('workSchedulePage.actions.planningReminder.selectLabel')}
+                </label>
+                <select
+                  id="planning-reminder-minutes"
+                  value={planningReminder.minutesBefore}
+                  onChange={handleMinutesChange}
+                  disabled={!hasSchedule}
+                  className="rounded border border-gray-300 bg-white px-2 py-1 text-sm dark:border-gray-700 dark:bg-gray-900 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {MINUTE_OPTIONS.map(option => (
+                    <option
+                      key={option}
+                      value={option}
+                    >
+                      {t(
+                        `workSchedulePage.actions.planningReminder.minutes.${option}`
+                      )}
+                    </option>
+                  ))}
+                </select>
+                <span className="text-sm text-gray-600 dark:text-gray-300">
+                  {t('workSchedulePage.actions.planningReminder.selectSuffix')}
+                </span>
+              </div>
+              <ToggleSwitch
+                enabled={planningReminder.enabled}
+                onToggle={handleReminderToggle}
+                disabled={!hasSchedule}
+                label={t(
+                  'workSchedulePage.actions.planningReminder.switchLabel'
+                )}
+              />
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
   );
 }

@@ -116,7 +116,6 @@ const translations: Record<Language, any> = {
       intro:
         'Save your working hours so Local Quick Planner can adapt to your workday.',
       calendar: {
-        title: 'Weekly hours',
         instructions:
           'Click and drag over the half-hour slots to mark when your workday starts and ends each day.',
         timeLabel: 'Time',
@@ -388,7 +387,6 @@ const translations: Record<Language, any> = {
       intro:
         'Guarda tu horario laboral para que Local Quick Planner se adapte a tu jornada.',
       calendar: {
-        title: 'Horario semanal',
         instructions:
           'Haz clic y arrastra sobre los bloques de media hora para marcar cuándo empieza y termina tu jornada cada día.',
         timeLabel: 'Hora',
