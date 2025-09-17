@@ -100,7 +100,11 @@ export default function TaskItem({
           title={
             task.plannedFor ? t('taskItem.removeMyDay') : t('taskItem.addMyDay')
           }
-          className="rounded bg-transparent p-1 text-black focus:ring dark:text-white"
+          className={`rounded bg-transparent p-1 text-black focus:ring dark:text-white ${
+            showHelp
+              ? 'ring-2 ring-[#57886C] ring-offset-2 ring-offset-gray-100 animate-pulse dark:ring-offset-gray-900'
+              : ''
+          }`}
         >
           {task.plannedFor ? (
             <CalendarX className="h-4 w-4" />
@@ -109,7 +113,7 @@ export default function TaskItem({
           )}
         </button>
         {showHelp && (
-          <div className="absolute -top-24 left-1/2 z-30 w-64 -translate-x-1/2 rounded-lg bg-gray-900 px-3 py-2 text-xs text-white shadow-lg">
+          <div className="absolute bottom-full left-1/2 z-30 mb-3 w-64 -translate-x-1/2 rounded-lg bg-gray-900 px-3 py-2 text-xs text-white shadow-lg">
             <div className="flex items-start gap-2">
               <HelpCircle className="mt-[2px] h-4 w-4 flex-shrink-0" />
               <span className="flex-1 leading-snug">
@@ -126,7 +130,7 @@ export default function TaskItem({
             </div>
             <span
               aria-hidden="true"
-              className="absolute left-1/2 top-full -translate-x-1/2 border-8 border-transparent border-t-gray-900"
+              className="absolute left-1/2 top-full -translate-x-1/2 border-[6px] border-transparent border-t-gray-900"
             />
           </div>
         )}
