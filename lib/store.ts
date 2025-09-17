@@ -7,6 +7,9 @@ import {
   Priority,
   Notification,
   TaskTimer,
+  WorkSchedule,
+  WorkPreferences,
+  Weekday,
 } from './types';
 import { loadState, saveState } from './storage';
 
@@ -18,6 +21,84 @@ const defaultLists: List[] = [
 ];
 
 export const DEFAULT_TIMER_DURATION = 5 * 60;
+
+const createEmptyWorkSchedule = (): WorkSchedule => ({
+  monday: [],
+  tuesday: [],
+  wednesday: [],
+  thursday: [],
+  friday: [],
+  saturday: [],
+  sunday: [],
+});
+
+const defaultWorkPreferences: WorkPreferences = {
+  planningReminder: {
+    enabled: false,
+    minutesBefore: 15,
+    lastNotifiedDate: null,
+  },
+};
+
+const sanitizeSlots = (slots: unknown): number[] => {
+  if (!Array.isArray(slots)) {
+    return [];
+  }
+  return Array.from(
+    new Set(
+      slots
+        .map(slot =>
+          typeof slot === 'number' ? slot : Number.parseInt(String(slot), 10)
+        )
+        .filter(slot => Number.isFinite(slot) && slot >= 0 && slot < 48)
+    )
+  ).sort((a, b) => a - b);
+};
+
+const sanitizeWorkSchedule = (input: unknown): WorkSchedule => {
+  if (!input || typeof input !== 'object') {
+    return createEmptyWorkSchedule();
+  }
+  const schedule = input as Partial<Record<Weekday, unknown>>;
+  return {
+    monday: sanitizeSlots(schedule.monday),
+    tuesday: sanitizeSlots(schedule.tuesday),
+    wednesday: sanitizeSlots(schedule.wednesday),
+    thursday: sanitizeSlots(schedule.thursday),
+    friday: sanitizeSlots(schedule.friday),
+    saturday: sanitizeSlots(schedule.saturday),
+    sunday: sanitizeSlots(schedule.sunday),
+  };
+};
+
+const sanitizeWorkPreferences = (input: unknown): WorkPreferences => {
+  const defaults = defaultWorkPreferences.planningReminder;
+  if (!input || typeof input !== 'object') {
+    return {
+      planningReminder: { ...defaults },
+    };
+  }
+  const preferences = input as Partial<WorkPreferences>;
+  const reminder = preferences.planningReminder as
+    | Partial<WorkPreferences['planningReminder']>
+    | undefined;
+  const minutesBefore =
+    typeof reminder?.minutesBefore === 'number' && reminder.minutesBefore > 0
+      ? reminder.minutesBefore
+      : defaults.minutesBefore;
+  const lastNotifiedDate =
+    typeof reminder?.lastNotifiedDate === 'string'
+      ? reminder.lastNotifiedDate
+      : null;
+
+  return {
+    planningReminder: {
+      enabled: Boolean(reminder?.enabled),
+      minutesBefore,
+      lastNotifiedDate,
+    },
+  };
+};
 
 const defaultState: PersistedState = {
   tasks: [],
@@ -46,7 +127,9 @@ const defaultState: PersistedState = {
     },
   ],
   timers: {},
-  version: 7,
+  workSchedule: createEmptyWorkSchedule(),
+  workPreferences: defaultWorkPreferences,
+  version: 8,
 };
 
 type Store = PersistedState & {
@@ -83,6 +166,15 @@ type Store = PersistedState & {
   addNotification: (n: Notification) => void;
   markNotificationRead: (id: string) => void;
   markAllNotificationsRead: () => void;
+  setWorkScheduleDay: (day: Weekday, slots: number[]) => void;
+  toggleWorkScheduleSlot: (
+    day: Weekday,
+    slot: number,
+    mode?: 'add' | 'remove'
+  ) => 'add' | 'remove';
+  setPlanningReminderEnabled: (enabled: boolean) => void;
+  setPlanningReminderMinutes: (minutes: number) => void;
+  setPlanningReminderLastNotified: (date: string | null) => void;
 };
 
 const persisted = loadState();
@@ -146,6 +238,13 @@ if (persisted) {
   if (persisted.version < 7) {
     persisted.timers = {};
     persisted.version = 7;
+  }
+  persisted.workSchedule = sanitizeWorkSchedule(persisted.workSchedule);
+  persisted.workPreferences = sanitizeWorkPreferences(
+    persisted.workPreferences
+  );
+  if (persisted.version < 8) {
+    persisted.version = 8;
   }
 }
 
@@ -264,6 +363,8 @@ export const useStore = create<Store>((set, get) => ({
         order: newOrder,
         notifications: state.notifications,
         timers,
+        workSchedule: state.workSchedule,
+        workPreferences: state.workPreferences,
         version: state.version,
       };
       saveState(persisted);
@@ -537,6 +638,8 @@ export const useStore = create<Store>((set, get) => ({
       ...defaultState,
       ...data,
       timers: data.timers ?? {},
+      workSchedule: sanitizeWorkSchedule(data.workSchedule),
+      workPreferences: sanitizeWorkPreferences(data.workPreferences),
       version: defaultState.version,
     };
     set(() => sanitized);
@@ -562,6 +665,93 @@ export const useStore = create<Store>((set, get) => ({
     set(state => ({
       notifications: state.notifications.map(n => ({ ...n, read: true })),
     }));
+    saveState(get());
+  },
+  setWorkScheduleDay: (day, slots) => {
+    const sanitized = sanitizeSlots(slots);
+    set(state => ({
+      workSchedule: {
+        ...(state.workSchedule ?? createEmptyWorkSchedule()),
+        [day]: sanitized,
+      },
+    }));
+    saveState(get());
+  },
+  toggleWorkScheduleSlot: (day, slot, mode) => {
+    if (slot < 0 || slot >= 48) {
+      return mode ?? 'add';
+    }
+    let applied: 'add' | 'remove' = mode ?? 'add';
+    set(state => {
+      const schedule = state.workSchedule ?? createEmptyWorkSchedule();
+      const current = new Set(schedule[day] ?? []);
+      if (!mode) {
+        applied = current.has(slot) ? 'remove' : 'add';
+      } else {
+        applied = mode;
+      }
+      if (applied === 'add') {
+        current.add(slot);
+      } else {
+        current.delete(slot);
+      }
+      return {
+        workSchedule: {
+          ...schedule,
+          [day]: Array.from(current).sort((a, b) => a - b),
+        },
+      };
+    });
+    saveState(get());
+    return applied;
+  },
+  setPlanningReminderEnabled: enabled => {
+    set(state => {
+      const current =
+        state.workPreferences?.planningReminder ??
+        defaultWorkPreferences.planningReminder;
+      return {
+        workPreferences: {
+          planningReminder: {
+            ...current,
+            enabled,
+          },
+        },
+      };
+    });
+    saveState(get());
+  },
+  setPlanningReminderMinutes: minutes => {
+    const safeMinutes = Number.isFinite(minutes) && minutes > 0 ? minutes : 15;
+    set(state => {
+      const current =
+        state.workPreferences?.planningReminder ??
+        defaultWorkPreferences.planningReminder;
+      return {
+        workPreferences: {
+          planningReminder: {
+            ...current,
+            minutesBefore: safeMinutes,
+          },
+        },
+      };
+    });
+    saveState(get());
+  },
+  setPlanningReminderLastNotified: date => {
+    set(state => {
+      const current =
+        state.workPreferences?.planningReminder ??
+        defaultWorkPreferences.planningReminder;
+      return {
+        workPreferences: {
+          planningReminder: {
+            ...current,
+            lastNotifiedDate: date,
+          },
+        },
+      };
+    });
     saveState(get());
   },
 }));

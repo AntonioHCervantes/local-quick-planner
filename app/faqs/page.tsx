@@ -19,7 +19,7 @@ export default function FAQsPage() {
   ];
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 px-4 py-8">
+    <div className="mx-auto max-w-3xl space-y-6 px-4 py-16">
       <h1 className="text-2xl font-bold">{t('faqs.title')}</h1>
       <Accordion items={faqs} />
       <div>
