@@ -5,7 +5,7 @@ import {
   Trash2,
   GripVertical,
   Plus,
-  CircleHelp,
+  HelpCircle,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Priority, Tag } from '../../lib/types';
@@ -111,7 +111,7 @@ export default function TaskItem({
         {showHelp && (
           <div className="absolute -top-24 left-1/2 z-30 w-64 -translate-x-1/2 rounded-lg bg-gray-900 px-3 py-2 text-xs text-white shadow-lg">
             <div className="flex items-start gap-2">
-              <CircleHelp className="mt-[2px] h-4 w-4 flex-shrink-0" />
+              <HelpCircle className="mt-[2px] h-4 w-4 flex-shrink-0" />
               <span className="flex-1 leading-snug">
                 {t('taskItem.myDayHelp')}
               </span>
