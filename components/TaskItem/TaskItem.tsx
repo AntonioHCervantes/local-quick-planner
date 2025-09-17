@@ -5,6 +5,7 @@ import {
   Trash2,
   GripVertical,
   Plus,
+  CircleHelp,
 } from 'lucide-react';
 import { useState } from 'react';
 import { Priority, Tag } from '../../lib/types';
@@ -17,9 +18,16 @@ import Link from '../Link/Link';
 
 interface TaskItemProps extends UseTaskItemProps {
   highlighted?: boolean;
+  showMyDayHelp?: boolean;
+  onCloseMyDayHelp?: () => void;
 }
 
-export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
+export default function TaskItem({
+  taskId,
+  highlighted,
+  showMyDayHelp = false,
+  onCloseMyDayHelp,
+}: TaskItemProps) {
   const { state, actions } = useTaskItem({ taskId });
   const { task, isEditing, title, allTags, showTagInput } = state as any;
   const {
@@ -56,7 +64,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
     return null;
   }
 
-  const Actions = () => (
+  const Actions = ({ showHelp }: { showHelp?: boolean }) => (
     <>
       {isPriorityEditing ? (
         <select
@@ -83,22 +91,46 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
           <span>{priorityLabels[task.priority as Priority]}</span>
         </button>
       )}
-      <button
-        onClick={() => toggleMyDay(task.id)}
-        aria-label={
-          task.plannedFor ? t('taskItem.removeMyDay') : t('taskItem.addMyDay')
-        }
-        title={
-          task.plannedFor ? t('taskItem.removeMyDay') : t('taskItem.addMyDay')
-        }
-        className="rounded bg-transparent p-1 text-black focus:ring dark:text-white"
-      >
-        {task.plannedFor ? (
-          <CalendarX className="h-4 w-4" />
-        ) : (
-          <CalendarPlus className="h-4 w-4" />
+      <div className="relative flex items-center">
+        <button
+          onClick={() => toggleMyDay(task.id)}
+          aria-label={
+            task.plannedFor ? t('taskItem.removeMyDay') : t('taskItem.addMyDay')
+          }
+          title={
+            task.plannedFor ? t('taskItem.removeMyDay') : t('taskItem.addMyDay')
+          }
+          className="rounded bg-transparent p-1 text-black focus:ring dark:text-white"
+        >
+          {task.plannedFor ? (
+            <CalendarX className="h-4 w-4" />
+          ) : (
+            <CalendarPlus className="h-4 w-4" />
+          )}
+        </button>
+        {showHelp && (
+          <div className="absolute -top-24 left-1/2 z-30 w-64 -translate-x-1/2 rounded-lg bg-gray-900 px-3 py-2 text-xs text-white shadow-lg">
+            <div className="flex items-start gap-2">
+              <CircleHelp className="mt-[2px] h-4 w-4 flex-shrink-0" />
+              <span className="flex-1 leading-snug">
+                {t('taskItem.myDayHelp')}
+              </span>
+              <button
+                type="button"
+                onClick={() => onCloseMyDayHelp?.()}
+                aria-label={t('actions.close')}
+                className="ml-2 text-white transition hover:opacity-80"
+              >
+                ×
+              </button>
+            </div>
+            <span
+              aria-hidden="true"
+              className="absolute left-1/2 top-full -translate-x-1/2 border-8 border-transparent border-t-gray-900"
+            />
+          </div>
         )}
-      </button>
+      </div>
       <button
         onClick={() => removeTask(task.id)}
         aria-label={t('taskItem.deleteTask')}
@@ -150,7 +182,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
             </p>
           )}
           <div className="hidden md:flex items-center gap-2 md:self-start">
-            <Actions />
+            <Actions showHelp={showMyDayHelp} />
           </div>
         </div>
         <div className="flex items-center gap-2 mt-2">
@@ -216,7 +248,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
           )}
         </div>
         <div className="flex items-center gap-2 md:hidden">
-          <Actions />
+          <Actions showHelp={showMyDayHelp} />
         </div>
       </div>
     </div>

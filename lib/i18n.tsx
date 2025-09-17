@@ -65,6 +65,7 @@ const translations: Record<Language, any> = {
       addMyDay: 'Add to My Day',
       deleteTask: 'Delete task',
       tagPlaceholder: 'Add tag',
+      myDayHelp: 'Plan your daily work by adding tasks to My Day.',
     },
     myDayPage: {
       empty: 'No tasks added to My Day',
@@ -336,6 +337,7 @@ const translations: Record<Language, any> = {
       addMyDay: 'Agregar a Mi Día',
       deleteTask: 'Eliminar tarea',
       tagPlaceholder: 'Añadir etiqueta',
+      myDayHelp: 'Planifica tu trabajo diario añadiendo tareas a Mi Día.',
     },
     myDayPage: {
       empty: 'No hay tareas añadidas a Mi Día',

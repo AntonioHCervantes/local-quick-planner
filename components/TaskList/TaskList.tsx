@@ -1,4 +1,5 @@
 'use client';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { DndContext } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -17,6 +18,77 @@ export default function TaskList({ tasks, highlightedId }: TaskListProps) {
   const { state, actions } = useTaskList({ tasks });
   const { sensors } = state;
   const { handleDragEnd } = actions;
+  const [myDayHelpTaskId, setMyDayHelpTaskId] = useState<string | null>(null);
+  const [showMyDayHelp, setShowMyDayHelp] = useState(false);
+  const previousLengthRef = useRef(tasks.length);
+  const hasShownHelpRef = useRef(false);
+  const hideMyDayHelp = useCallback(() => {
+    setShowMyDayHelp(false);
+    setMyDayHelpTaskId(null);
+  }, []);
+
+  useEffect(() => {
+    const previousLength = previousLengthRef.current;
+    if (
+      !hasShownHelpRef.current &&
+      tasks.length === 1 &&
+      previousLength === 0
+    ) {
+      const [firstTask] = tasks;
+      if (firstTask) {
+        let shouldShowHelp = true;
+
+        if (typeof window !== 'undefined') {
+          try {
+            const hasSeenTooltip = window.localStorage.getItem('myDayHelpSeen');
+            if (hasSeenTooltip) {
+              shouldShowHelp = false;
+            } else {
+              window.localStorage.setItem('myDayHelpSeen', 'true');
+            }
+          } catch {
+            // Ignore storage access issues
+          }
+        }
+
+        if (shouldShowHelp) {
+          setMyDayHelpTaskId(firstTask.id);
+          setShowMyDayHelp(true);
+        }
+
+        hasShownHelpRef.current = true;
+      }
+    }
+
+    if (tasks.length === 0) {
+      hideMyDayHelp();
+    }
+
+    previousLengthRef.current = tasks.length;
+  }, [tasks, hideMyDayHelp]);
+
+  useEffect(() => {
+    if (!showMyDayHelp) {
+      return;
+    }
+
+    const timeout = window.setTimeout(() => {
+      hideMyDayHelp();
+    }, 5000);
+
+    return () => window.clearTimeout(timeout);
+  }, [showMyDayHelp, hideMyDayHelp]);
+
+  useEffect(() => {
+    if (!showMyDayHelp || !myDayHelpTaskId) {
+      return;
+    }
+
+    if (!tasks.some(task => task.id === myDayHelpTaskId)) {
+      hideMyDayHelp();
+    }
+  }, [tasks, showMyDayHelp, myDayHelpTaskId, hideMyDayHelp]);
+
   const { t } = useI18n();
   return (
     <DndContext
@@ -33,6 +105,8 @@ export default function TaskList({ tasks, highlightedId }: TaskListProps) {
               key={task.id}
               taskId={task.id}
               highlighted={task.id === highlightedId}
+              showMyDayHelp={showMyDayHelp && task.id === myDayHelpTaskId}
+              onCloseMyDayHelp={hideMyDayHelp}
             />
           ))}
           {tasks.length === 0 && (
