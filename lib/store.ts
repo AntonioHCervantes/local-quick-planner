@@ -502,7 +502,31 @@ export const useStore = create<Store>((set, get) => ({
         task.plannedFor = today;
         task.dayStatus = 'todo';
         const key = 'day-todo';
-        newOrder[key] = [...(newOrder[key] || []), id];
+        const priorityOrder: Record<Priority, number> = {
+          high: 0,
+          medium: 1,
+          low: 2,
+        };
+        const todoOrder = (newOrder[key] || []).filter(tid => tid !== id);
+        const newTaskPriority = task.priority;
+        const insertIndex = todoOrder.findIndex(tid => {
+          const existingTask =
+            tid === id ? task : state.tasks.find(t => t.id === tid);
+          if (!existingTask) {
+            return false;
+          }
+          const existingPriority =
+            priorityOrder[existingTask.priority] ?? priorityOrder.medium;
+          return existingPriority > priorityOrder[newTaskPriority];
+        });
+        newOrder[key] =
+          insertIndex === -1
+            ? [...todoOrder, id]
+            : [
+                ...todoOrder.slice(0, insertIndex),
+                id,
+                ...todoOrder.slice(insertIndex),
+              ];
         const existingTimer = timers[id];
         timers[id] = existingTimer
           ? {
