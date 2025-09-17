@@ -131,7 +131,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
             : ''
         } ${highlighted ? 'ring-2 ring-[#57886C] bg-[#57886C] text-white' : ''}`}
       >
-        <div className="flex flex-col gap-2 md:flex-row md:items-center">
+        <div className="flex flex-col gap-2 md:flex-row md:items-start md:gap-6">
           {isEditing ? (
             <input
               value={title}
@@ -149,7 +149,7 @@ export default function TaskItem({ taskId, highlighted }: TaskItemProps) {
               <LinkifiedText text={task.title} />
             </p>
           )}
-          <div className="hidden md:flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-2 md:self-start">
             <Actions />
           </div>
         </div>
