@@ -10,6 +10,7 @@ import {
   Moon,
   Settings,
   Bell,
+  CalendarClock,
 } from 'lucide-react';
 import { Language, LANGUAGES } from '../../lib/i18n';
 import Icon from '../Icon/Icon';
@@ -194,6 +195,14 @@ export default function Header() {
                 )}
                 {t('actions.toggleTheme')}
               </button>
+              <Link
+                href="/settings/work-schedule"
+                onClick={() => setShowActions(false)}
+                className="flex items-center gap-2 rounded px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800"
+              >
+                <CalendarClock className="h-4 w-4" />{' '}
+                {t('actions.workSchedule')}
+              </Link>
               <div className="mt-2 border-t pt-2">
                 <label
                   htmlFor="language-select"

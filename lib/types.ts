@@ -29,6 +29,25 @@ export type TaskTimer = {
   endsAt: string | null;
 };
 
+export type Weekday =
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday'
+  | 'friday'
+  | 'saturday'
+  | 'sunday';
+
+export type WorkSchedule = Record<Weekday, number[]>;
+
+export type WorkPreferences = {
+  planningReminder: {
+    enabled: boolean;
+    minutesBefore: number;
+    lastNotifiedDate: string | null;
+  };
+};
+
 export type PersistedState = {
   tasks: Task[];
   lists: List[];
@@ -36,6 +55,8 @@ export type PersistedState = {
   order: Record<string, string[]>;
   notifications: Notification[];
   timers: Record<string, TaskTimer>;
+  workSchedule: WorkSchedule;
+  workPreferences: WorkPreferences;
   version: number;
 };
 

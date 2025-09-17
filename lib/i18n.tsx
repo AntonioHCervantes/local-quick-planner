@@ -22,6 +22,7 @@ const translations: Record<Language, any> = {
       language: 'Select language',
       more: 'More actions',
       settings: 'Settings',
+      workSchedule: 'Work schedule',
       removeTag: 'Remove tag',
       addTag: 'Add tag',
       favoriteTag: 'Add tag to favorites',
@@ -103,6 +104,57 @@ const translations: Record<Language, any> = {
         title: 'Welcome to Local Quick Planner',
         description:
           'Use the "My Tasks" board to collect and prioritize everything you need to do. Move items into "My Day" when you are ready to focus on them. Open settings to switch theme, export your data and more.',
+      },
+      workReminder: {
+        title: 'Plan tomorrow',
+        description:
+          'Your workday is about to finish. Review your progress and decide what comes next.',
+      },
+    },
+    workSchedulePage: {
+      title: 'Work schedule',
+      intro:
+        'Save your working hours so Local Quick Planner can adapt to your workday.',
+      helper:
+        'For example, you can set a reminder to arrive 15 minutes before the end of each workday so you can plan the next day.',
+      calendar: {
+        title: 'Weekly hours',
+        instructions:
+          'Click and drag over the half-hour slots to mark when your workday starts and ends each day.',
+        timeLabel: 'Time',
+      },
+      week: {
+        monday: 'Monday',
+        tuesday: 'Tuesday',
+        wednesday: 'Wednesday',
+        thursday: 'Thursday',
+        friday: 'Friday',
+        saturday: 'Saturday',
+        sunday: 'Sunday',
+      },
+      actions: {
+        title: 'Available actions',
+        planningReminder: {
+          title: 'Reminder to plan tomorrow',
+          description:
+            'Receive a reminder shortly before your workday ends so you can organize the next day.',
+          selectLabel: 'Notify me',
+          selectSuffix: 'before the end of my workday',
+          selectHelper:
+            'Select how long before finishing you want to receive the reminder.',
+          minutes: {
+            '5': '5m',
+            '15': '15m',
+            '30': '30m',
+            '60': '1h',
+          },
+          switchLabel: 'Enable reminder',
+          fillScheduleFirst:
+            'Set your work schedule before activating this reminder.',
+        },
+      },
+      reminder: {
+        toast: 'Your workday is about to end. Take a moment to plan tomorrow.',
       },
     },
     footer: {
@@ -244,6 +296,7 @@ const translations: Record<Language, any> = {
       language: 'Seleccionar idioma',
       more: 'Más acciones',
       settings: 'Ajustes',
+      workSchedule: 'Jornada laboral',
       removeTag: 'Eliminar etiqueta',
       addTag: 'Añadir etiqueta',
       favoriteTag: 'Marcar etiqueta como favorita',
@@ -325,6 +378,58 @@ const translations: Record<Language, any> = {
         title: '¡Hola! Te damos la bienvenida a Local Quick Planner',
         description:
           'Usa el tablero "Mis Tareas" para reunir y priorizar todo lo que debes hacer. Pasa los elementos a "Mi Día" cuando quieras enfocarte en ellos. Abre los ajustes para cambiar el tema, exportar tus datos y más.',
+      },
+      workReminder: {
+        title: 'Planifica el mañana',
+        description:
+          'Tu jornada está a punto de terminar. Revisa tu progreso y decide los siguientes pasos.',
+      },
+    },
+    workSchedulePage: {
+      title: 'Jornada laboral',
+      intro:
+        'Guarda tu horario laboral para que Local Quick Planner se adapte a tu jornada.',
+      helper:
+        'Por ejemplo, puedes configurar un recordatorio para que llegue 15 minutos antes de terminar cada jornada y así planificar el día siguiente.',
+      calendar: {
+        title: 'Horario semanal',
+        instructions:
+          'Haz clic y arrastra sobre los bloques de media hora para marcar cuándo empieza y termina tu jornada cada día.',
+        timeLabel: 'Hora',
+      },
+      week: {
+        monday: 'Lunes',
+        tuesday: 'Martes',
+        wednesday: 'Miércoles',
+        thursday: 'Jueves',
+        friday: 'Viernes',
+        saturday: 'Sábado',
+        sunday: 'Domingo',
+      },
+      actions: {
+        title: 'Acciones disponibles',
+        planningReminder: {
+          title: 'Recordatorio para planificar el siguiente día',
+          description:
+            'Recibe un aviso poco antes de finalizar tu jornada para organizar el trabajo del día siguiente.',
+          selectLabel: 'Avísame',
+          selectSuffix: 'antes de que termine mi jornada',
+          selectHelper:
+            'Selecciona cuánto tiempo antes quieres recibir el aviso.',
+          minutes: {
+            '5': '5m',
+            '15': '15m',
+            '30': '30m',
+            '60': '1h',
+          },
+          switchLabel: 'Activar recordatorio',
+          fillScheduleFirst:
+            'Rellena tu jornada laboral antes de activar este recordatorio.',
+        },
+      },
+      reminder: {
+        toast:
+          'Tu jornada está a punto de terminar. Tómate un momento para planificar el próximo día.',
       },
     },
     footer: {
