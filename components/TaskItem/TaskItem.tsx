@@ -16,6 +16,8 @@ import { CSS } from '@dnd-kit/utilities';
 import LinkifiedText from '../LinkifiedText/LinkifiedText';
 import Link from '../Link/Link';
 
+const BASE_TOOLTIP_OFFSET = -72;
+
 interface TaskItemProps extends UseTaskItemProps {
   highlighted?: boolean;
   showMyDayHelp?: boolean;
@@ -153,7 +155,7 @@ export default function TaskItem({
             ref={tooltipRef}
             className="absolute top-full left-1/2 z-30 mt-3 w-64 rounded-lg border border-white bg-gray-900 px-3 py-2 text-xs text-white shadow-lg"
             style={{
-              transform: `translateX(calc(-50% + ${tooltipShift}px))`,
+              transform: `translateX(calc(-50% + ${tooltipShift + BASE_TOOLTIP_OFFSET}px))`,
             }}
           >
             <div className="flex items-start gap-2">
@@ -174,7 +176,7 @@ export default function TaskItem({
               aria-hidden="true"
               className="absolute left-1/2 bottom-full border-[6px] border-transparent border-b-gray-900"
               style={{
-                transform: `translateX(calc(-50% - ${tooltipShift}px))`,
+                transform: `translateX(calc(-50% - ${tooltipShift + BASE_TOOLTIP_OFFSET}px))`,
               }}
             />
           </div>
