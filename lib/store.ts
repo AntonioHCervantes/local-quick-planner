@@ -127,9 +127,10 @@ const defaultState: PersistedState = {
     },
   ],
   timers: {},
+  mainMyDayTaskId: null,
   workSchedule: createEmptyWorkSchedule(),
   workPreferences: defaultWorkPreferences,
-  version: 8,
+  version: 9,
 };
 
 type Store = PersistedState & {
@@ -160,6 +161,7 @@ type Store = PersistedState & {
   updateTimerRemaining: (id: string, remaining: number) => void;
   completeTimer: (id: string) => void;
   clearTimer: (id: string) => void;
+  setMainMyDayTask: (id: string | null) => void;
   exportData: () => void;
   importData: (data: PersistedState) => void;
   clearAll: () => void;
@@ -185,6 +187,9 @@ if (persisted) {
   }
   if (!persisted.timers) {
     persisted.timers = {};
+  }
+  if (persisted.mainMyDayTaskId === undefined) {
+    persisted.mainMyDayTaskId = null;
   }
   if (persisted.version < 3) {
     persisted.tasks.forEach(task => {
@@ -245,6 +250,9 @@ if (persisted) {
   );
   if (persisted.version < 8) {
     persisted.version = 8;
+  }
+  if (persisted.version < 9) {
+    persisted.version = 9;
   }
 }
 
@@ -356,6 +364,8 @@ export const useStore = create<Store>((set, get) => ({
       const tasks = state.tasks.filter(t => t.id !== id);
       const timers = { ...state.timers };
       delete timers[id];
+      const mainMyDayTaskId =
+        state.mainMyDayTaskId === id ? null : state.mainMyDayTaskId;
       const persisted = {
         tasks,
         lists: state.lists,
@@ -363,12 +373,13 @@ export const useStore = create<Store>((set, get) => ({
         order: newOrder,
         notifications: state.notifications,
         timers,
+        mainMyDayTaskId,
         workSchedule: state.workSchedule,
         workPreferences: state.workPreferences,
         version: state.version,
       };
       saveState(persisted);
-      return { tasks, order: newOrder, timers };
+      return { tasks, order: newOrder, timers, mainMyDayTaskId };
     });
   },
   moveTask: (id, update) => {
@@ -487,6 +498,7 @@ export const useStore = create<Store>((set, get) => ({
       if (!task) return {};
       const newOrder = { ...state.order };
       const timers: Record<string, TaskTimer> = { ...state.timers };
+      let mainMyDayTaskId = state.mainMyDayTaskId;
       if (task.plannedFor) {
         // remove from My Day
         if (task.dayStatus) {
@@ -496,6 +508,9 @@ export const useStore = create<Store>((set, get) => ({
         task.plannedFor = null;
         task.dayStatus = undefined;
         delete timers[id];
+        if (mainMyDayTaskId === id) {
+          mainMyDayTaskId = null;
+        }
       } else {
         // add to My Day as todo
         const today = new Date().toISOString().slice(0, 10);
@@ -546,7 +561,21 @@ export const useStore = create<Store>((set, get) => ({
         tasks: state.tasks.map(t => (t.id === id ? task : t)),
         order: newOrder,
         timers,
+        mainMyDayTaskId,
       };
+    });
+    saveState(get());
+  },
+  setMainMyDayTask: id => {
+    set(state => {
+      if (!id) {
+        return { mainMyDayTaskId: null };
+      }
+      const task = state.tasks.find(t => t.id === id);
+      if (!task || !task.plannedFor) {
+        return { mainMyDayTaskId: null };
+      }
+      return { mainMyDayTaskId: id };
     });
     saveState(get());
   },
@@ -662,6 +691,7 @@ export const useStore = create<Store>((set, get) => ({
       ...defaultState,
       ...data,
       timers: data.timers ?? {},
+      mainMyDayTaskId: data.mainMyDayTaskId ?? null,
       workSchedule: sanitizeWorkSchedule(data.workSchedule),
       workPreferences: sanitizeWorkPreferences(data.workPreferences),
       version: defaultState.version,

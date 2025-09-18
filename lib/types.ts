@@ -55,6 +55,7 @@ export type PersistedState = {
   order: Record<string, string[]>;
   notifications: Notification[];
   timers: Record<string, TaskTimer>;
+  mainMyDayTaskId: string | null;
   workSchedule: WorkSchedule;
   workPreferences: WorkPreferences;
   version: number;

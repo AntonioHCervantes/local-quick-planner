@@ -1,6 +1,6 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { Check, Trash2, Play, Clock } from 'lucide-react';
+import { useEffect, useState, type MouseEvent } from 'react';
+import { Check, Trash2, Play, Clock, Star } from 'lucide-react';
 import Link from '../Link/Link';
 import Timer from './Timer';
 import useTaskCard, { UseTaskCardProps } from './useTaskCard';
@@ -15,14 +15,33 @@ const priorityColors = {
 
 export default function TaskCard(props: UseTaskCardProps) {
   const { state, actions } = useTaskCard(props);
-  const { attributes, listeners, setNodeRef, style, t } = state;
-  const { markInProgress, markDone, getTagColor, deleteTask } = actions;
+  const { attributes, listeners, setNodeRef, style, t, isMainTask } = state;
+  const { markInProgress, markDone, getTagColor, deleteTask, toggleMainTask } =
+    actions;
   const { task, mode } = props;
   const timer = useStore(state => state.timers[task.id]);
   const shouldForceShowTimer =
     mode === 'my-day' && task.dayStatus === 'doing' && Boolean(timer?.running);
   const [showTimer, setShowTimer] = useState(() => shouldForceShowTimer);
   const isTimerVisible = showTimer || shouldForceShowTimer;
+
+  const priorityClass = priorityColors[task.priority];
+  const cardClasses = [
+    'group rounded border-l-4 p-4 cursor-grab focus:outline-none focus:ring transition-all duration-200 ease-out',
+    isMainTask
+      ? 'border-l-amber-400 bg-gradient-to-r from-amber-100 via-yellow-50 to-white text-gray-900 shadow-xl ring-1 ring-amber-300/60 dark:from-amber-500/20 dark:via-amber-400/15 dark:to-gray-950 dark:text-amber-50 dark:ring-amber-500/40'
+      : `${priorityClass} bg-gray-100 dark:bg-gray-800 hover:shadow-md`,
+  ].join(' ');
+
+  const handleToggleMainTask = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    event.preventDefault();
+    toggleMainTask();
+  };
+
+  const mainTaskLabel = isMainTask
+    ? t('taskCard.unsetMainTask')
+    : t('taskCard.setMainTask');
 
   useEffect(() => {
     if (shouldForceShowTimer) {
@@ -43,14 +62,15 @@ export default function TaskCard(props: UseTaskCardProps) {
       style={style as any}
       {...attributes}
       {...listeners}
-      className={`rounded border-l-4 p-4 cursor-grab focus:outline-none focus:ring bg-gray-100 dark:bg-gray-800 ${priorityColors[task.priority]}`}
+      className={cardClasses}
+      data-main-task={isMainTask || undefined}
     >
       <div
         className={`flex justify-between ${
           mode === 'my-day' ? 'items-start' : 'items-center'
         }`}
       >
-        <span className="flex-1 mr-2 min-w-0">
+        <span className="mr-2 min-w-0 flex-1">
           <LinkifiedText text={task.title} />
         </span>
         <div
@@ -60,6 +80,26 @@ export default function TaskCard(props: UseTaskCardProps) {
         >
           {mode === 'my-day' ? (
             <>
+              <button
+                type="button"
+                onClick={handleToggleMainTask}
+                aria-pressed={isMainTask}
+                aria-label={mainTaskLabel}
+                title={t('taskCard.mainTaskTooltip')}
+                className={`rounded-full p-1 transition-colors duration-150 focus-visible:outline-none focus-visible:ring focus-visible:ring-amber-400 ${
+                  isMainTask
+                    ? 'bg-amber-100/80 text-amber-600 hover:text-amber-500 dark:bg-amber-500/20 dark:text-amber-300'
+                    : 'text-gray-400 hover:text-amber-400'
+                }`}
+              >
+                <Star
+                  className={`h-4 w-4 transition-transform ${
+                    isMainTask ? 'scale-110' : ''
+                  }`}
+                  strokeWidth={isMainTask ? 1.5 : 2}
+                  fill={isMainTask ? 'currentColor' : 'none'}
+                />
+              </button>
               {task.dayStatus === 'todo' && (
                 <button
                   onClick={markInProgress}
@@ -110,7 +150,7 @@ export default function TaskCard(props: UseTaskCardProps) {
           <span
             key={tag}
             style={{ backgroundColor: getTagColor(tag) }}
-            className="text-xs px-2 py-1 rounded-full text-white"
+            className="rounded-full px-2 py-1 text-xs text-white"
           >
             {tag}
           </span>
