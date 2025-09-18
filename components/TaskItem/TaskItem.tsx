@@ -7,7 +7,7 @@ import {
   Plus,
   HelpCircle,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Priority, Tag } from '../../lib/types';
 import { useI18n } from '../../lib/i18n';
 import useTaskItem, { UseTaskItemProps } from './useTaskItem';
@@ -46,6 +46,42 @@ export default function TaskItem({
   } = actions as any; // when task undefined, actions is empty
   const { t } = useI18n();
   const [isPriorityEditing, setIsPriorityEditing] = useState(false);
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
+  const [tooltipShift, setTooltipShift] = useState(0);
+
+  useEffect(() => {
+    if (!showMyDayHelp) {
+      setTooltipShift(0);
+      return;
+    }
+
+    const adjustTooltipPosition = () => {
+      const element = tooltipRef.current;
+      if (!element) {
+        return;
+      }
+
+      const rect = element.getBoundingClientRect();
+      const padding = 12;
+      let shift = 0;
+
+      if (rect.left < padding) {
+        shift = padding - rect.left;
+      } else if (rect.right > window.innerWidth - padding) {
+        shift = -(rect.right - (window.innerWidth - padding));
+      }
+
+      setTooltipShift(shift);
+    };
+
+    const frame = window.requestAnimationFrame(adjustTooltipPosition);
+    window.addEventListener('resize', adjustTooltipPosition);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener('resize', adjustTooltipPosition);
+    };
+  }, [showMyDayHelp]);
 
   const priorityLabels: Record<Priority, string> = {
     low: t('priority.low'),
@@ -113,7 +149,13 @@ export default function TaskItem({
           )}
         </button>
         {showHelp && (
-          <div className="absolute top-full left-1/2 z-30 mt-3 w-64 -translate-x-1/2 rounded-lg border border-white bg-gray-900 px-3 py-2 text-xs text-white shadow-lg">
+          <div
+            ref={tooltipRef}
+            className="absolute top-full left-1/2 z-30 mt-3 w-64 rounded-lg border border-white bg-gray-900 px-3 py-2 text-xs text-white shadow-lg"
+            style={{
+              transform: `translateX(calc(-50% + ${tooltipShift}px))`,
+            }}
+          >
             <div className="flex items-start gap-2">
               <HelpCircle className="mt-[2px] h-4 w-4 flex-shrink-0" />
               <span className="flex-1 leading-snug">
@@ -130,7 +172,10 @@ export default function TaskItem({
             </div>
             <span
               aria-hidden="true"
-              className="absolute left-1/2 bottom-full -translate-x-1/2 border-[6px] border-transparent border-b-gray-900"
+              className="absolute left-1/2 bottom-full border-[6px] border-transparent border-b-gray-900"
+              style={{
+                transform: `translateX(calc(-50% - ${tooltipShift}px))`,
+              }}
             />
           </div>
         )}

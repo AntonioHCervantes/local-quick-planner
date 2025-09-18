@@ -93,7 +93,7 @@ export default function TaskList({ tasks, highlightedId }: TaskListProps) {
 
     const timeout = window.setTimeout(() => {
       hideMyDayHelp();
-    }, 5000);
+    }, 9000);
 
     return () => window.clearTimeout(timeout);
   }, [showMyDayHelp, hideMyDayHelp]);
