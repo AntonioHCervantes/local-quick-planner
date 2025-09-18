@@ -26,6 +26,7 @@ export default function Board(props: UseBoardProps) {
             title={col.title}
             tasks={getTasks(col.id)}
             mode={props.mode}
+            status={col.status}
           />
         ))}
       </div>

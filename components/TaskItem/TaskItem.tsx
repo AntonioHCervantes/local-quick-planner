@@ -10,6 +10,7 @@ import {
 import { useEffect, useRef, useState } from 'react';
 import { Priority, Tag } from '../../lib/types';
 import { useI18n } from '../../lib/i18n';
+import { getDayStatusIcon } from '../../lib/dayStatus';
 import useTaskItem, { UseTaskItemProps } from './useTaskItem';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -101,6 +102,11 @@ export default function TaskItem({
   if (!task) {
     return null;
   }
+
+  const isInMyDay = Boolean(task.plannedFor);
+  const dayStatus = isInMyDay ? (task.dayStatus ?? 'todo') : undefined;
+  const StatusIcon = getDayStatusIcon(dayStatus);
+  const statusLabel = dayStatus ? t(`board.${dayStatus}`) : null;
 
   const Actions = ({ showHelp }: { showHelp?: boolean }) => (
     <>
@@ -208,98 +214,123 @@ export default function TaskItem({
         <GripVertical className="h-4 w-4 text-gray-500" />
       </div>
       <div
-        className={`flex flex-col gap-2 rounded p-2 flex-1 min-w-0 bg-gray-100 dark:bg-gray-800 ${
-          task.plannedFor
-            ? 'pl-4 md:pl-5 border-l-[8px] md:border-l-[16px] border-blue-100 dark:border-[rgb(62,74,113)]'
-            : ''
-        } ${highlighted ? 'ring-2 ring-[#57886C] bg-[#57886C] text-white' : ''}`}
+        className={`flex flex-1 min-w-0 overflow-hidden rounded ${
+          highlighted ? 'ring-2 ring-[#57886C]' : ''
+        }`}
       >
-        <div className="flex flex-col gap-2 md:flex-row md:items-start md:gap-6">
-          {isEditing ? (
-            <input
-              value={title}
-              onChange={e => setTitle(e.target.value)}
-              onBlur={saveTitle}
-              onKeyDown={handleTitleKeyDown}
-              className="w-full md:flex-1 rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
-              autoFocus
-            />
-          ) : (
-            <p
-              className="w-full md:flex-1 min-w-0"
-              onClick={startEditing}
-            >
-              <LinkifiedText text={task.title} />
-            </p>
-          )}
-          <div className="hidden md:flex items-center gap-2 md:self-start">
-            <Actions showHelp={showMyDayHelp} />
+        {isInMyDay && (
+          <div className="flex w-12 flex-none items-center justify-center bg-blue-100 text-blue-700 dark:bg-[rgb(62,74,113)] dark:text-white md:w-14">
+            {StatusIcon ? (
+              <>
+                <StatusIcon
+                  className="h-5 w-5"
+                  aria-hidden="true"
+                />
+                {statusLabel ? (
+                  <span className="sr-only">{statusLabel}</span>
+                ) : null}
+              </>
+            ) : statusLabel ? (
+              <span className="sr-only">{statusLabel}</span>
+            ) : null}
           </div>
-        </div>
-        <div className="flex items-center gap-2 mt-2">
-          {task.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1 items-center">
-              {task.tags.map((tag: string) => (
-                <span
-                  key={tag}
-                  style={{ backgroundColor: getTagColor(tag) }}
-                  className="flex items-center rounded-full pl-2 pr-1 py-1 text-xs text-white"
-                >
-                  <span className="mr-1 select-none">{tag}</span>
-                  <button
-                    onClick={() => removeTag(tag)}
-                    aria-label={t('actions.removeTag')}
-                    title={t('actions.removeTag')}
-                    className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20"
+        )}
+        <div
+          className={`flex flex-col gap-2 p-2 flex-1 min-w-0 ${
+            isInMyDay ? 'rounded-r' : 'rounded'
+          } ${
+            highlighted
+              ? 'bg-[#57886C] text-white'
+              : 'bg-gray-100 dark:bg-gray-800'
+          }`}
+        >
+          <div className="flex flex-col gap-2 md:flex-row md:items-start md:gap-6">
+            {isEditing ? (
+              <input
+                value={title}
+                onChange={e => setTitle(e.target.value)}
+                onBlur={saveTitle}
+                onKeyDown={handleTitleKeyDown}
+                className="w-full md:flex-1 rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
+                autoFocus
+              />
+            ) : (
+              <p
+                className="w-full md:flex-1 min-w-0"
+                onClick={startEditing}
+              >
+                <LinkifiedText text={task.title} />
+              </p>
+            )}
+            <div className="hidden md:flex items-center gap-2 md:self-start">
+              <Actions showHelp={showMyDayHelp} />
+            </div>
+          </div>
+          <div className="flex items-center gap-2 mt-2">
+            {task.tags.length > 0 && (
+              <div className="flex flex-wrap gap-1 items-center">
+                {task.tags.map((tag: string) => (
+                  <span
+                    key={tag}
+                    style={{ backgroundColor: getTagColor(tag) }}
+                    className="flex items-center rounded-full pl-2 pr-1 py-1 text-xs text-white"
                   >
-                    ×
-                  </button>
-                </span>
-              ))}
-              <button
+                    <span className="mr-1 select-none">{tag}</span>
+                    <button
+                      onClick={() => removeTag(tag)}
+                      aria-label={t('actions.removeTag')}
+                      title={t('actions.removeTag')}
+                      className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20"
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+                <button
+                  onClick={toggleTagInput}
+                  aria-label={t('actions.addTag')}
+                  title={t('actions.addTag')}
+                  className="flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20 text-black dark:text-white"
+                >
+                  <Plus className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+            {showTagInput && (
+              <>
+                <input
+                  onKeyDown={handleTagInputChange}
+                  onChange={handleExistingTagSelect}
+                  className="w-full md:w-[200px] rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
+                  placeholder={t('taskItem.tagPlaceholder')}
+                  list="existing-tags"
+                  autoFocus={task.tags.length > 0}
+                />
+                <datalist id="existing-tags">
+                  {allTags.map((tag: Tag) => (
+                    <option
+                      key={tag.id}
+                      value={tag.label}
+                    />
+                  ))}
+                </datalist>
+              </>
+            )}
+            {!showTagInput && task.tags.length === 0 && (
+              <Link
                 onClick={toggleTagInput}
                 aria-label={t('actions.addTag')}
                 title={t('actions.addTag')}
-                className="flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20 text-black dark:text-white"
+                icon={Plus}
+                className="text-xs text-white"
               >
-                <Plus className="h-4 w-4" />
-              </button>
-            </div>
-          )}
-          {showTagInput && (
-            <>
-              <input
-                onKeyDown={handleTagInputChange}
-                onChange={handleExistingTagSelect}
-                className="w-full md:w-[200px] rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
-                placeholder={t('taskItem.tagPlaceholder')}
-                list="existing-tags"
-                autoFocus={task.tags.length > 0}
-              />
-              <datalist id="existing-tags">
-                {allTags.map((tag: Tag) => (
-                  <option
-                    key={tag.id}
-                    value={tag.label}
-                  />
-                ))}
-              </datalist>
-            </>
-          )}
-          {!showTagInput && task.tags.length === 0 && (
-            <Link
-              onClick={toggleTagInput}
-              aria-label={t('actions.addTag')}
-              title={t('actions.addTag')}
-              icon={Plus}
-              className="text-xs text-white"
-            >
-              {t('actions.addTag')}
-            </Link>
-          )}
-        </div>
-        <div className="flex items-center gap-2 md:hidden">
-          <Actions showHelp={showMyDayHelp} />
+                {t('actions.addTag')}
+              </Link>
+            )}
+          </div>
+          <div className="flex items-center gap-2 md:hidden">
+            <Actions showHelp={showMyDayHelp} />
+          </div>
         </div>
       </div>
     </div>

@@ -11,6 +11,7 @@ import {
   DragOverEvent,
 } from '@dnd-kit/core';
 import { Task } from '../../lib/types';
+import type { DayStatus } from '../../lib/dayStatus';
 import { useStore } from '../../lib/store';
 import { useI18n } from '../../lib/i18n';
 export interface UseBoardProps {
@@ -25,12 +26,12 @@ export default function useBoard({ mode }: UseBoardProps) {
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const { t } = useI18n();
 
-  const columns =
+  const columns: Array<{ id: string; title: string; status?: DayStatus }> =
     mode === 'my-day'
       ? [
-          { id: 'todo', title: t('board.todo') },
-          { id: 'doing', title: t('board.doing') },
-          { id: 'done', title: t('board.done') },
+          { id: 'todo', title: t('board.todo'), status: 'todo' },
+          { id: 'doing', title: t('board.doing'), status: 'doing' },
+          { id: 'done', title: t('board.done'), status: 'done' },
         ]
       : [...lists]
           .sort((a, b) => a.order - b.order)
