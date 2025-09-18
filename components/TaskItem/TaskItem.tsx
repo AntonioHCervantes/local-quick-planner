@@ -214,12 +214,15 @@ export default function TaskItem({
         <GripVertical className="h-4 w-4 text-gray-500" />
       </div>
       <div
-        className={`flex flex-1 min-w-0 overflow-hidden rounded ${
+        className={`flex flex-1 min-w-0 rounded ${
           highlighted ? 'ring-2 ring-[#57886C]' : ''
         }`}
       >
         {isInMyDay && (
-          <div className="flex w-12 flex-none items-center justify-center bg-blue-100 text-blue-700 dark:bg-[rgb(62,74,113)] dark:text-white md:w-14">
+          <div
+            className="flex w-12 flex-none items-center justify-center rounded-l bg-blue-100 text-blue-700 dark:bg-[rgb(62,74,113)] dark:text-white md:w-14"
+            title={statusLabel ?? undefined}
+          >
             {StatusIcon ? (
               <>
                 <StatusIcon
