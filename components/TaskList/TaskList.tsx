@@ -20,9 +20,14 @@ export default function TaskList({ tasks, highlightedId }: TaskListProps) {
   const { handleDragEnd } = actions;
   const [myDayHelpTaskId, setMyDayHelpTaskId] = useState<string | null>(null);
   const [showMyDayHelp, setShowMyDayHelp] = useState(false);
+  const showHelpDelayRef = useRef<number | null>(null);
   const previousLengthRef = useRef(tasks.length);
   const hasShownHelpRef = useRef(false);
   const hideMyDayHelp = useCallback(() => {
+    if (showHelpDelayRef.current !== null) {
+      window.clearTimeout(showHelpDelayRef.current);
+      showHelpDelayRef.current = null;
+    }
     setShowMyDayHelp(false);
     setMyDayHelpTaskId(null);
   }, []);
@@ -53,7 +58,13 @@ export default function TaskList({ tasks, highlightedId }: TaskListProps) {
 
         if (shouldShowHelp) {
           setMyDayHelpTaskId(firstTask.id);
-          setShowMyDayHelp(true);
+          if (showHelpDelayRef.current !== null) {
+            window.clearTimeout(showHelpDelayRef.current);
+          }
+          showHelpDelayRef.current = window.setTimeout(() => {
+            setShowMyDayHelp(true);
+            showHelpDelayRef.current = null;
+          }, 3000);
         }
 
         hasShownHelpRef.current = true;
@@ -66,6 +77,14 @@ export default function TaskList({ tasks, highlightedId }: TaskListProps) {
 
     previousLengthRef.current = tasks.length;
   }, [tasks, hideMyDayHelp]);
+
+  useEffect(() => {
+    return () => {
+      if (showHelpDelayRef.current !== null) {
+        window.clearTimeout(showHelpDelayRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (!showMyDayHelp) {

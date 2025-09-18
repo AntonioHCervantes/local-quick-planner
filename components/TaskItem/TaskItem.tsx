@@ -113,7 +113,7 @@ export default function TaskItem({
           )}
         </button>
         {showHelp && (
-          <div className="absolute bottom-full left-1/2 z-30 mb-3 w-64 -translate-x-1/2 rounded-lg bg-gray-900 px-3 py-2 text-xs text-white shadow-lg">
+          <div className="absolute top-full left-1/2 z-30 mt-3 w-64 -translate-x-1/2 rounded-lg border border-white bg-gray-900 px-3 py-2 text-xs text-white shadow-lg">
             <div className="flex items-start gap-2">
               <HelpCircle className="mt-[2px] h-4 w-4 flex-shrink-0" />
               <span className="flex-1 leading-snug">
@@ -130,7 +130,7 @@ export default function TaskItem({
             </div>
             <span
               aria-hidden="true"
-              className="absolute left-1/2 top-full -translate-x-1/2 border-[6px] border-transparent border-t-gray-900"
+              className="absolute left-1/2 bottom-full -translate-x-1/2 border-[6px] border-transparent border-b-gray-900"
             />
           </div>
         )}
