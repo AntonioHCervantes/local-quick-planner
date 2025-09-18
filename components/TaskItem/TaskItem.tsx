@@ -239,7 +239,7 @@ export default function TaskItem({
           </div>
         )}
         <div
-          className={`flex flex-col gap-2 p-2 flex-1 min-w-0 ${
+          className={`flex flex-col gap-2 p-4 flex-1 min-w-0 ${
             isInMyDay ? 'rounded-r' : 'rounded'
           } ${
             highlighted
