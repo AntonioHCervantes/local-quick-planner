@@ -190,21 +190,22 @@ export default function Header() {
               className="relative rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
               onClick={() => setShowNotificationPopover(false)}
             >
-              <Bell className="h-4 w-4" />
-              {unreadNotifications > 0 && (
-                <span className="absolute -right-1 -top-1 min-w-[16px] rounded-full bg-red-500 px-1 text-center text-[10px] leading-4 text-white">
-                  {unreadNotifications}
-                </span>
-              )}
+              <span className="relative inline-flex">
+                <Bell className="h-4 w-4" />
+                {unreadNotifications > 0 && (
+                  <span className="absolute -right-1 -top-1 min-w-[16px] rounded-full bg-red-500 px-1 text-center text-[10px] leading-4 text-white">
+                    {unreadNotifications}
+                  </span>
+                )}
+              </span>
             </Link>
             {showNotificationPopover && latestUnreadNotification && (
               <Link
                 href="/notifications"
                 onClick={() => setShowNotificationPopover(false)}
-                className="absolute right-0 top-[calc(100%+0.5rem)] w-64 rounded-md border border-gray-200 bg-white p-3 shadow-lg transition-opacity hover:border-gray-300 focus:border-gray-300 dark:border-gray-700 dark:bg-gray-900"
+                className="absolute right-0 top-full z-20 w-64 border border-gray-200 bg-white px-4 py-3 shadow-lg transition-opacity hover:border-gray-300 focus:border-gray-300 dark:border-gray-700 dark:bg-gray-900"
               >
-                <span className="pointer-events-none absolute -top-1 right-6 block h-3 w-3 rotate-45 border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900" />
-                <div className="flex items-start gap-2">
+                <div className="flex items-start gap-3">
                   <NotificationIcon className="mt-0.5 h-4 w-4 flex-shrink-0" />
                   <div className="min-w-0">
                     <p className="text-xs font-semibold">{popoverTitle}</p>
