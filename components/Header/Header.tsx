@@ -193,7 +193,7 @@ export default function Header() {
               <span className="relative inline-flex">
                 <Bell className="h-4 w-4" />
                 {unreadNotifications > 0 && (
-                  <span className="absolute -right-1 -top-1 min-w-[16px] rounded-full bg-red-500 px-1 text-center text-[10px] leading-4 text-white">
+                  <span className="absolute -right-1 -top-2 min-w-[16px] rounded-full bg-red-500 px-1 text-center text-[10px] leading-4 text-white">
                     {unreadNotifications}
                   </span>
                 )}
@@ -203,7 +203,7 @@ export default function Header() {
               <Link
                 href="/notifications"
                 onClick={() => setShowNotificationPopover(false)}
-                className="absolute right-0 top-full z-20 w-64 border border-gray-200 bg-white px-4 py-3 shadow-lg transition-opacity hover:border-gray-300 focus:border-gray-300 dark:border-gray-700 dark:bg-gray-900"
+                className="absolute right-0 top-[calc(100%+0.5rem)] z-20 w-64 border border-gray-200 bg-white px-4 py-3 shadow-lg transition-opacity hover:border-gray-300 focus:border-gray-300 dark:border-gray-700 dark:bg-gray-900 md:top-[calc(100%+0.75rem)] lg:top-[calc(100%+1rem)]"
               >
                 <div className="flex items-start gap-3">
                   <NotificationIcon className="mt-0.5 h-4 w-4 flex-shrink-0" />
