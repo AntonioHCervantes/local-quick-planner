@@ -16,16 +16,17 @@ export default function NotificationCard({ notification }: Props) {
       : notification.type === 'tip'
         ? Lightbulb
         : Info;
+  const title = notification.title ?? t(notification.titleKey);
+  const description =
+    notification.description ?? t(notification.descriptionKey);
 
   return (
     <div className="rounded border border-gray-200 p-6 dark:border-gray-700">
       <div className="flex items-start gap-4">
         <Icon className="mt-1 h-6 w-6 flex-shrink-0" />
         <div className="flex-1">
-          <h2 className="text-lg font-semibold">{t(notification.titleKey)}</h2>
-          <p className="text-base mt-1 w-full">
-            {t(notification.descriptionKey)}
-          </p>
+          <h2 className="text-lg font-semibold">{title}</h2>
+          <p className="mt-1 w-full text-base">{description}</p>
           {notification.actionUrl && notification.actionLabelKey && (
             <a
               href={notification.actionUrl}

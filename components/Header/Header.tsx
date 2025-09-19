@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import {
   Download,
@@ -11,6 +11,9 @@ import {
   Settings,
   Bell,
   CalendarClock,
+  AlertTriangle,
+  Info,
+  Lightbulb,
 } from 'lucide-react';
 import { Language, LANGUAGES } from '../../lib/i18n';
 import Icon from '../Icon/Icon';
@@ -26,6 +29,7 @@ export default function Header() {
     language,
     myDayCount,
     unreadNotifications,
+    notifications,
   } = state;
   const {
     exportData,
@@ -37,11 +41,103 @@ export default function Header() {
     handleImport,
   } = actions;
   const [showActions, setShowActions] = useState(false);
+  const [showNotificationPopover, setShowNotificationPopover] = useState(false);
+  const [lastNotificationId, setLastNotificationId] = useState<string | null>(
+    null
+  );
+  const headerRef = useRef<HTMLElement | null>(null);
+  const bellRef = useRef<HTMLAnchorElement | null>(null);
+  const [popoverPosition, setPopoverPosition] = useState<{
+    top: number;
+    right: number;
+  } | null>(null);
   const pathname = usePathname();
+  const latestUnreadNotification = useMemo(() => {
+    const unread = notifications.filter(n => !n.read);
+    if (unread.length === 0) {
+      return null;
+    }
+    return unread.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )[0];
+  }, [notifications]);
+  const popoverTitle = useMemo(() => {
+    if (!latestUnreadNotification) {
+      return '';
+    }
+    return (
+      latestUnreadNotification.title ?? t(latestUnreadNotification.titleKey)
+    );
+  }, [latestUnreadNotification, t]);
+  const popoverDescription = useMemo(() => {
+    if (!latestUnreadNotification) {
+      return '';
+    }
+    const description =
+      latestUnreadNotification.description ??
+      t(latestUnreadNotification.descriptionKey);
+    return description.length > 80
+      ? `${description.slice(0, 77)}...`
+      : description;
+  }, [latestUnreadNotification, t]);
+  const NotificationIcon =
+    latestUnreadNotification?.type === 'alert'
+      ? AlertTriangle
+      : latestUnreadNotification?.type === 'tip'
+        ? Lightbulb
+        : Info;
+
+  const updatePopoverPosition = useCallback(() => {
+    if (!bellRef.current) {
+      return;
+    }
+    const rect = bellRef.current.getBoundingClientRect();
+    const headerRect = headerRef.current?.getBoundingClientRect();
+    setPopoverPosition({
+      top: headerRect?.bottom ?? rect.bottom,
+      right: Math.max(0, window.innerWidth - (rect.left + rect.width)),
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!latestUnreadNotification) {
+      setShowNotificationPopover(false);
+      return;
+    }
+    if (latestUnreadNotification.id !== lastNotificationId) {
+      setLastNotificationId(latestUnreadNotification.id);
+      setShowNotificationPopover(true);
+    }
+  }, [latestUnreadNotification, lastNotificationId]);
+
+  useEffect(() => {
+    if (!showNotificationPopover) {
+      setPopoverPosition(null);
+      return;
+    }
+    updatePopoverPosition();
+    const handleReposition = () => {
+      updatePopoverPosition();
+    };
+    window.addEventListener('resize', handleReposition);
+    window.addEventListener('scroll', handleReposition);
+    const timeout = window.setTimeout(() => {
+      setShowNotificationPopover(false);
+    }, 8000);
+    return () => {
+      window.clearTimeout(timeout);
+      window.removeEventListener('resize', handleReposition);
+      window.removeEventListener('scroll', handleReposition);
+    };
+  }, [showNotificationPopover, lastNotificationId, updatePopoverPosition]);
 
   return (
     <>
-      <header className="relative grid grid-cols-3 items-center bg-gray-100 px-2 py-2 dark:bg-gray-950 md:px-4 md:py-3 lg:py-4">
+      <header
+        ref={headerRef}
+        className="relative grid grid-cols-3 items-center bg-gray-100 px-2 py-2 dark:bg-gray-950 md:px-4 md:py-3 lg:py-4"
+      >
         <div className="flex items-center gap-2">
           <Icon />
           <span className="hidden text-lg font-semibold text-black dark:text-white sm:inline">
@@ -123,6 +219,7 @@ export default function Header() {
             aria-label={t('actions.notifications')}
             title={t('actions.notifications')}
             className="relative rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
+            ref={bellRef}
           >
             <Bell className="h-4 w-4" />
             {unreadNotifications > 0 && (
@@ -131,6 +228,29 @@ export default function Header() {
               </span>
             )}
           </Link>
+          {showNotificationPopover &&
+            latestUnreadNotification &&
+            popoverPosition && (
+              <Link
+                href="/notifications"
+                onClick={() => setShowNotificationPopover(false)}
+                className="fixed z-20 w-64 rounded-none border border-gray-200 bg-white px-4 py-3 text-left shadow-lg transition-colors hover:border-gray-300 focus:border-gray-300 dark:border-gray-700 dark:bg-gray-900"
+                style={{
+                  top: popoverPosition.top,
+                  right: popoverPosition.right,
+                }}
+              >
+                <div className="flex items-start gap-3">
+                  <NotificationIcon className="mt-0.5 h-4 w-4 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold">{popoverTitle}</p>
+                    <p className="mt-1 truncate text-sm text-gray-700 dark:text-gray-200">
+                      {popoverDescription}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            )}
           <button
             onClick={() => setShowActions(true)}
             aria-label={t('actions.settings')}

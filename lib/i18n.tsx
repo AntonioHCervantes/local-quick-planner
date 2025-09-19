@@ -114,6 +114,11 @@ const translations: Record<Language, any> = {
         description:
           'Your workday is about to finish. Review your progress and decide what comes next.',
       },
+      timerFinished: {
+        title: 'Planned time finished',
+        description: 'A planned time has finished.',
+        untitledTask: 'Untitled task',
+      },
     },
     workSchedulePage: {
       title: 'Work schedule',
@@ -388,6 +393,11 @@ const translations: Record<Language, any> = {
         title: 'Planifica el mañana',
         description:
           'Tu jornada está a punto de terminar. Revisa tu progreso y decide los siguientes pasos.',
+      },
+      timerFinished: {
+        title: 'Tiempo planificado finalizado',
+        description: 'Un tiempo planificado ha finalizado.',
+        untitledTask: 'Tarea sin título',
       },
     },
     workSchedulePage: {
