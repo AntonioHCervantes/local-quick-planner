@@ -31,7 +31,7 @@ export default function Column({
       ref={setNodeRef}
       className={containerClasses}
     >
-      <h2 className="mb-2 flex items-center gap-2 text-lg font-semibold">
+      <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">
         {StatusIcon ? (
           <StatusIcon
             aria-hidden="true"
