@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import {
   Download,
@@ -45,6 +45,12 @@ export default function Header() {
   const [lastNotificationId, setLastNotificationId] = useState<string | null>(
     null
   );
+  const headerRef = useRef<HTMLElement | null>(null);
+  const bellRef = useRef<HTMLAnchorElement | null>(null);
+  const [popoverPosition, setPopoverPosition] = useState<{
+    top: number;
+    right: number;
+  } | null>(null);
   const pathname = usePathname();
   const latestUnreadNotification = useMemo(() => {
     const unread = notifications.filter(n => !n.read);
@@ -82,6 +88,18 @@ export default function Header() {
         ? Lightbulb
         : Info;
 
+  const updatePopoverPosition = useCallback(() => {
+    if (!bellRef.current) {
+      return;
+    }
+    const rect = bellRef.current.getBoundingClientRect();
+    const headerRect = headerRef.current?.getBoundingClientRect();
+    setPopoverPosition({
+      top: headerRect?.bottom ?? rect.bottom,
+      right: Math.max(0, window.innerWidth - (rect.left + rect.width)),
+    });
+  }, []);
+
   useEffect(() => {
     if (!latestUnreadNotification) {
       setShowNotificationPopover(false);
@@ -95,17 +113,31 @@ export default function Header() {
 
   useEffect(() => {
     if (!showNotificationPopover) {
+      setPopoverPosition(null);
       return;
     }
+    updatePopoverPosition();
+    const handleReposition = () => {
+      updatePopoverPosition();
+    };
+    window.addEventListener('resize', handleReposition);
+    window.addEventListener('scroll', handleReposition);
     const timeout = window.setTimeout(() => {
       setShowNotificationPopover(false);
     }, 8000);
-    return () => window.clearTimeout(timeout);
-  }, [showNotificationPopover, lastNotificationId]);
+    return () => {
+      window.clearTimeout(timeout);
+      window.removeEventListener('resize', handleReposition);
+      window.removeEventListener('scroll', handleReposition);
+    };
+  }, [showNotificationPopover, lastNotificationId, updatePopoverPosition]);
 
   return (
     <>
-      <header className="relative grid grid-cols-3 items-center bg-gray-100 px-2 py-2 dark:bg-gray-950 md:px-4 md:py-3 lg:py-4">
+      <header
+        ref={headerRef}
+        className="relative grid grid-cols-3 items-center bg-gray-100 px-2 py-2 dark:bg-gray-950 md:px-4 md:py-3 lg:py-4"
+      >
         <div className="flex items-center gap-2">
           <Icon />
           <span className="hidden text-lg font-semibold text-black dark:text-white sm:inline">
@@ -182,26 +214,31 @@ export default function Header() {
               )}
             </div>
           </div>
-          <div className="relative">
-            <Link
-              href="/notifications"
-              aria-label={t('actions.notifications')}
-              title={t('actions.notifications')}
-              className="relative rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
-              onClick={() => setShowNotificationPopover(false)}
-            >
-              <Bell className="h-4 w-4" />
-              {unreadNotifications > 0 && (
-                <span className="absolute -right-1 -top-1 min-w-[16px] rounded-full bg-red-500 px-1 text-center text-[10px] leading-4 text-white">
-                  {unreadNotifications}
-                </span>
-              )}
-            </Link>
-            {showNotificationPopover && latestUnreadNotification && (
+          <Link
+            href="/notifications"
+            aria-label={t('actions.notifications')}
+            title={t('actions.notifications')}
+            className="relative rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
+            ref={bellRef}
+          >
+            <Bell className="h-4 w-4" />
+            {unreadNotifications > 0 && (
+              <span className="absolute -right-1 -top-1 min-w-[16px] rounded-full bg-red-500 px-1 text-center text-[10px] leading-4 text-white">
+                {unreadNotifications}
+              </span>
+            )}
+          </Link>
+          {showNotificationPopover &&
+            latestUnreadNotification &&
+            popoverPosition && (
               <Link
                 href="/notifications"
                 onClick={() => setShowNotificationPopover(false)}
-                className="absolute right-0 top-[calc(100%+0.5rem)] z-20 w-64 border border-gray-200 bg-white px-4 py-3 shadow-lg transition-opacity hover:border-gray-300 focus:border-gray-300 dark:border-gray-700 dark:bg-gray-900 md:top-[calc(100%+0.75rem)] lg:top-[calc(100%+1rem)]"
+                className="fixed z-20 w-64 rounded-none border border-gray-200 bg-white px-4 py-3 text-left shadow-lg transition-colors hover:border-gray-300 focus:border-gray-300 dark:border-gray-700 dark:bg-gray-900"
+                style={{
+                  top: popoverPosition.top,
+                  right: popoverPosition.right,
+                }}
               >
                 <div className="flex items-start gap-3">
                   <NotificationIcon className="mt-0.5 h-4 w-4 flex-shrink-0" />
@@ -214,7 +251,6 @@ export default function Header() {
                 </div>
               </Link>
             )}
-          </div>
           <button
             onClick={() => setShowActions(true)}
             aria-label={t('actions.settings')}
