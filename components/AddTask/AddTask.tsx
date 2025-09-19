@@ -172,9 +172,9 @@ export default function AddTask(props: UseAddTaskProps) {
               onChange={e => setPriority(e.target.value as Priority)}
               className="w-full rounded bg-gray-200 p-2 text-sm focus:ring dark:bg-gray-800 lg:w-auto"
             >
-              <option value="low">{t('priority.low')}</option>
-              <option value="medium">{t('priority.medium')}</option>
               <option value="high">{t('priority.high')}</option>
+              <option value="medium">{t('priority.medium')}</option>
+              <option value="low">{t('priority.low')}</option>
             </select>
           </div>
           <button

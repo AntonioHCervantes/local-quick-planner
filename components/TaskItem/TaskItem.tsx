@@ -121,9 +121,9 @@ export default function TaskItem({
           className="rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700 flex-1 md:flex-none"
           autoFocus
         >
-          <option value="low">{t('priority.low')}</option>
-          <option value="medium">{t('priority.medium')}</option>
           <option value="high">{t('priority.high')}</option>
+          <option value="medium">{t('priority.medium')}</option>
+          <option value="low">{t('priority.low')}</option>
         </select>
       ) : (
         <button
