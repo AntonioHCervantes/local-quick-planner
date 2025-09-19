@@ -28,16 +28,16 @@ export default function TaskCard(props: UseTaskCardProps) {
 
   const priorityClass = priorityColors[task.priority];
   const cardClasses = [
-    'group relative z-0 rounded border-l-4 p-4 cursor-grab focus:outline-none focus:ring transition-all duration-500 ease-out transform-gpu',
+    'group relative z-0 rounded border-l-4 p-4 cursor-grab focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-400 focus-visible:outline-offset-4 transition-all duration-500 ease-out transform-gpu',
     priorityClass,
     isMainTask
       ? [
-          'bg-amber-50/95 text-gray-900',
-          'ring-[1.5px] ring-amber-200/80 hover:ring-amber-300/70',
-          'ring-offset-2 ring-offset-amber-100/70',
-          'dark:bg-amber-500/15 dark:text-amber-50',
-          'dark:ring-[1.5px] dark:ring-amber-300/60 dark:hover:ring-amber-200/60',
-          'dark:ring-offset-2 dark:ring-offset-amber-500/10',
+          'bg-amber-100 text-gray-900',
+          'border border-amber-200 hover:border-amber-300',
+          'outline outline-2 outline-amber-300 outline-offset-4 hover:outline-amber-400',
+          'dark:bg-amber-500/20 dark:text-amber-50',
+          'dark:border-amber-300/70 dark:hover:border-amber-200/70',
+          'dark:outline-amber-300/70 dark:hover:outline-amber-200/70',
         ].join(' ')
       : 'bg-gray-100 dark:bg-gray-800 hover:shadow-md',
     isMainTaskEntering ? 'animate-main-task-wow' : '',
