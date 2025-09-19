@@ -190,14 +190,12 @@ export default function Header() {
               className="relative rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
               onClick={() => setShowNotificationPopover(false)}
             >
-              <span className="relative inline-flex">
-                <Bell className="h-4 w-4" />
-                {unreadNotifications > 0 && (
-                  <span className="absolute -right-1 -top-2 min-w-[16px] rounded-full bg-red-500 px-1 text-center text-[10px] leading-4 text-white">
-                    {unreadNotifications}
-                  </span>
-                )}
-              </span>
+              <Bell className="h-4 w-4" />
+              {unreadNotifications > 0 && (
+                <span className="absolute -right-1 -top-1 min-w-[16px] rounded-full bg-red-500 px-1 text-center text-[10px] leading-4 text-white">
+                  {unreadNotifications}
+                </span>
+              )}
             </Link>
             {showNotificationPopover && latestUnreadNotification && (
               <Link
