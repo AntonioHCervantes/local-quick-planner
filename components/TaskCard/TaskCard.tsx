@@ -32,12 +32,12 @@ export default function TaskCard(props: UseTaskCardProps) {
     priorityClass,
     isMainTask
       ? [
-          'bg-amber-100 text-gray-900',
-          'shadow-[0_18px_55px_-32px_rgba(217,119,6,0.55)] hover:shadow-[0_22px_60px_-34px_rgba(217,119,6,0.5)]',
-          'ring-2 ring-amber-300/80',
-          'dark:bg-amber-500/20 dark:text-amber-50',
-          'dark:shadow-[0_18px_55px_-34px_rgba(253,230,138,0.45)] dark:hover:shadow-[0_22px_60px_-36px_rgba(253,230,138,0.4)]',
-          'dark:ring-amber-400/60',
+          'bg-amber-50/95 text-gray-900',
+          'ring-[1.5px] ring-amber-200/80 hover:ring-amber-300/70',
+          'ring-offset-2 ring-offset-amber-100/70',
+          'dark:bg-amber-500/15 dark:text-amber-50',
+          'dark:ring-[1.5px] dark:ring-amber-300/60 dark:hover:ring-amber-200/60',
+          'dark:ring-offset-2 dark:ring-offset-amber-500/10',
         ].join(' ')
       : 'bg-gray-100 dark:bg-gray-800 hover:shadow-md',
     isMainTaskEntering ? 'animate-main-task-wow' : '',
@@ -109,29 +109,15 @@ export default function TaskCard(props: UseTaskCardProps) {
           <span className="mr-2 min-w-0 flex-1">
             <LinkifiedText text={task.title} />
           </span>
-          <div className="flex items-center gap-2">
+          <div
+            className={
+              mode === 'my-day'
+                ? 'flex min-h-[4.5rem] flex-col items-end gap-2 pl-3'
+                : 'flex items-center gap-2'
+            }
+          >
             {mode === 'my-day' ? (
               <>
-                <button
-                  type="button"
-                  onClick={handleToggleMainTask}
-                  aria-pressed={isMainTask}
-                  aria-label={mainTaskLabel}
-                  title={t('taskCard.mainTaskTooltip')}
-                  className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 ${
-                    isMainTask
-                      ? 'bg-amber-200/70 text-amber-700 hover:text-amber-600 dark:bg-amber-400/20 dark:text-amber-200'
-                      : 'text-gray-400 hover:text-amber-400 dark:text-gray-500 dark:hover:text-amber-300'
-                  }`}
-                >
-                  <Star
-                    className={`h-4 w-4 transition-transform duration-300 ease-out ${
-                      isMainTask ? 'scale-[1.25] rotate-3 drop-shadow-sm' : ''
-                    }`}
-                    strokeWidth={isMainTask ? 1.5 : 2}
-                    fill={isMainTask ? 'currentColor' : 'none'}
-                  />
-                </button>
                 {task.dayStatus === 'todo' && (
                   <button
                     onClick={markInProgress}
@@ -162,6 +148,26 @@ export default function TaskCard(props: UseTaskCardProps) {
                     <Trash2 className="h-4 w-4" />
                   </button>
                 )}
+                <button
+                  type="button"
+                  onClick={handleToggleMainTask}
+                  aria-pressed={isMainTask}
+                  aria-label={mainTaskLabel}
+                  title={t('taskCard.mainTaskTooltip')}
+                  className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 ${
+                    isMainTask
+                      ? 'bg-amber-200/60 text-amber-700 hover:text-amber-600 dark:bg-amber-400/20 dark:text-amber-200'
+                      : 'text-gray-400 hover:text-amber-400 dark:text-gray-500 dark:hover:text-amber-300'
+                  }`}
+                >
+                  <Star
+                    className={`h-4 w-4 transition-transform duration-300 ease-out ${
+                      isMainTask ? 'scale-110 rotate-3' : ''
+                    }`}
+                    strokeWidth={isMainTask ? 1.5 : 2}
+                    fill={isMainTask ? 'currentColor' : 'none'}
+                  />
+                </button>
               </>
             ) : (
               task.dayStatus !== 'done' && (
