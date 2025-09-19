@@ -66,6 +66,7 @@ export default function useHeader() {
       language,
       myDayCount,
       unreadNotifications,
+      notifications,
     },
     actions: {
       exportData,

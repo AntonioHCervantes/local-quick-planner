@@ -65,6 +65,8 @@ export type Notification = {
   type: 'info' | 'tip' | 'alert';
   titleKey: string;
   descriptionKey: string;
+  title?: string;
+  description?: string;
   read: boolean;
   createdAt: string;
   actionUrl?: string;

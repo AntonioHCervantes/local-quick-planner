@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import { toast } from 'react-hot-toast';
 import { useI18n } from '../../lib/i18n';
 import { useStore } from '../../lib/store';
 
@@ -76,12 +75,24 @@ export default function TaskTimerManager() {
         if (remaining <= 0) {
           state.completeTimer(taskId);
           const task = state.tasks.find(t => t.id === taskId);
-          toast.success(
-            t('timer.finished').replace('{task}', task?.title ?? ''),
-            {
-              duration: 10000,
-            }
-          );
+          const taskTitle = task?.title?.trim()
+            ? task.title
+            : t('notifications.timerFinished.untitledTask');
+          const description = t('timer.finished').replace('{task}', taskTitle);
+          const randomId =
+            typeof globalThis.crypto?.randomUUID === 'function'
+              ? globalThis.crypto.randomUUID()
+              : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+          state.addNotification({
+            id: `timer-finished-${taskId}-${randomId}`,
+            type: 'alert',
+            titleKey: 'notifications.timerFinished.title',
+            descriptionKey: 'notifications.timerFinished.description',
+            title: t('notifications.timerFinished.title'),
+            description,
+            read: false,
+            createdAt: new Date().toISOString(),
+          });
           playSound();
         } else if (remaining !== timer.remaining) {
           state.updateTimerRemaining(taskId, remaining);

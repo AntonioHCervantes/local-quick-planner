@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import {
   Download,
@@ -11,6 +11,9 @@ import {
   Settings,
   Bell,
   CalendarClock,
+  AlertTriangle,
+  Info,
+  Lightbulb,
 } from 'lucide-react';
 import { Language, LANGUAGES } from '../../lib/i18n';
 import Icon from '../Icon/Icon';
@@ -26,6 +29,7 @@ export default function Header() {
     language,
     myDayCount,
     unreadNotifications,
+    notifications,
   } = state;
   const {
     exportData,
@@ -37,7 +41,67 @@ export default function Header() {
     handleImport,
   } = actions;
   const [showActions, setShowActions] = useState(false);
+  const [showNotificationPopover, setShowNotificationPopover] = useState(false);
+  const [lastNotificationId, setLastNotificationId] = useState<string | null>(
+    null
+  );
   const pathname = usePathname();
+  const latestUnreadNotification = useMemo(() => {
+    const unread = notifications.filter(n => !n.read);
+    if (unread.length === 0) {
+      return null;
+    }
+    return unread.sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )[0];
+  }, [notifications]);
+  const popoverTitle = useMemo(() => {
+    if (!latestUnreadNotification) {
+      return '';
+    }
+    return (
+      latestUnreadNotification.title ?? t(latestUnreadNotification.titleKey)
+    );
+  }, [latestUnreadNotification, t]);
+  const popoverDescription = useMemo(() => {
+    if (!latestUnreadNotification) {
+      return '';
+    }
+    const description =
+      latestUnreadNotification.description ??
+      t(latestUnreadNotification.descriptionKey);
+    return description.length > 80
+      ? `${description.slice(0, 77)}...`
+      : description;
+  }, [latestUnreadNotification, t]);
+  const NotificationIcon =
+    latestUnreadNotification?.type === 'alert'
+      ? AlertTriangle
+      : latestUnreadNotification?.type === 'tip'
+        ? Lightbulb
+        : Info;
+
+  useEffect(() => {
+    if (!latestUnreadNotification) {
+      setShowNotificationPopover(false);
+      return;
+    }
+    if (latestUnreadNotification.id !== lastNotificationId) {
+      setLastNotificationId(latestUnreadNotification.id);
+      setShowNotificationPopover(true);
+    }
+  }, [latestUnreadNotification, lastNotificationId]);
+
+  useEffect(() => {
+    if (!showNotificationPopover) {
+      return;
+    }
+    const timeout = window.setTimeout(() => {
+      setShowNotificationPopover(false);
+    }, 8000);
+    return () => window.clearTimeout(timeout);
+  }, [showNotificationPopover, lastNotificationId]);
 
   return (
     <>
@@ -118,19 +182,40 @@ export default function Header() {
               )}
             </div>
           </div>
-          <Link
-            href="/notifications"
-            aria-label={t('actions.notifications')}
-            title={t('actions.notifications')}
-            className="relative rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
-          >
-            <Bell className="h-4 w-4" />
-            {unreadNotifications > 0 && (
-              <span className="absolute -right-1 -top-1 min-w-[16px] rounded-full bg-red-500 px-1 text-center text-[10px] leading-4 text-white">
-                {unreadNotifications}
-              </span>
+          <div className="relative">
+            <Link
+              href="/notifications"
+              aria-label={t('actions.notifications')}
+              title={t('actions.notifications')}
+              className="relative rounded p-2 hover:bg-gray-200 focus:bg-gray-200 dark:hover:bg-gray-800 dark:focus:bg-gray-800"
+              onClick={() => setShowNotificationPopover(false)}
+            >
+              <Bell className="h-4 w-4" />
+              {unreadNotifications > 0 && (
+                <span className="absolute -right-1 -top-1 min-w-[16px] rounded-full bg-red-500 px-1 text-center text-[10px] leading-4 text-white">
+                  {unreadNotifications}
+                </span>
+              )}
+            </Link>
+            {showNotificationPopover && latestUnreadNotification && (
+              <Link
+                href="/notifications"
+                onClick={() => setShowNotificationPopover(false)}
+                className="absolute right-0 top-[calc(100%+0.5rem)] w-64 rounded-md border border-gray-200 bg-white p-3 shadow-lg transition-opacity hover:border-gray-300 focus:border-gray-300 dark:border-gray-700 dark:bg-gray-900"
+              >
+                <span className="pointer-events-none absolute -top-1 right-6 block h-3 w-3 rotate-45 border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900" />
+                <div className="flex items-start gap-2">
+                  <NotificationIcon className="mt-0.5 h-4 w-4 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-xs font-semibold">{popoverTitle}</p>
+                    <p className="mt-1 truncate text-sm text-gray-700 dark:text-gray-200">
+                      {popoverDescription}
+                    </p>
+                  </div>
+                </div>
+              </Link>
             )}
-          </Link>
+          </div>
           <button
             onClick={() => setShowActions(true)}
             aria-label={t('actions.settings')}
