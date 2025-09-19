@@ -33,10 +33,10 @@ export default function TaskCard(props: UseTaskCardProps) {
     isMainTask
       ? [
           'bg-amber-100 text-gray-900',
-          'shadow-[0_32px_90px_-48px_rgba(217,119,6,0.95)] hover:shadow-[0_24px_65px_-40px_rgba(217,119,6,0.85)]',
+          'shadow-[0_18px_55px_-32px_rgba(217,119,6,0.55)] hover:shadow-[0_22px_60px_-34px_rgba(217,119,6,0.5)]',
           'ring-2 ring-amber-300/80',
           'dark:bg-amber-500/20 dark:text-amber-50',
-          'dark:shadow-[0_32px_90px_-48px_rgba(253,230,138,0.7)] dark:hover:shadow-[0_24px_65px_-40px_rgba(253,230,138,0.55)]',
+          'dark:shadow-[0_18px_55px_-34px_rgba(253,230,138,0.45)] dark:hover:shadow-[0_22px_60px_-36px_rgba(253,230,138,0.4)]',
           'dark:ring-amber-400/60',
         ].join(' ')
       : 'bg-gray-100 dark:bg-gray-800 hover:shadow-md',
@@ -120,7 +120,7 @@ export default function TaskCard(props: UseTaskCardProps) {
                   title={t('taskCard.mainTaskTooltip')}
                   className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 ${
                     isMainTask
-                      ? 'bg-amber-200/70 text-amber-700 shadow-[0_0_18px_rgba(217,119,6,0.45)] hover:text-amber-600 dark:bg-amber-400/20 dark:text-amber-200'
+                      ? 'bg-amber-200/70 text-amber-700 hover:text-amber-600 dark:bg-amber-400/20 dark:text-amber-200'
                       : 'text-gray-400 hover:text-amber-400 dark:text-gray-500 dark:hover:text-amber-300'
                   }`}
                 >
