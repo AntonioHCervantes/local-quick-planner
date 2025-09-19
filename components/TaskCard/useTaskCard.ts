@@ -5,6 +5,7 @@ import { Task } from '../../lib/types';
 import { useStore } from '../../lib/store';
 import { useI18n } from '../../lib/i18n';
 import confetti from 'canvas-confetti';
+import { playApplause } from '../../lib/sounds';
 
 export interface UseTaskCardProps {
   task: Task;
@@ -27,7 +28,19 @@ export default function useTaskCard({
         transform: CSS.Transform.toString(transform),
         transition,
       };
-  const { moveTask, removeTask, tags: allTags } = useStore();
+  const {
+    moveTask,
+    removeTask,
+    tags: allTags,
+    mainMyDayTaskId,
+    setMainMyDayTask,
+  } = useStore(state => ({
+    moveTask: state.moveTask,
+    removeTask: state.removeTask,
+    tags: state.tags,
+    mainMyDayTaskId: state.mainMyDayTaskId,
+    setMainMyDayTask: state.setMainMyDayTask,
+  }));
   const { t } = useI18n();
 
   const markInProgress = () => {
@@ -40,6 +53,9 @@ export default function useTaskCard({
     if (task.dayStatus !== 'done') {
       moveTask(task.id, { dayStatus: 'done' });
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      if (mainMyDayTaskId === task.id) {
+        playApplause();
+      }
     }
   };
 
@@ -52,8 +68,29 @@ export default function useTaskCard({
     return tag ? tag.color : '#ccc';
   };
 
+  const toggleMainTask = () => {
+    if (!task.plannedFor) {
+      return;
+    }
+    setMainMyDayTask(mainMyDayTaskId === task.id ? null : task.id);
+  };
+
   return {
-    state: { attributes, listeners, setNodeRef, style, t, allTags },
-    actions: { markInProgress, markDone, getTagColor, deleteTask },
+    state: {
+      attributes,
+      listeners,
+      setNodeRef,
+      style,
+      t,
+      allTags,
+      isMainTask: mainMyDayTaskId === task.id,
+    },
+    actions: {
+      markInProgress,
+      markDone,
+      getTagColor,
+      deleteTask,
+      toggleMainTask,
+    },
   } as const;
 }

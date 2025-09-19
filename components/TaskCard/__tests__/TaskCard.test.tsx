@@ -7,6 +7,15 @@ jest.mock('../useTaskCard');
 
 const mockUseTaskCard = useTaskCard as jest.MockedFunction<typeof useTaskCard>;
 
+const getLatestActions = () => {
+  const lastResult =
+    mockUseTaskCard.mock.results[mockUseTaskCard.mock.results.length - 1];
+  if (!lastResult) {
+    throw new Error('useTaskCard was not called');
+  }
+  return lastResult.value.actions as any;
+};
+
 const baseTask = {
   id: 't1',
   title: 'Task',
@@ -20,6 +29,7 @@ const baseTask = {
 
 describe('TaskCard', () => {
   beforeEach(() => {
+    mockUseTaskCard.mockReset();
     mockUseTaskCard.mockReturnValue({
       state: {
         attributes: {} as any,
@@ -28,12 +38,14 @@ describe('TaskCard', () => {
         style: {} as any,
         t: (k: string) => k,
         allTags: [],
+        isMainTask: false,
       },
       actions: {
         markInProgress: jest.fn(),
         markDone: jest.fn(),
         getTagColor: () => '#fff',
         deleteTask: jest.fn(),
+        toggleMainTask: jest.fn(),
       },
     });
   });
@@ -49,8 +61,7 @@ describe('TaskCard', () => {
     await user.click(
       screen.getByRole('button', { name: 'taskCard.markInProgress' })
     );
-    const { markInProgress } = mockUseTaskCard.mock.results[0].value
-      .actions as any;
+    const { markInProgress } = getLatestActions();
     expect(markInProgress).toHaveBeenCalled();
   });
 
@@ -63,7 +74,22 @@ describe('TaskCard', () => {
       />
     );
     await user.click(screen.getByRole('button', { name: 'taskCard.markDone' }));
-    const { markDone } = mockUseTaskCard.mock.results[1].value.actions as any;
+    const { markDone } = getLatestActions();
     expect(markDone).toHaveBeenCalled();
+  });
+
+  it('toggles main task selection', async () => {
+    const user = userEvent.setup();
+    render(
+      <TaskCard
+        task={baseTask}
+        mode="my-day"
+      />
+    );
+    const button = screen.getByRole('button', { name: 'taskCard.setMainTask' });
+    expect(button).toHaveAttribute('title', 'taskCard.mainTaskTooltip');
+    await user.click(button);
+    const { toggleMainTask } = getLatestActions();
+    expect(toggleMainTask).toHaveBeenCalled();
   });
 });

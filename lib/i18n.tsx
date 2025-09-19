@@ -59,6 +59,9 @@ const translations: Record<Language, any> = {
       markDone: 'Mark as done',
       deleteTask: 'Delete task',
       showTimer: 'Plan time',
+      setMainTask: 'Mark as main task',
+      unsetMainTask: 'Remove main task status',
+      mainTaskTooltip: 'Main task of the day',
     },
     taskItem: {
       removeMyDay: 'Remove from My Day',
@@ -331,6 +334,9 @@ const translations: Record<Language, any> = {
       markDone: 'Marcar como completada',
       deleteTask: 'Eliminar tarea',
       showTimer: 'Planificar tiempo',
+      setMainTask: 'Marcar como tarea principal',
+      unsetMainTask: 'Quitar tarea principal',
+      mainTaskTooltip: 'Tarea principal del día',
     },
     taskItem: {
       removeMyDay: 'Quitar de Mi Día',
