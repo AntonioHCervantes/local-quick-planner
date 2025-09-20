@@ -163,6 +163,8 @@ export default function TaskItem({
           .join(', ')
       )
     : t('taskItem.recurring.button');
+  const hasTags = task.tags.length > 0;
+  const canShowAddTagLink = !showTagInput && !hasTags;
   const handleToggleRepeatDay = (day: Weekday) => {
     const nextDays = selectedDays.includes(day)
       ? selectedDays.filter(d => d !== day)
@@ -382,8 +384,8 @@ export default function TaskItem({
             </div>
           </div>
           <div className="mt-2 flex flex-col gap-2">
-            <div className="flex flex-wrap items-start gap-2">
-              {task.tags.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2">
+              {(hasTags || canShowAddTagLink) && (
                 <div className="flex flex-wrap items-center gap-1">
                   {task.tags.map((tag: string) => (
                     <span
@@ -402,14 +404,26 @@ export default function TaskItem({
                       </button>
                     </span>
                   ))}
-                  <button
-                    onClick={toggleTagInput}
-                    aria-label={t('actions.addTag')}
-                    title={t('actions.addTag')}
-                    className="flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20 text-black dark:text-white"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </button>
+                  {hasTags ? (
+                    <button
+                      onClick={toggleTagInput}
+                      aria-label={t('actions.addTag')}
+                      title={t('actions.addTag')}
+                      className="flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20 text-black dark:text-white"
+                    >
+                      <Plus className="h-4 w-4" />
+                    </button>
+                  ) : (
+                    <Link
+                      onClick={toggleTagInput}
+                      aria-label={t('actions.addTag')}
+                      title={t('actions.addTag')}
+                      icon={Plus}
+                      className="text-xs text-white"
+                    >
+                      {t('actions.addTag')}
+                    </Link>
+                  )}
                 </div>
               )}
               <div className="ml-auto flex items-center">
@@ -452,7 +466,7 @@ export default function TaskItem({
                   className="w-full md:w-[200px] rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
                   placeholder={t('taskItem.tagPlaceholder')}
                   list="existing-tags"
-                  autoFocus={task.tags.length > 0}
+                  autoFocus={hasTags}
                 />
                 <datalist id="existing-tags">
                   {allTags.map((tag: Tag) => (
@@ -463,17 +477,6 @@ export default function TaskItem({
                   ))}
                 </datalist>
               </>
-            )}
-            {!showTagInput && task.tags.length === 0 && (
-              <Link
-                onClick={toggleTagInput}
-                aria-label={t('actions.addTag')}
-                title={t('actions.addTag')}
-                icon={Plus}
-                className="text-xs text-white"
-              >
-                {t('actions.addTag')}
-              </Link>
             )}
           </div>
         </div>
