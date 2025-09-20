@@ -3,9 +3,9 @@
   "short_name": "Quick Planner",
   "description": "Plan your tasks and day locally.",
   "start_url": "/my-tasks",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
+  "display": "fullscreen",
+  "background_color": "#111827",
+  "theme_color": "#111827",
   "icons": [
     {
       "src": "/icon-192.png",
