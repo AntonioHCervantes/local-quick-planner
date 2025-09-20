@@ -54,6 +54,8 @@ export default function TaskItem({
   const [isPriorityEditing, setIsPriorityEditing] = useState(false);
   const [showRecurringOptions, setShowRecurringOptions] = useState(false);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
+  const recurringTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const recurringPanelRef = useRef<HTMLDivElement | null>(null);
   const [tooltipShift, setTooltipShift] = useState(0);
 
   useEffect(() => {
@@ -89,6 +91,36 @@ export default function TaskItem({
       window.removeEventListener('resize', adjustTooltipPosition);
     };
   }, [showMyDayHelp]);
+
+  useEffect(() => {
+    if (!showRecurringOptions) {
+      return undefined;
+    }
+
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node | null;
+      if (!target) {
+        return;
+      }
+
+      if (
+        recurringPanelRef.current?.contains(target) ||
+        recurringTriggerRef.current?.contains(target)
+      ) {
+        return;
+      }
+
+      setShowRecurringOptions(false);
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [showRecurringOptions]);
 
   const priorityLabels: Record<Priority, string> = {
     low: t('priority.low'),
@@ -349,7 +381,7 @@ export default function TaskItem({
               : 'bg-gray-100 dark:bg-gray-800'
           }`}
         >
-          <div className="flex flex-col gap-2 md:flex-row md:items-start md:gap-6">
+          <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-6">
             {isEditing ? (
               <input
                 value={title}
@@ -371,36 +403,69 @@ export default function TaskItem({
               <Actions showHelp={showMyDayHelp} />
             </div>
           </div>
-          <div className="flex items-center gap-2 mt-2">
-            {task.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1 items-center">
-                {task.tags.map((tag: string) => (
-                  <span
-                    key={tag}
-                    style={{ backgroundColor: getTagColor(tag) }}
-                    className="flex items-center rounded-full pl-2 pr-1 py-1 text-xs text-white"
-                  >
-                    <span className="mr-1 select-none">{tag}</span>
-                    <button
-                      onClick={() => removeTag(tag)}
-                      aria-label={t('actions.removeTag')}
-                      title={t('actions.removeTag')}
-                      className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20"
+          <div className="mt-2 flex flex-col gap-2">
+            <div className="flex flex-wrap items-start gap-2">
+              {task.tags.length > 0 && (
+                <div className="flex flex-wrap items-center gap-1">
+                  {task.tags.map((tag: string) => (
+                    <span
+                      key={tag}
+                      style={{ backgroundColor: getTagColor(tag) }}
+                      className="flex items-center rounded-full pl-2 pr-1 py-1 text-xs text-white"
                     >
-                      ×
-                    </button>
-                  </span>
-                ))}
-                <button
-                  onClick={toggleTagInput}
-                  aria-label={t('actions.addTag')}
-                  title={t('actions.addTag')}
-                  className="flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20 text-black dark:text-white"
-                >
-                  <Plus className="h-4 w-4" />
-                </button>
+                      <span className="mr-1 select-none">{tag}</span>
+                      <button
+                        onClick={() => removeTag(tag)}
+                        aria-label={t('actions.removeTag')}
+                        title={t('actions.removeTag')}
+                        className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                  <button
+                    onClick={toggleTagInput}
+                    aria-label={t('actions.addTag')}
+                    title={t('actions.addTag')}
+                    className="flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20 text-black dark:text-white"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                </div>
+              )}
+              <div className="ml-auto flex items-center">
+                {isPriorityEditing ? (
+                  <select
+                    value={(task.priority ?? 'medium') as Priority}
+                    onChange={e => {
+                      updateTask(task.id, {
+                        priority: e.target.value as Priority,
+                      });
+                      setIsPriorityEditing(false);
+                    }}
+                    onBlur={() => setIsPriorityEditing(false)}
+                    className="rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700"
+                    autoFocus
+                  >
+                    <option value="high">{t('priority.high')}</option>
+                    <option value="medium">{t('priority.medium')}</option>
+                    <option value="low">{t('priority.low')}</option>
+                  </select>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => setIsPriorityEditing(true)}
+                    onFocus={() => setIsPriorityEditing(true)}
+                    className="cursor-pointer rounded bg-transparent p-1 text-sm focus:ring dark:text-white"
+                  >
+                    <span>
+                      {priorityLabels[(task.priority ?? 'medium') as Priority]}
+                    </span>
+                  </button>
+                )}
               </div>
-            )}
+            </div>
             {showTagInput && (
               <>
                 <input
