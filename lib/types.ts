@@ -7,6 +7,32 @@ export type Tag = {
   favorite?: boolean;
 };
 
+export type Weekday =
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday'
+  | 'friday'
+  | 'saturday'
+  | 'sunday';
+
+export const WEEKDAYS: Weekday[] = [
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+  'sunday',
+];
+
+export type TaskRepeat = {
+  frequency: 'weekly';
+  days: Weekday[];
+  autoAddToMyDay: boolean;
+  lastOccurrenceDate: string | null;
+};
+
 export type Task = {
   id: string;
   title: string;
@@ -18,6 +44,7 @@ export type Task = {
   listId: string;
   plannedFor: string | null;
   dayStatus?: 'todo' | 'doing' | 'done';
+  repeat?: TaskRepeat | null;
 };
 
 export type List = { id: string; title: string; order: number };
@@ -28,15 +55,6 @@ export type TaskTimer = {
   running: boolean;
   endsAt: string | null;
 };
-
-export type Weekday =
-  | 'monday'
-  | 'tuesday'
-  | 'wednesday'
-  | 'thursday'
-  | 'friday'
-  | 'saturday'
-  | 'sunday';
 
 export type WorkSchedule = Record<Weekday, number[]>;
 

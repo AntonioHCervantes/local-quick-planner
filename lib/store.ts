@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import {
   PersistedState,
   Task,
+  TaskRepeat,
   List,
   Tag,
   Priority,
@@ -10,6 +11,7 @@ import {
   WorkSchedule,
   WorkPreferences,
   Weekday,
+  WEEKDAYS,
 } from './types';
 import { loadState, saveState } from './storage';
 
@@ -100,6 +102,69 @@ const sanitizeWorkPreferences = (input: unknown): WorkPreferences => {
   };
 };
 
+const WEEKDAY_SET = new Set<Weekday>(WEEKDAYS);
+
+const WEEKDAY_ORDER = WEEKDAYS.reduce(
+  (acc, day, index) => {
+    acc[day] = index;
+    return acc;
+  },
+  {} as Record<Weekday, number>
+);
+
+const sanitizeTaskRepeat = (input: unknown): TaskRepeat | null => {
+  if (!input || typeof input !== 'object') {
+    return null;
+  }
+
+  const repeat = input as Partial<TaskRepeat> & { days?: unknown };
+  if (repeat.frequency !== 'weekly') {
+    return null;
+  }
+
+  const days = Array.isArray(repeat.days)
+    ? Array.from(
+        new Set(
+          repeat.days
+            .map(day =>
+              typeof day === 'string' && WEEKDAY_SET.has(day as Weekday)
+                ? (day as Weekday)
+                : null
+            )
+            .filter((day): day is Weekday => day !== null)
+        )
+      )
+    : [];
+
+  if (days.length === 0) {
+    return null;
+  }
+
+  days.sort((a, b) => WEEKDAY_ORDER[a] - WEEKDAY_ORDER[b]);
+
+  const lastOccurrenceDate =
+    typeof repeat.lastOccurrenceDate === 'string'
+      ? repeat.lastOccurrenceDate
+      : null;
+
+  return {
+    frequency: 'weekly',
+    days,
+    autoAddToMyDay: true,
+    lastOccurrenceDate,
+  };
+};
+
+const DAY_FROM_INDEX: Record<number, Weekday> = {
+  0: 'sunday',
+  1: 'monday',
+  2: 'tuesday',
+  3: 'wednesday',
+  4: 'thursday',
+  5: 'friday',
+  6: 'saturday',
+};
+
 const defaultState: PersistedState = {
   tasks: [],
   lists: defaultLists,
@@ -130,7 +195,7 @@ const defaultState: PersistedState = {
   mainMyDayTaskId: null,
   workSchedule: createEmptyWorkSchedule(),
   workPreferences: defaultWorkPreferences,
-  version: 9,
+  version: 10,
 };
 
 type Store = PersistedState & {
@@ -143,6 +208,7 @@ type Store = PersistedState & {
   removeTag: (label: string) => void;
   toggleFavoriteTag: (label: string) => void;
   updateTask: (id: string, patch: Partial<Task>) => void;
+  setTaskRepeat: (id: string, days: Weekday[]) => void;
   removeTask: (id: string) => void;
   moveTask: (
     id: string,
@@ -177,6 +243,7 @@ type Store = PersistedState & {
   setPlanningReminderEnabled: (enabled: boolean) => void;
   setPlanningReminderMinutes: (minutes: number) => void;
   setPlanningReminderLastNotified: (date: string | null) => void;
+  applyRecurringTasksForToday: () => void;
 };
 
 const persisted = loadState();
@@ -254,6 +321,16 @@ if (persisted) {
   if (persisted.version < 9) {
     persisted.version = 9;
   }
+  if (persisted.version < 10) {
+    persisted.version = 10;
+  }
+  persisted.tasks = persisted.tasks.map(task => {
+    const sanitizedRepeat = sanitizeTaskRepeat((task as any).repeat);
+    return {
+      ...task,
+      repeat: sanitizedRepeat,
+    };
+  });
 }
 
 export const useStore = create<Store>((set, get) => ({
@@ -268,6 +345,7 @@ export const useStore = create<Store>((set, get) => ({
       plannedFor: null,
       tags,
       priority,
+      repeat: null,
     };
     set(state => {
       const newOrder = { ...state.order };
@@ -354,6 +432,59 @@ export const useStore = create<Store>((set, get) => ({
       return { tasks, order: newOrder };
     });
     saveState(get());
+  },
+  setTaskRepeat: (id, days) => {
+    const normalizedDays = Array.from(new Set(days)).sort(
+      (a, b) => WEEKDAY_ORDER[a] - WEEKDAY_ORDER[b]
+    );
+    set(state => {
+      let changed = false;
+      const tasks = state.tasks.map(task => {
+        if (task.id !== id) {
+          return task;
+        }
+        if (normalizedDays.length === 0) {
+          if (!task.repeat) {
+            return task;
+          }
+          changed = true;
+          return { ...task, repeat: null };
+        }
+        const current =
+          task.repeat?.frequency === 'weekly' ? task.repeat : null;
+        const currentDays = current
+          ? [...current.days].sort(
+              (a, b) => WEEKDAY_ORDER[a] - WEEKDAY_ORDER[b]
+            )
+          : [];
+        const isSameDays =
+          currentDays.length === normalizedDays.length &&
+          currentDays.every((day, index) => day === normalizedDays[index]);
+        if (isSameDays && current?.autoAddToMyDay) {
+          return task;
+        }
+        changed = true;
+        const lastOccurrenceDate =
+          isSameDays && current ? (current.lastOccurrenceDate ?? null) : null;
+        return {
+          ...task,
+          repeat: {
+            frequency: 'weekly',
+            days: [...normalizedDays],
+            autoAddToMyDay: true,
+            lastOccurrenceDate,
+          },
+        };
+      });
+      if (!changed) {
+        return {};
+      }
+      return { tasks };
+    });
+    saveState(get());
+    if (normalizedDays.length > 0) {
+      get().applyRecurringTasksForToday();
+    }
   },
   removeTask: id => {
     set(state => {
@@ -807,5 +938,127 @@ export const useStore = create<Store>((set, get) => ({
       };
     });
     saveState(get());
+  },
+  applyRecurringTasksForToday: () => {
+    const today = new Date();
+    const weekday = DAY_FROM_INDEX[today.getDay()];
+    if (!weekday) {
+      return;
+    }
+    const todayKey = today.toISOString().slice(0, 10);
+    let shouldSave = false;
+    set(state => {
+      let changed = false;
+      let order = state.order;
+      let timers = state.timers;
+      const priorityOrder: Record<Priority, number> = {
+        high: 0,
+        medium: 1,
+        low: 2,
+      };
+      const tasks = state.tasks.map(task => {
+        const repeat = task.repeat?.frequency === 'weekly' ? task.repeat : null;
+        if (!repeat || !repeat.days.includes(weekday)) {
+          return task;
+        }
+
+        let updatedRepeat: TaskRepeat = repeat.autoAddToMyDay
+          ? repeat
+          : { ...repeat, autoAddToMyDay: true };
+
+        const alreadyAppliedToday =
+          updatedRepeat.lastOccurrenceDate === todayKey;
+
+        if (alreadyAppliedToday) {
+          if (updatedRepeat !== repeat) {
+            changed = true;
+            return { ...task, repeat: updatedRepeat };
+          }
+          return task;
+        }
+
+        updatedRepeat = {
+          ...updatedRepeat,
+          lastOccurrenceDate: todayKey,
+        };
+
+        if (task.plannedFor === todayKey) {
+          changed = true;
+          return {
+            ...task,
+            repeat: updatedRepeat,
+          };
+        }
+
+        changed = true;
+        if (order === state.order) {
+          order = { ...state.order };
+        }
+        if (timers === state.timers) {
+          timers = { ...state.timers };
+        }
+
+        if (task.dayStatus) {
+          const fromKey = `day-${task.dayStatus}`;
+          if (order[fromKey]) {
+            order[fromKey] = order[fromKey].filter(tid => tid !== task.id);
+          }
+        }
+
+        const todoKey = 'day-todo';
+        const existingOrder = (order[todoKey] || []).filter(
+          tid => tid !== task.id
+        );
+        const insertIndex = existingOrder.findIndex(tid => {
+          const existingTask = state.tasks.find(t => t.id === tid);
+          if (!existingTask) {
+            return false;
+          }
+          return (
+            priorityOrder[existingTask.priority] > priorityOrder[task.priority]
+          );
+        });
+        order[todoKey] =
+          insertIndex === -1
+            ? [...existingOrder, task.id]
+            : [
+                ...existingOrder.slice(0, insertIndex),
+                task.id,
+                ...existingOrder.slice(insertIndex),
+              ];
+
+        const existingTimer = timers[task.id];
+        timers[task.id] = existingTimer
+          ? {
+              ...existingTimer,
+              running: false,
+              remaining: existingTimer.duration,
+              endsAt: null,
+            }
+          : {
+              duration: DEFAULT_TIMER_DURATION,
+              remaining: DEFAULT_TIMER_DURATION,
+              running: false,
+              endsAt: null,
+            };
+
+        return {
+          ...task,
+          plannedFor: todayKey,
+          dayStatus: 'todo',
+          repeat: updatedRepeat,
+        };
+      });
+
+      if (!changed) {
+        return {};
+      }
+
+      shouldSave = true;
+      return { tasks, order, timers };
+    });
+    if (shouldSave) {
+      saveState(get());
+    }
   },
 }));

@@ -6,9 +6,10 @@ import {
   GripVertical,
   Plus,
   HelpCircle,
+  RotateCcw,
 } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import { Priority, Tag } from '../../lib/types';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Priority, Tag, Weekday, WEEKDAYS } from '../../lib/types';
 import { useI18n } from '../../lib/i18n';
 import { getDayStatusIcon } from '../../lib/dayStatus';
 import useTaskItem, { UseTaskItemProps } from './useTaskItem';
@@ -16,6 +17,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import LinkifiedText from '../LinkifiedText/LinkifiedText';
 import Link from '../Link/Link';
+import { useStore } from '../../lib/store';
 
 const BASE_TOOLTIP_OFFSET = -72;
 
@@ -43,12 +45,14 @@ export default function TaskItem({
     saveTitle,
     handleTitleKeyDown,
     updateTask,
+    setTaskRepeat,
     toggleMyDay,
     removeTask,
     toggleTagInput,
   } = actions as any; // when task undefined, actions is empty
   const { t } = useI18n();
   const [isPriorityEditing, setIsPriorityEditing] = useState(false);
+  const [showRecurringOptions, setShowRecurringOptions] = useState(false);
   const tooltipRef = useRef<HTMLDivElement | null>(null);
   const [tooltipShift, setTooltipShift] = useState(0);
 
@@ -92,6 +96,15 @@ export default function TaskItem({
     high: t('priority.high'),
   };
 
+  const workSchedule = useStore(state => state.workSchedule);
+  const availableWeekdays = useMemo(() => {
+    if (!workSchedule) {
+      return WEEKDAYS;
+    }
+    const active = WEEKDAYS.filter(day => (workSchedule[day] ?? []).length > 0);
+    return active.length > 0 ? active : WEEKDAYS;
+  }, [workSchedule]);
+  const showLimitedWeekdaysHint = availableWeekdays.length < WEEKDAYS.length;
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: taskId, disabled: !task });
   const style = {
@@ -107,96 +120,185 @@ export default function TaskItem({
   const dayStatus = isInMyDay ? (task.dayStatus ?? 'todo') : undefined;
   const StatusIcon = getDayStatusIcon(dayStatus);
   const statusLabel = dayStatus ? t(`board.${dayStatus}`) : null;
+  const weeklyRepeat = task.repeat?.frequency === 'weekly' ? task.repeat : null;
+  const selectedDays = weeklyRepeat ? weeklyRepeat.days : [];
+  const repeatPanelId = `task-repeat-${task.id}`;
+  const repeatButtonLabel = selectedDays.length
+    ? t('taskItem.recurring.buttonWithDays').replace(
+        '{days}',
+        selectedDays
+          .map(day => t(`taskItem.recurring.weekdaysShort.${day}`))
+          .join(', ')
+      )
+    : t('taskItem.recurring.button');
+  const handleToggleRepeatDay = (day: Weekday) => {
+    const nextDays = selectedDays.includes(day)
+      ? selectedDays.filter(d => d !== day)
+      : [...selectedDays, day];
+    setTaskRepeat(task.id, nextDays);
+  };
+  const handleClearRepeat = () => {
+    setTaskRepeat(task.id, []);
+  };
 
   const Actions = ({ showHelp }: { showHelp?: boolean }) => (
-    <>
-      {isPriorityEditing ? (
-        <select
-          value={task.priority ?? ''}
-          onChange={e => {
-            updateTask(task.id, { priority: e.target.value as Priority });
-            setIsPriorityEditing(false);
-          }}
-          onBlur={() => setIsPriorityEditing(false)}
-          className="rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700 flex-1 md:flex-none"
-          autoFocus
+    <div className="flex w-full flex-col gap-2">
+      <div className="flex items-center gap-2">
+        {isPriorityEditing ? (
+          <select
+            value={task.priority ?? ''}
+            onChange={e => {
+              updateTask(task.id, { priority: e.target.value as Priority });
+              setIsPriorityEditing(false);
+            }}
+            onBlur={() => setIsPriorityEditing(false)}
+            className="flex-1 rounded bg-gray-200 p-1 text-sm focus:ring dark:bg-gray-700 md:flex-none"
+            autoFocus
+          >
+            <option value="high">{t('priority.high')}</option>
+            <option value="medium">{t('priority.medium')}</option>
+            <option value="low">{t('priority.low')}</option>
+          </select>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setIsPriorityEditing(true)}
+            onFocus={() => setIsPriorityEditing(true)}
+            className="flex flex-1 cursor-pointer items-center rounded bg-transparent p-1 text-sm focus:ring dark:text-white md:flex-none"
+          >
+            <span>{priorityLabels[task.priority as Priority]}</span>
+          </button>
+        )}
+        <div className="relative flex items-center">
+          <button
+            onClick={() => toggleMyDay(task.id)}
+            aria-label={
+              task.plannedFor
+                ? t('taskItem.removeMyDay')
+                : t('taskItem.addMyDay')
+            }
+            title={
+              task.plannedFor
+                ? t('taskItem.removeMyDay')
+                : t('taskItem.addMyDay')
+            }
+            className={`rounded bg-transparent p-1 text-black focus:ring dark:text-white ${
+              showHelp
+                ? 'ring-2 ring-[#57886C] ring-offset-2 ring-offset-gray-100 animate-pulse dark:ring-offset-gray-900'
+                : ''
+            }`}
+          >
+            {task.plannedFor ? (
+              <CalendarX className="h-4 w-4" />
+            ) : (
+              <CalendarPlus className="h-4 w-4" />
+            )}
+          </button>
+          {showHelp && (
+            <div
+              ref={tooltipRef}
+              className="absolute top-full left-1/2 z-30 mt-3 w-64 rounded-lg border border-white bg-gray-900 px-3 py-2 text-xs text-white shadow-lg"
+              style={{
+                transform: `translateX(calc(-50% + ${tooltipShift + BASE_TOOLTIP_OFFSET}px))`,
+              }}
+            >
+              <div className="flex items-start gap-2">
+                <HelpCircle className="mt-[2px] h-4 w-4 flex-shrink-0" />
+                <span className="flex-1 leading-snug">
+                  {t('taskItem.myDayHelp')}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => onCloseMyDayHelp?.()}
+                  aria-label={t('actions.close')}
+                  className="ml-2 text-white transition hover:opacity-80"
+                >
+                  ×
+                </button>
+              </div>
+              <span
+                aria-hidden="true"
+                className="absolute left-1/2 bottom-full border-[6px] border-transparent border-b-gray-900"
+                style={{
+                  transform: `translateX(calc(-50% - ${tooltipShift + BASE_TOOLTIP_OFFSET}px))`,
+                }}
+              />
+            </div>
+          )}
+        </div>
+        <button
+          onClick={() => removeTask(task.id)}
+          aria-label={t('taskItem.deleteTask')}
+          title={t('taskItem.deleteTask')}
+          className="rounded bg-transparent p-1 text-black focus:ring dark:text-white"
         >
-          <option value="high">{t('priority.high')}</option>
-          <option value="medium">{t('priority.medium')}</option>
-          <option value="low">{t('priority.low')}</option>
-        </select>
-      ) : (
+          <Trash2 className="h-4 w-4" />
+        </button>
+      </div>
+      <div>
         <button
           type="button"
-          onClick={() => setIsPriorityEditing(true)}
-          onFocus={() => setIsPriorityEditing(true)}
-          className="flex items-center rounded bg-transparent p-1 text-sm focus:ring dark:text-white cursor-pointer flex-1 md:flex-none"
+          onClick={() => setShowRecurringOptions(prev => !prev)}
+          aria-expanded={showRecurringOptions}
+          aria-controls={repeatPanelId}
+          title={repeatButtonLabel}
+          className="flex w-full items-center gap-2 rounded px-2 py-1 text-left text-xs text-[#57886C] transition hover:underline focus-visible:ring focus-visible:ring-[#57886C] focus-visible:ring-offset-2 focus-visible:ring-offset-gray-100 dark:focus-visible:ring-offset-gray-900"
         >
-          <span>{priorityLabels[task.priority as Priority]}</span>
+          <RotateCcw className="h-3.5 w-3.5" />
+          <span className="flex-1 truncate">{repeatButtonLabel}</span>
         </button>
-      )}
-      <div className="relative flex items-center">
-        <button
-          onClick={() => toggleMyDay(task.id)}
-          aria-label={
-            task.plannedFor ? t('taskItem.removeMyDay') : t('taskItem.addMyDay')
-          }
-          title={
-            task.plannedFor ? t('taskItem.removeMyDay') : t('taskItem.addMyDay')
-          }
-          className={`rounded bg-transparent p-1 text-black focus:ring dark:text-white ${
-            showHelp
-              ? 'ring-2 ring-[#57886C] ring-offset-2 ring-offset-gray-100 animate-pulse dark:ring-offset-gray-900'
-              : ''
-          }`}
-        >
-          {task.plannedFor ? (
-            <CalendarX className="h-4 w-4" />
-          ) : (
-            <CalendarPlus className="h-4 w-4" />
-          )}
-        </button>
-        {showHelp && (
+        {showRecurringOptions && (
           <div
-            ref={tooltipRef}
-            className="absolute top-full left-1/2 z-30 mt-3 w-64 rounded-lg border border-white bg-gray-900 px-3 py-2 text-xs text-white shadow-lg"
-            style={{
-              transform: `translateX(calc(-50% + ${tooltipShift + BASE_TOOLTIP_OFFSET}px))`,
-            }}
+            id={repeatPanelId}
+            className="mt-2 space-y-3 rounded border border-gray-300 bg-white p-3 text-xs text-gray-700 shadow-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-200"
           >
-            <div className="flex items-start gap-2">
-              <HelpCircle className="mt-[2px] h-4 w-4 flex-shrink-0" />
-              <span className="flex-1 leading-snug">
-                {t('taskItem.myDayHelp')}
-              </span>
+            <div className="space-y-1">
+              <p>{t('taskItem.recurring.description')}</p>
+              {showLimitedWeekdaysHint && (
+                <p className="text-[11px] text-gray-500 dark:text-gray-400">
+                  {t('taskItem.recurring.limitedBySchedule')}
+                </p>
+              )}
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {availableWeekdays.map(day => {
+                const checked = selectedDays.includes(day);
+                return (
+                  <label
+                    key={day}
+                    className={`flex items-center gap-2 rounded border px-2 py-1 text-[11px] font-medium ${
+                      checked
+                        ? 'border-[#57886C] text-[#57886C] dark:border-[#78a48c]'
+                        : 'border-gray-200 text-gray-700 dark:border-gray-600 dark:text-gray-200'
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={() => handleToggleRepeatDay(day)}
+                      className="h-3.5 w-3.5"
+                    />
+                    <span>{t(`workSchedulePage.week.${day}`)}</span>
+                  </label>
+                );
+              })}
+            </div>
+            <p className="text-[11px] text-gray-500 dark:text-gray-400">
+              {t('taskItem.recurring.autoAddHint')}
+            </p>
+            {selectedDays.length > 0 && (
               <button
                 type="button"
-                onClick={() => onCloseMyDayHelp?.()}
-                aria-label={t('actions.close')}
-                className="ml-2 text-white transition hover:opacity-80"
+                onClick={handleClearRepeat}
+                className="text-left text-xs text-red-600 transition hover:underline focus-visible:ring focus-visible:ring-red-400 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:text-red-400 dark:focus-visible:ring-offset-gray-900"
               >
-                ×
+                {t('taskItem.recurring.remove')}
               </button>
-            </div>
-            <span
-              aria-hidden="true"
-              className="absolute left-1/2 bottom-full border-[6px] border-transparent border-b-gray-900"
-              style={{
-                transform: `translateX(calc(-50% - ${tooltipShift + BASE_TOOLTIP_OFFSET}px))`,
-              }}
-            />
+            )}
           </div>
         )}
       </div>
-      <button
-        onClick={() => removeTask(task.id)}
-        aria-label={t('taskItem.deleteTask')}
-        title={t('taskItem.deleteTask')}
-        className="rounded bg-transparent p-1 text-black focus:ring dark:text-white"
-      >
-        <Trash2 className="h-4 w-4" />
-      </button>
-    </>
+    </div>
   );
 
   return (
@@ -265,7 +367,7 @@ export default function TaskItem({
                 <LinkifiedText text={task.title} />
               </p>
             )}
-            <div className="hidden md:flex items-center gap-2 md:self-start">
+            <div className="hidden md:flex md:flex-col md:items-stretch md:gap-2 md:self-start">
               <Actions showHelp={showMyDayHelp} />
             </div>
           </div>
@@ -331,7 +433,7 @@ export default function TaskItem({
               </Link>
             )}
           </div>
-          <div className="flex items-center gap-2 md:hidden">
+          <div className="flex flex-col gap-2 md:hidden">
             <Actions showHelp={showMyDayHelp} />
           </div>
         </div>

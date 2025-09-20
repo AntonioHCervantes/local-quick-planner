@@ -11,6 +11,7 @@ export default function useTaskItem({ taskId }: UseTaskItemProps) {
   const {
     tasks,
     updateTask,
+    setTaskRepeat,
     tags: allTags,
     addTag,
     toggleMyDay,
@@ -115,6 +116,7 @@ export default function useTaskItem({ taskId }: UseTaskItemProps) {
       saveTitle,
       handleTitleKeyDown,
       updateTask,
+      setTaskRepeat,
       toggleMyDay,
       removeTask,
       toggleTagInput,
