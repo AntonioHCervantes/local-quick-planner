@@ -433,8 +433,8 @@ export const useStore = create<Store>((set, get) => ({
     });
     saveState(get());
   },
-  setTaskRepeat: (id, days) => {
-    const normalizedDays = Array.from(new Set(days)).sort(
+  setTaskRepeat: (id: string, days: Weekday[]) => {
+    const normalizedDays: Weekday[] = Array.from(new Set(days)).sort(
       (a, b) => WEEKDAY_ORDER[a] - WEEKDAY_ORDER[b]
     );
     set(state => {
@@ -450,7 +450,7 @@ export const useStore = create<Store>((set, get) => ({
           changed = true;
           return { ...task, repeat: null };
         }
-        const current =
+        const current: TaskRepeat | null =
           task.repeat?.frequency === 'weekly' ? task.repeat : null;
         const currentDays = current
           ? [...current.days].sort(
@@ -466,14 +466,15 @@ export const useStore = create<Store>((set, get) => ({
         changed = true;
         const lastOccurrenceDate =
           isSameDays && current ? (current.lastOccurrenceDate ?? null) : null;
+        const nextRepeat: TaskRepeat = {
+          frequency: 'weekly',
+          days: [...normalizedDays],
+          autoAddToMyDay: true,
+          lastOccurrenceDate,
+        };
         return {
           ...task,
-          repeat: {
-            frequency: 'weekly',
-            days: [...normalizedDays],
-            autoAddToMyDay: true,
-            lastOccurrenceDate,
-          },
+          repeat: nextRepeat,
         };
       });
       if (!changed) {
@@ -957,7 +958,8 @@ export const useStore = create<Store>((set, get) => ({
         low: 2,
       };
       const tasks = state.tasks.map(task => {
-        const repeat = task.repeat?.frequency === 'weekly' ? task.repeat : null;
+        const repeat: TaskRepeat | null =
+          task.repeat?.frequency === 'weekly' ? task.repeat : null;
         if (!repeat || !repeat.days.includes(weekday)) {
           return task;
         }
@@ -972,7 +974,8 @@ export const useStore = create<Store>((set, get) => ({
         if (alreadyAppliedToday) {
           if (updatedRepeat !== repeat) {
             changed = true;
-            return { ...task, repeat: updatedRepeat };
+            const updatedTask: Task = { ...task, repeat: updatedRepeat };
+            return updatedTask;
           }
           return task;
         }
@@ -984,10 +987,11 @@ export const useStore = create<Store>((set, get) => ({
 
         if (task.plannedFor === todayKey) {
           changed = true;
-          return {
+          const updatedTask: Task = {
             ...task,
             repeat: updatedRepeat,
           };
+          return updatedTask;
         }
 
         changed = true;
@@ -1042,12 +1046,13 @@ export const useStore = create<Store>((set, get) => ({
               endsAt: null,
             };
 
-        return {
+        const updatedTask: Task = {
           ...task,
           plannedFor: todayKey,
           dayStatus: 'todo',
           repeat: updatedRepeat,
         };
+        return updatedTask;
       });
 
       if (!changed) {

@@ -121,7 +121,7 @@ export default function TaskItem({
   const StatusIcon = getDayStatusIcon(dayStatus);
   const statusLabel = dayStatus ? t(`board.${dayStatus}`) : null;
   const weeklyRepeat = task.repeat?.frequency === 'weekly' ? task.repeat : null;
-  const selectedDays = weeklyRepeat ? weeklyRepeat.days : [];
+  const selectedDays: Weekday[] = weeklyRepeat ? weeklyRepeat.days : [];
   const repeatPanelId = `task-repeat-${task.id}`;
   const repeatButtonLabel = selectedDays.length
     ? t('taskItem.recurring.buttonWithDays').replace(
