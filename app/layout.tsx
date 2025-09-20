@@ -9,6 +9,7 @@ import WelcomeModal from '../components/WelcomeModal/WelcomeModal';
 import ServiceWorker from '../components/ServiceWorker';
 import TaskTimerManager from '../components/TaskTimerManager/TaskTimerManager';
 import WorkScheduleManager from '../components/WorkScheduleManager/WorkScheduleManager';
+import RecurringTaskManager from '../components/RecurringTaskManager/RecurringTaskManager';
 
 const description =
   'Local Quick Planner is a free, fast, private, and open source task manager that boosts your productivity and personal organization at work.';
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Toaster />
           <TaskTimerManager />
           <WorkScheduleManager />
+          <RecurringTaskManager />
           <WelcomeModal />
           <ServiceWorker />
         </I18nProvider>

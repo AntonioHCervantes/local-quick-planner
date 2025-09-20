@@ -69,6 +69,25 @@ const translations: Record<Language, any> = {
       deleteTask: 'Delete task',
       tagPlaceholder: 'Add tag',
       myDayHelp: 'Plan your daily work by adding tasks to My Day.',
+      recurring: {
+        button: 'Repeat every week',
+        buttonWithDays: 'Repeats: {days}',
+        description: 'Select the weekdays when this task should repeat.',
+        limitedBySchedule:
+          'Showing only the days configured in your work schedule.',
+        autoAddHint:
+          'On those days the task will be added to My Day automatically.',
+        remove: 'Remove weekly repetition',
+        weekdaysShort: {
+          monday: 'Mon',
+          tuesday: 'Tue',
+          wednesday: 'Wed',
+          thursday: 'Thu',
+          friday: 'Fri',
+          saturday: 'Sat',
+          sunday: 'Sun',
+        },
+      },
     },
     myDayPage: {
       empty: 'No tasks added to My Day',
@@ -349,6 +368,26 @@ const translations: Record<Language, any> = {
       deleteTask: 'Eliminar tarea',
       tagPlaceholder: 'Añadir etiqueta',
       myDayHelp: 'Planifica tu trabajo diario añadiendo tareas a Mi Día.',
+      recurring: {
+        button: 'Repetir cada semana',
+        buttonWithDays: 'Se repite: {days}',
+        description:
+          'Selecciona los días en los que quieres repetir esta tarea.',
+        limitedBySchedule:
+          'Mostramos solo los días incluidos en tu jornada laboral.',
+        autoAddHint:
+          'Los días seleccionados la tarea se añadirá a Mi Día automáticamente.',
+        remove: 'Quitar repetición semanal',
+        weekdaysShort: {
+          monday: 'L',
+          tuesday: 'M',
+          wednesday: 'X',
+          thursday: 'J',
+          friday: 'V',
+          saturday: 'S',
+          sunday: 'D',
+        },
+      },
     },
     myDayPage: {
       empty: 'No hay tareas añadidas a Mi Día',
