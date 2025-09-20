@@ -38,6 +38,7 @@ describe('TaskItem', () => {
       },
       actions: {
         startEditing,
+        setTaskRepeat: jest.fn(),
       },
     } as any);
     render(<TaskItem taskId="1" />);
