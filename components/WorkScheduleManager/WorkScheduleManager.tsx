@@ -5,6 +5,7 @@ import { toast } from 'react-hot-toast';
 import { useI18n } from '../../lib/i18n';
 import { useStore } from '../../lib/store';
 import type { Weekday } from '../../lib/types';
+import { playReminderSound } from '../../lib/sounds';
 
 const DAY_FROM_INDEX: Record<number, Weekday> = {
   0: 'sunday',
@@ -73,6 +74,7 @@ export default function WorkScheduleManager() {
 
         state.setPlanningReminderLastNotified(todayKey);
         toast(t('workSchedulePage.reminder.toast'), { duration: 8000 });
+        playReminderSound();
         const randomId =
           typeof globalThis.crypto?.randomUUID === 'function'
             ? globalThis.crypto.randomUUID()
