@@ -97,6 +97,7 @@ const translations: Record<Language, any> = {
         medium: "You're making progress—keep going!",
         low: 'Almost there—keep it up!',
         done: 'All tasks completed! Great job!',
+        clearCompleted: 'Remove completed tasks',
       },
     },
     timer: {
@@ -397,6 +398,7 @@ const translations: Record<Language, any> = {
         medium: '¡Buen progreso, sigue así!',
         low: '¡Ánimo, ya falta poco!',
         done: '¡Todo hecho, gran trabajo!',
+        clearCompleted: 'Eliminar tareas completadas',
       },
     },
     timer: {

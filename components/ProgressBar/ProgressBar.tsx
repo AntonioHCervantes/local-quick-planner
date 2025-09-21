@@ -4,13 +4,21 @@ import { useI18n } from '../../lib/i18n';
 
 interface ProgressBarProps {
   percent: number;
+  onClearCompleted?: () => void;
+  clearCompletedLabel?: string;
 }
 
-export default function ProgressBar({ percent }: ProgressBarProps) {
+export default function ProgressBar({
+  percent,
+  onClearCompleted,
+  clearCompletedLabel,
+}: ProgressBarProps) {
   const { t } = useI18n();
 
   let colorClass = 'bg-red-500';
   let message = t('myDayPage.progress.full');
+  const showClearAction =
+    percent >= 100 && onClearCompleted && clearCompletedLabel;
 
   if (percent >= 100) {
     colorClass = 'bg-green-500';
@@ -31,9 +39,18 @@ export default function ProgressBar({ percent }: ProgressBarProps) {
           style={{ width: `${percent}%` }}
         />
       </div>
-      <p className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
-        {message}
-      </p>
+      <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+        <span>{message}</span>
+        {showClearAction ? (
+          <button
+            type="button"
+            onClick={onClearCompleted}
+            className="rounded px-1 font-medium text-[#57886C] underline-offset-2 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#57886C]"
+          >
+            {clearCompletedLabel}
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 }
