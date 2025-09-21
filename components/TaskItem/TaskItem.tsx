@@ -216,32 +216,34 @@ export default function TaskItem({
           {showHelp && (
             <div
               ref={tooltipRef}
-              className="absolute top-full left-1/2 z-30 mt-3 w-64 rounded-lg border border-white bg-gray-900 px-3 py-2 text-xs text-white shadow-lg"
+              className="absolute left-1/2 top-full z-30 mt-3 w-72 max-w-xs rounded-2xl border border-slate-200 bg-white/95 px-4 py-3 text-sm text-slate-700 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-gray-900/95 dark:text-gray-100"
               style={{
                 transform: `translateX(calc(-50% + ${tooltipShift + BASE_TOOLTIP_OFFSET}px))`,
               }}
             >
-              <div className="flex items-start gap-2">
-                <HelpCircle className="mt-[2px] h-4 w-4 flex-shrink-0" />
-                <span className="flex-1 leading-snug">
+              <div className="flex items-start gap-3">
+                <HelpCircle className="mt-[2px] h-5 w-5 flex-shrink-0 text-[#57886C]" />
+                <span className="flex-1 leading-relaxed">
                   {t('taskItem.myDayHelp')}
                 </span>
                 <button
                   type="button"
                   onClick={() => onCloseMyDayHelp?.()}
                   aria-label={t('actions.close')}
-                  className="ml-2 text-white transition hover:opacity-80"
+                  className="ml-2 rounded-full bg-slate-100 p-1 text-slate-500 transition hover:bg-slate-200 hover:text-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#57886C] dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                 >
                   ×
                 </button>
               </div>
               <span
                 aria-hidden="true"
-                className="absolute left-1/2 bottom-full border-[6px] border-transparent border-b-gray-900"
+                className="pointer-events-none absolute left-1/2 bottom-full"
                 style={{
-                  transform: `translateX(calc(-50% - ${tooltipShift + BASE_TOOLTIP_OFFSET}px))`,
+                  transform: `translateX(calc(-50% - ${tooltipShift + BASE_TOOLTIP_OFFSET}px)) translateY(50%)`,
                 }}
-              />
+              >
+                <span className="block h-3 w-3 rotate-45 rounded-[2px] border border-slate-200 bg-white/95 shadow-[0_2px_8px_rgba(15,23,42,0.12)] dark:border-gray-700 dark:bg-gray-900/95" />
+              </span>
             </div>
           )}
         </div>
