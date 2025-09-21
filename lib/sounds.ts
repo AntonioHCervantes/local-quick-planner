@@ -40,6 +40,59 @@ export function playApplause() {
 
 let applauseContext: AudioContext | null = null;
 
+export function playReminderSound() {
+  if (typeof window === 'undefined') {
+    return;
+  }
+  try {
+    const AudioContextConstructor =
+      window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContextConstructor) {
+      return;
+    }
+    const ctx = new AudioContextConstructor();
+    const oscillator = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    oscillator.type = 'triangle';
+    oscillator.connect(gain);
+    gain.connect(ctx.destination);
+
+    const start = ctx.currentTime;
+    const tones = [
+      { frequency: 587.33, duration: 0.18 },
+      { frequency: 698.46, duration: 0.18 },
+      { frequency: 880, duration: 0.24 },
+    ];
+
+    let current = start;
+    tones.forEach(({ frequency, duration }) => {
+      oscillator.frequency.setValueAtTime(frequency, current);
+      current += duration;
+    });
+
+    const fadeInEnd = start + 0.05;
+    const fadeOutStart = Math.max(start, current - 0.15);
+
+    gain.gain.setValueAtTime(0, start);
+    gain.gain.linearRampToValueAtTime(0.12, fadeInEnd);
+    gain.gain.setValueAtTime(0.12, fadeOutStart);
+    gain.gain.linearRampToValueAtTime(0, current);
+
+    oscillator.start(start);
+    oscillator.stop(current);
+    oscillator.onended = () => {
+      try {
+        ctx.close();
+      } catch {
+        // ignore
+      }
+    };
+  } catch {
+    // ignore
+  }
+}
+
 function createApplauseBuffer(ctx: AudioContext) {
   const duration = 1.9;
   const sampleRate = ctx.sampleRate;
