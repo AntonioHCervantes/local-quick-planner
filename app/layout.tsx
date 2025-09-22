@@ -62,7 +62,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             toastOptions={{
               duration: 5000,
               className:
-                'text-lg leading-relaxed px-6 py-4 rounded-xl shadow-lg border border-slate-200/70 bg-white text-slate-900 dark:border-slate-700/70 dark:bg-slate-900 dark:text-slate-100',
+                'text-lg leading-relaxed px-6 py-4 rounded-xl shadow-lg border border-slate-200/70 bg-white text-slate-900 dark:border-slate-700/70 dark:bg-slate-900 dark:text-slate-100 lg:text-xl lg:leading-loose lg:px-8 lg:py-5 xl:text-2xl xl:leading-relaxed xl:px-10 xl:py-6',
             }}
           />
           <TaskTimerManager />
