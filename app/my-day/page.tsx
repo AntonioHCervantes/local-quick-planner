@@ -30,7 +30,7 @@ export default function MyDayPage() {
       className={
         hasMyDayTasks
           ? undefined
-          : 'flex flex-col items-center justify-center p-4 text-center'
+          : 'flex flex-col items-center justify-center px-4 py-16 text-center'
       }
     >
       {hasMyDayTasks ? (
