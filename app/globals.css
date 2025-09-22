@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body, #__next, :root {
+html,
+body,
+#__next,
+:root {
   height: 100%;
 }
 
@@ -49,4 +52,36 @@ html, body, #__next, :root {
 
 .animate-main-task-ripple {
   animation: main-task-ripple 0.75s ease-out forwards;
+}
+
+@media (prefers-color-scheme: dark) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.45) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: rgba(148, 163, 184, 0.45);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    transition: background-color 150ms ease-in-out;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(226, 232, 240, 0.6);
+  }
+
+  *::-webkit-scrollbar-thumb:active {
+    background-color: rgba(226, 232, 240, 0.75);
+  }
 }
