@@ -222,6 +222,7 @@ type Store = PersistedState & {
   ) => void;
   reorderMyTasks: (id: string, newIndex: number) => void;
   toggleMyDay: (id: string) => void;
+  clearCompletedMyDayTasks: () => void;
   setTimerDuration: (id: string, duration: number) => void;
   toggleTimer: (id: string) => void;
   updateTimerRemaining: (id: string, remaining: number) => void;
@@ -697,6 +698,24 @@ export const useStore = create<Store>((set, get) => ({
       };
     });
     saveState(get());
+  },
+  clearCompletedMyDayTasks: () => {
+    const { tasks, toggleMyDay, removeTask } = get();
+    const completedTasks = tasks.filter(
+      task => task.plannedFor && task.dayStatus === 'done'
+    );
+    if (completedTasks.length === 0) {
+      return;
+    }
+    completedTasks.forEach(task => {
+      const repeat =
+        task.repeat?.frequency === 'weekly' && task.repeat.days.length > 0;
+      if (repeat) {
+        toggleMyDay(task.id);
+      } else {
+        removeTask(task.id);
+      }
+    });
   },
   setMainMyDayTask: id => {
     set(state => {
