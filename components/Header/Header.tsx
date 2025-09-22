@@ -124,7 +124,7 @@ export default function Header() {
     window.addEventListener('scroll', handleReposition);
     const timeout = window.setTimeout(() => {
       setShowNotificationPopover(false);
-    }, 8000);
+    }, 5000);
     return () => {
       window.clearTimeout(timeout);
       window.removeEventListener('resize', handleReposition);
@@ -234,17 +234,19 @@ export default function Header() {
               <Link
                 href="/notifications"
                 onClick={() => setShowNotificationPopover(false)}
-                className="fixed z-20 w-64 rounded-none border border-gray-200 bg-white px-4 py-3 text-left shadow-lg transition-colors hover:border-gray-300 focus:border-gray-300 dark:border-gray-700 dark:bg-gray-900"
+                className="fixed z-30 w-[min(92vw,22rem)] translate-y-2 rounded-2xl border border-slate-200/80 bg-white/95 px-6 py-5 text-left shadow-2xl shadow-slate-900/10 backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-slate-700/70 dark:bg-slate-900/95 dark:text-slate-100 dark:shadow-black/30 dark:focus-visible:ring-offset-slate-900"
                 style={{
                   top: popoverPosition.top,
                   right: popoverPosition.right,
                 }}
               >
-                <div className="flex items-start gap-3">
-                  <NotificationIcon className="mt-0.5 h-4 w-4 flex-shrink-0" />
+                <div className="flex items-start gap-4">
+                  <NotificationIcon className="mt-1 h-6 w-6 flex-shrink-0 text-blue-600 dark:text-blue-300" />
                   <div className="min-w-0">
-                    <p className="text-xs font-semibold">{popoverTitle}</p>
-                    <p className="mt-1 truncate text-sm text-gray-700 dark:text-gray-200">
+                    <p className="text-base font-semibold text-slate-900 dark:text-slate-100">
+                      {popoverTitle}
+                    </p>
+                    <p className="mt-2 text-base leading-relaxed text-slate-700 dark:text-slate-300">
                       {popoverDescription}
                     </p>
                   </div>
