@@ -124,6 +124,7 @@ const translations: Record<Language, any> = {
     notifications: {
       title: 'Notifications',
       empty: 'No notifications',
+      dismiss: 'Dismiss notification',
       welcome: {
         title: 'Welcome to Local Quick Planner',
         description:
@@ -425,6 +426,7 @@ const translations: Record<Language, any> = {
     notifications: {
       title: 'Notificaciones',
       empty: 'Sin notificaciones',
+      dismiss: 'Cerrar notificación',
       welcome: {
         title: '¡Hola! Te damos la bienvenida a Local Quick Planner',
         description:
