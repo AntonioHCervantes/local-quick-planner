@@ -216,7 +216,7 @@ export default function TaskItem({
           {showHelp && (
             <div
               ref={tooltipRef}
-              className="absolute left-1/2 top-full z-30 mt-3 w-72 max-w-xs rounded-2xl border border-slate-200 bg-white/95 px-4 py-3 text-sm text-slate-700 shadow-2xl backdrop-blur-sm dark:border-gray-700 dark:bg-gray-900/95 dark:text-gray-100"
+              className="absolute left-1/2 top-full z-30 mt-4 w-72 max-w-xs rounded-3xl border border-slate-200/80 bg-white/95 px-5 py-4 text-[15px] text-slate-700 shadow-2xl backdrop-blur-sm dark:border-gray-700/70 dark:bg-gray-900/95 dark:text-gray-100"
               style={{
                 transform: `translateX(calc(-50% + ${tooltipShift + BASE_TOOLTIP_OFFSET}px))`,
               }}
@@ -230,20 +230,11 @@ export default function TaskItem({
                   type="button"
                   onClick={() => onCloseMyDayHelp?.()}
                   aria-label={t('actions.close')}
-                  className="ml-2 rounded-full bg-slate-100 p-1 text-slate-500 transition hover:bg-slate-200 hover:text-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#57886C] dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                  className="ml-2 rounded-full p-1 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#57886C] dark:text-gray-300 dark:hover:bg-gray-700/70 dark:hover:text-white"
                 >
                   ×
                 </button>
               </div>
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute left-1/2 bottom-full"
-                style={{
-                  transform: `translateX(calc(-50% - ${tooltipShift + BASE_TOOLTIP_OFFSET}px)) translateY(50%)`,
-                }}
-              >
-                <span className="block h-3 w-3 rotate-45 rounded-[2px] border border-slate-200 bg-white/95 shadow-[0_2px_8px_rgba(15,23,42,0.12)] dark:border-gray-700 dark:bg-gray-900/95" />
-              </span>
             </div>
           )}
         </div>
