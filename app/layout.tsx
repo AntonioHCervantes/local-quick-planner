@@ -55,7 +55,16 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
-          <Toaster />
+          <Toaster
+            position="top-center"
+            gutter={16}
+            containerStyle={{ top: '4.5rem' }}
+            toastOptions={{
+              duration: 5000,
+              className:
+                'text-lg leading-relaxed px-6 py-4 rounded-xl shadow-lg border border-slate-200/70 bg-white text-slate-900 dark:border-slate-700/70 dark:bg-slate-900 dark:text-slate-100',
+            }}
+          />
           <TaskTimerManager />
           <WorkScheduleManager />
           <RecurringTaskManager />
