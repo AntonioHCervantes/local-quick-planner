@@ -233,6 +233,7 @@ type Store = PersistedState & {
   importData: (data: PersistedState) => void;
   clearAll: () => void;
   addNotification: (n: Notification) => void;
+  removeNotification: (id: string) => void;
   markNotificationRead: (id: string) => void;
   markAllNotificationsRead: () => void;
   setWorkScheduleDay: (day: Weekday, slots: number[]) => void;
@@ -856,6 +857,12 @@ export const useStore = create<Store>((set, get) => ({
   },
   addNotification: n => {
     set(state => ({ notifications: [n, ...state.notifications] }));
+    saveState(get());
+  },
+  removeNotification: id => {
+    set(state => ({
+      notifications: state.notifications.filter(n => n.id !== id),
+    }));
     saveState(get());
   },
   markNotificationRead: id => {

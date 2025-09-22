@@ -1,5 +1,7 @@
 import { render, screen } from '../../../test/test-utils';
+import userEvent from '@testing-library/user-event';
 import NotificationCard from '../NotificationCard';
+import { useStore } from '../../../lib/store';
 
 const baseNotification = {
   id: 'n1',
@@ -9,6 +11,18 @@ const baseNotification = {
   read: false,
   createdAt: new Date().toISOString(),
 };
+
+const initialState = useStore.getState();
+const removeNotificationMock = jest.fn();
+
+beforeEach(() => {
+  removeNotificationMock.mockReset();
+  useStore.setState({ removeNotification: removeNotificationMock });
+});
+
+afterEach(() => {
+  useStore.setState(initialState, true);
+});
 
 describe('NotificationCard', () => {
   it('renders title and description', () => {
@@ -33,5 +47,18 @@ describe('NotificationCard', () => {
 
     const link = screen.getByRole('link', { name: /more actions/i });
     expect(link).toHaveAttribute('href', 'https://example.com');
+  });
+
+  it('allows dismissing the notification', async () => {
+    const user = userEvent.setup();
+    render(<NotificationCard notification={baseNotification} />);
+
+    const dismissButton = screen.getByRole('button', {
+      name: /dismiss notification/i,
+    });
+
+    await user.click(dismissButton);
+
+    expect(removeNotificationMock).toHaveBeenCalledWith('n1');
   });
 });
