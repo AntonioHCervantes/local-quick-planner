@@ -76,6 +76,10 @@ export default function useTasksView() {
     return [...list, ...remaining];
   }, [filteredTasks, store.order]);
 
+  const totalTags = store.tags.length;
+  const hasTasks = store.tasks.length > 0;
+  const isFiltering = totalTags > 0 && activeTags.length !== totalTags;
+
   return {
     state: {
       tasks: orderedTasks,
@@ -83,6 +87,8 @@ export default function useTasksView() {
       activeTags,
       tagToRemove,
       highlightedId,
+      hasTasks,
+      isFiltering,
     },
     actions: {
       addTask: (input: {

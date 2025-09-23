@@ -106,7 +106,10 @@ const translations: Record<Language, any> = {
       finished: 'Time for "{task}" finished',
     },
     priority: { low: 'Low', medium: 'Medium', high: 'High' },
-    taskList: { noTasks: 'No tasks' },
+    taskList: {
+      noTasks: 'No tasks',
+      noTasksIntro: 'Add your first task!',
+    },
     tagFilter: {
       showAll: 'Show all',
       confirmDelete:
@@ -408,7 +411,10 @@ const translations: Record<Language, any> = {
       finished: 'Tiempo para "{task}" terminado',
     },
     priority: { low: 'Baja', medium: 'Media', high: 'Alta' },
-    taskList: { noTasks: 'No hay tareas' },
+    taskList: {
+      noTasks: 'No hay tareas',
+      noTasksIntro: '¡Añade tu primera tarea!',
+    },
     tagFilter: {
       showAll: 'Mostrar todas',
       confirmDelete:

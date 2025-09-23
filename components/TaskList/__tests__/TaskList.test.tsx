@@ -31,13 +31,36 @@ describe('TaskList', () => {
   ];
 
   it('renders tasks', () => {
-    render(<TaskList tasks={tasks} />);
+    render(
+      <TaskList
+        tasks={tasks}
+        hasTasks
+        isFiltering={false}
+      />
+    );
     expect(screen.getByTestId('task-1')).toBeInTheDocument();
     expect(screen.getByTestId('task-2')).toBeInTheDocument();
   });
 
-  it('shows empty message', () => {
-    render(<TaskList tasks={[]} />);
+  it('shows intro empty message when there are no tasks', () => {
+    render(
+      <TaskList
+        tasks={[]}
+        hasTasks={false}
+        isFiltering={false}
+      />
+    );
+    expect(screen.getByText('Add your first task!')).toBeInTheDocument();
+  });
+
+  it('shows default empty message while filtering', () => {
+    render(
+      <TaskList
+        tasks={[]}
+        hasTasks
+        isFiltering
+      />
+    );
     expect(screen.getByText('No tasks')).toBeInTheDocument();
   });
 });
