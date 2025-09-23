@@ -21,21 +21,46 @@ function getDayKey(date: Date): Weekday {
   return DAY_FROM_INDEX[date.getDay()];
 }
 
-function getSlotEndTimestamp(baseDate: Date, slot: number): number {
-  const end = new Date(baseDate);
-  const endIndex = slot + 1;
-  const hours = Math.floor(endIndex / 2);
-  const minutes = endIndex % 2 === 0 ? 0 : 30;
-  end.setHours(hours, minutes, 0, 0);
-  return end.getTime();
+const SLOT_DURATION_MINUTES = 30;
+
+function getSlotStartTimestamp(baseDate: Date, slot: number): number {
+  const start = new Date(baseDate);
+  const hours = Math.floor(slot / 2);
+  const minutes = slot % 2 === 0 ? 0 : SLOT_DURATION_MINUTES;
+  start.setHours(hours, minutes, 0, 0);
+  return start.getTime();
 }
 
-function getReminderTimestamp(
+function getSlotEndTimestamp(baseDate: Date, slot: number): number {
+  return (
+    getSlotStartTimestamp(baseDate, slot) + SLOT_DURATION_MINUTES * 60 * 1000
+  );
+}
+
+function getReminderWindow(
   baseDate: Date,
-  slot: number,
+  slots: number[],
   minutesBefore: number
-) {
-  return getSlotEndTimestamp(baseDate, slot) - minutesBefore * 60 * 1000;
+): { reminderAt: number; endAt: number } | null {
+  const safeMinutes = Number.isFinite(minutesBefore)
+    ? Math.max(0, Math.floor(minutesBefore))
+    : 0;
+
+  if (!slots || slots.length === 0 || safeMinutes <= 0) {
+    return null;
+  }
+
+  const sortedSlots = Array.from(new Set(slots)).sort((a, b) => a - b);
+  const lastSlot = sortedSlots[sortedSlots.length - 1];
+
+  if (typeof lastSlot !== 'number' || Number.isNaN(lastSlot)) {
+    return null;
+  }
+
+  const endAt = getSlotEndTimestamp(baseDate, lastSlot);
+  const reminderAt = endAt - safeMinutes * 60 * 1000;
+
+  return { reminderAt, endAt };
 }
 
 export default function WorkScheduleManager() {
@@ -56,14 +81,12 @@ export default function WorkScheduleManager() {
         return;
       }
 
-      const sortedSlots = [...slots].sort((a, b) => a - b);
-      const lastSlot = sortedSlots[sortedSlots.length - 1];
-      const reminderAt = getReminderTimestamp(
-        today,
-        lastSlot,
-        reminder.minutesBefore
-      );
-      const endAt = getSlotEndTimestamp(today, lastSlot);
+      const window = getReminderWindow(today, slots, reminder.minutesBefore);
+      if (!window) {
+        return;
+      }
+
+      const { reminderAt, endAt } = window;
       const now = Date.now();
 
       if (now >= reminderAt && now < endAt) {
