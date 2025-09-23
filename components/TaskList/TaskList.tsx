@@ -12,9 +12,16 @@ import NoTasksIllustration from './NoTasksIllustration';
 
 interface TaskListProps extends UseTaskListProps {
   highlightedId?: string | null;
+  hasTasks: boolean;
+  isFiltering: boolean;
 }
 
-export default function TaskList({ tasks, highlightedId }: TaskListProps) {
+export default function TaskList({
+  tasks,
+  highlightedId,
+  hasTasks,
+  isFiltering,
+}: TaskListProps) {
   const { state, actions } = useTaskList({ tasks });
   const { sensors } = state;
   const { handleDragEnd } = actions;
@@ -109,6 +116,8 @@ export default function TaskList({ tasks, highlightedId }: TaskListProps) {
   }, [tasks, showMyDayHelp, myDayHelpTaskId, hideMyDayHelp]);
 
   const { t } = useI18n();
+  const emptyMessageKey =
+    !hasTasks && !isFiltering ? 'taskList.noTasksIntro' : 'taskList.noTasks';
   return (
     <DndContext
       sensors={sensors}
@@ -131,7 +140,7 @@ export default function TaskList({ tasks, highlightedId }: TaskListProps) {
           {tasks.length === 0 && (
             <div className="flex flex-col items-center">
               <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                {t('taskList.noTasks')}
+                {t(emptyMessageKey)}
               </p>
               <NoTasksIllustration className="mt-4 text-gray-400 dark:text-gray-500" />
             </div>
