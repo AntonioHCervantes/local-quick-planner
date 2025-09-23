@@ -26,7 +26,20 @@ export default function useAddTask({
   useEffect(() => {
     setTags(prev => {
       const existingLabels = existingTags.map(t => t.label);
-      return prev.filter(t => existingLabels.includes(t));
+      const favoriteLabels = existingTags
+        .filter(t => t.favorite)
+        .map(t => t.label);
+
+      const filtered = prev.filter(t => existingLabels.includes(t));
+      const withFavorites = [...filtered];
+
+      favoriteLabels.forEach(label => {
+        if (!withFavorites.includes(label)) {
+          withFavorites.push(label);
+        }
+      });
+
+      return withFavorites;
     });
   }, [existingTags]);
 
