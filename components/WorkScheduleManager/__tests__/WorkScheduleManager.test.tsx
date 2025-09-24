@@ -98,6 +98,35 @@ describe('WorkScheduleManager', () => {
     });
   });
 
+  it('handles reminder offsets that are persisted as strings', () => {
+    jest.setSystemTime(new Date('2024-05-01T16:29:30.000Z'));
+    useStore.setState({
+      notifications: [],
+      workSchedule: {
+        ...initialState.workSchedule,
+        wednesday: [30, 31, 32, 33],
+      },
+      workPreferences: {
+        planningReminder: {
+          enabled: true,
+          minutesBefore: '30' as unknown as number,
+          lastNotifiedDate: null,
+        },
+      },
+    });
+
+    render(<WorkScheduleManager />);
+
+    act(() => {
+      jest.advanceTimersByTime(30_000);
+    });
+
+    expect(mockedToast).toHaveBeenCalled();
+    expect(
+      useStore.getState().workPreferences.planningReminder.lastNotifiedDate
+    ).toBe('2024-05-01');
+  });
+
   it('does not emit reminders once the workday has ended', () => {
     jest.setSystemTime(new Date('2024-05-01T17:00:10.000Z'));
     useStore.setState({

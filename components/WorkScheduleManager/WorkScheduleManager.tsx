@@ -37,16 +37,31 @@ function getSlotEndTimestamp(baseDate: Date, slot: number): number {
   );
 }
 
+function coerceReminderMinutes(input: number): number | null {
+  const parsed = Number(input);
+  if (!Number.isFinite(parsed)) {
+    return null;
+  }
+
+  const floored = Math.floor(parsed);
+  if (floored <= 0) {
+    return null;
+  }
+
+  return floored;
+}
+
 function getReminderWindow(
   baseDate: Date,
   slots: number[],
   minutesBefore: number
 ): { reminderAt: number; endAt: number } | null {
-  const safeMinutes = Number.isFinite(minutesBefore)
-    ? Math.max(0, Math.floor(minutesBefore))
-    : 0;
+  if (!slots || slots.length === 0) {
+    return null;
+  }
 
-  if (!slots || slots.length === 0 || safeMinutes <= 0) {
+  const safeMinutes = coerceReminderMinutes(minutesBefore);
+  if (!safeMinutes) {
     return null;
   }
 
