@@ -47,6 +47,7 @@ export default function Header() {
   );
   const headerRef = useRef<HTMLElement | null>(null);
   const bellRef = useRef<HTMLAnchorElement | null>(null);
+  const langMenuRef = useRef<HTMLDivElement | null>(null);
   const [popoverPosition, setPopoverPosition] = useState<{
     top: number;
     right: number;
@@ -132,6 +133,28 @@ export default function Header() {
     };
   }, [showNotificationPopover, lastNotificationId, updatePopoverPosition]);
 
+  useEffect(() => {
+    if (!showLang) {
+      return;
+    }
+
+    const handlePointerDown = (event: PointerEvent) => {
+      if (
+        langMenuRef.current &&
+        event.target instanceof Node &&
+        !langMenuRef.current.contains(event.target)
+      ) {
+        setShowLang(false);
+      }
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+    };
+  }, [showLang, setShowLang]);
+
   return (
     <>
       <header
@@ -183,7 +206,10 @@ export default function Header() {
                 <Moon className="h-4 w-4" />
               )}
             </button>
-            <div className="relative">
+            <div
+              className="relative"
+              ref={langMenuRef}
+            >
               <button
                 onClick={() => setShowLang(v => !v)}
                 aria-label={t('actions.language')}
