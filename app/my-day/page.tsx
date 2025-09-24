@@ -8,9 +8,6 @@ import { useI18n } from '../../lib/i18n';
 export default function MyDayPage() {
   const { t } = useI18n();
   const tasks = useStore(state => state.tasks);
-  const clearCompletedMyDayTasks = useStore(
-    state => state.clearCompletedMyDayTasks
-  );
   const plannedTasks = tasks.filter(task => task.plannedFor !== null);
   const remainingTasks = plannedTasks.filter(task => task.dayStatus !== 'done');
   const progressPercent = plannedTasks.length
@@ -20,10 +17,6 @@ export default function MyDayPage() {
       )
     : 0;
   const hasMyDayTasks = plannedTasks.length > 0;
-  const allTasksCompleted = hasMyDayTasks && remainingTasks.length === 0;
-  const clearCompletedLabel = allTasksCompleted
-    ? t('myDayPage.progress.clearCompleted')
-    : undefined;
 
   return (
     <main
@@ -35,13 +28,7 @@ export default function MyDayPage() {
     >
       {hasMyDayTasks ? (
         <>
-          <ProgressBar
-            percent={progressPercent}
-            onClearCompleted={
-              allTasksCompleted ? clearCompletedMyDayTasks : undefined
-            }
-            clearCompletedLabel={clearCompletedLabel}
-          />
+          <ProgressBar percent={progressPercent} />
           <Board mode="my-day" />
         </>
       ) : (
