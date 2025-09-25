@@ -1,6 +1,3 @@
-jest.mock('react-hot-toast', () => ({
-  toast: jest.fn(),
-}));
 jest.mock('../../../lib/sounds', () => ({
   playReminderSound: jest.fn(),
 }));
@@ -9,12 +6,10 @@ import { act } from '@testing-library/react';
 import { render } from '../../../test/test-utils';
 import WorkScheduleManager from '../WorkScheduleManager';
 import { useStore } from '../../../lib/store';
-import { toast } from 'react-hot-toast';
 import { playReminderSound } from '../../../lib/sounds';
 
 describe('WorkScheduleManager', () => {
   const initialState = useStore.getState();
-  const mockedToast = toast as jest.MockedFunction<typeof toast>;
   const mockedPlayReminderSound = playReminderSound as jest.MockedFunction<
     typeof playReminderSound
   >;
@@ -36,7 +31,6 @@ describe('WorkScheduleManager', () => {
         },
       },
     });
-    mockedToast.mockClear();
     mockedPlayReminderSound.mockClear();
   });
 
@@ -66,10 +60,7 @@ describe('WorkScheduleManager', () => {
       titleKey: 'notifications.workReminder.title',
       descriptionKey: 'notifications.workReminder.description',
     });
-    expect(mockedToast).toHaveBeenCalledWith(
-      'Your workday is about to end. Take a moment to plan tomorrow.',
-      { duration: 8000 }
-    );
+    expect(state.notifications).toHaveLength(1);
     expect(mockedPlayReminderSound).toHaveBeenCalled();
   });
 
@@ -92,7 +83,8 @@ describe('WorkScheduleManager', () => {
 
     render(<WorkScheduleManager />);
 
-    expect(mockedToast).not.toHaveBeenCalled();
+    expect(useStore.getState().notifications).toHaveLength(0);
+    expect(mockedPlayReminderSound).not.toHaveBeenCalled();
 
     act(() => {
       jest.advanceTimersByTime(15_000);
@@ -101,7 +93,8 @@ describe('WorkScheduleManager', () => {
     expect(useStore.getState().workPreferences.planningReminder).toMatchObject({
       lastNotifiedDate: '2024-05-01',
     });
-    expect(mockedToast).toHaveBeenCalled();
+    expect(useStore.getState().notifications).toHaveLength(1);
+    expect(mockedPlayReminderSound).toHaveBeenCalledTimes(1);
   });
 
   it('handles reminder offsets that are persisted as strings', () => {
@@ -127,10 +120,11 @@ describe('WorkScheduleManager', () => {
       jest.advanceTimersByTime(30_000);
     });
 
-    expect(mockedToast).toHaveBeenCalled();
     expect(
       useStore.getState().workPreferences.planningReminder.lastNotifiedDate
     ).toBe('2024-05-01');
+    expect(useStore.getState().notifications).toHaveLength(1);
+    expect(mockedPlayReminderSound).toHaveBeenCalledTimes(1);
   });
 
   it('fires immediately when already within the reminder window', () => {
@@ -152,8 +146,8 @@ describe('WorkScheduleManager', () => {
 
     render(<WorkScheduleManager />);
 
-    expect(mockedToast).toHaveBeenCalled();
-    expect(mockedPlayReminderSound).toHaveBeenCalled();
+    expect(useStore.getState().notifications).toHaveLength(1);
+    expect(mockedPlayReminderSound).toHaveBeenCalledTimes(1);
   });
 
   it('emits once when the reminder is enabled during the window', () => {
@@ -175,13 +169,14 @@ describe('WorkScheduleManager', () => {
 
     render(<WorkScheduleManager />);
 
-    expect(mockedToast).not.toHaveBeenCalled();
+    expect(useStore.getState().notifications).toHaveLength(0);
+    expect(mockedPlayReminderSound).not.toHaveBeenCalled();
 
     act(() => {
       useStore.getState().setPlanningReminderEnabled(true);
     });
 
-    expect(mockedToast).toHaveBeenCalledTimes(1);
+    expect(useStore.getState().notifications).toHaveLength(1);
     expect(mockedPlayReminderSound).toHaveBeenCalledTimes(1);
   });
 
@@ -208,10 +203,10 @@ describe('WorkScheduleManager', () => {
       jest.advanceTimersByTime(30_000);
     });
 
-    expect(mockedToast).not.toHaveBeenCalled();
     expect(mockedPlayReminderSound).not.toHaveBeenCalled();
     expect(
       useStore.getState().workPreferences.planningReminder.lastNotifiedDate
     ).toBeNull();
+    expect(useStore.getState().notifications).toHaveLength(0);
   });
 });

@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect } from 'react';
-import { toast } from 'react-hot-toast';
-import { useI18n } from '../../lib/i18n';
 import { useStore } from '../../lib/store';
 import type { Weekday } from '../../lib/types';
 import { playReminderSound } from '../../lib/sounds';
@@ -113,8 +111,6 @@ function findNextReminderWindow(
 }
 
 export default function WorkScheduleManager() {
-  const { t } = useI18n();
-
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout> | null = null;
     let destroyed = false;
@@ -164,7 +160,6 @@ export default function WorkScheduleManager() {
           const todayKey = getLocalDateKey(now);
           if (reminder.lastNotifiedDate !== todayKey) {
             state.setPlanningReminderLastNotified(todayKey);
-            toast(t('workSchedulePage.reminder.toast'), { duration: 8000 });
             playReminderSound();
             const randomId =
               typeof globalThis.crypto?.randomUUID === 'function'
@@ -223,7 +218,7 @@ export default function WorkScheduleManager() {
       }
       unsubscribe();
     };
-  }, [t]);
+  }, []);
 
   return null;
 }
