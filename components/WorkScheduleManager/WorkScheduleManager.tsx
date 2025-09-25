@@ -51,6 +51,13 @@ function coerceReminderMinutes(input: number): number | null {
   return floored;
 }
 
+function getLocalDateKey(date: Date): string {
+  const year = date.getFullYear();
+  const month = `${date.getMonth() + 1}`.padStart(2, '0');
+  const day = `${date.getDate()}`.padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 function getReminderWindow(
   baseDate: Date,
   slots: number[],
@@ -78,57 +85,144 @@ function getReminderWindow(
   return { reminderAt, endAt };
 }
 
+function findNextReminderWindow(
+  fromDate: Date,
+  schedule: Record<Weekday, number[]>,
+  minutesBefore: number
+): { reminderAt: number; endAt: number } | null {
+  for (let offset = 1; offset <= 7; offset += 1) {
+    const candidate = new Date(fromDate);
+    candidate.setDate(candidate.getDate() + offset);
+    const dayKey = getDayKey(candidate);
+    const slots = schedule[dayKey];
+    if (!slots || slots.length === 0) {
+      continue;
+    }
+
+    const window = getReminderWindow(candidate, slots, minutesBefore);
+    if (!window) {
+      continue;
+    }
+
+    if (window.reminderAt > fromDate.getTime()) {
+      return window;
+    }
+  }
+
+  return null;
+}
+
 export default function WorkScheduleManager() {
   const { t } = useI18n();
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    let destroyed = false;
+
+    const scheduleCheck = (delay: number) => {
+      if (destroyed) {
+        return;
+      }
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      const normalizedDelay = Number.isFinite(delay) ? Math.floor(delay) : 0;
+      const safeDelay = Math.min(
+        2_147_483_647,
+        Math.max(1000, normalizedDelay)
+      );
+      timeoutId = setTimeout(runCheck, safeDelay);
+    };
+
+    const runCheck = () => {
+      if (destroyed) {
+        return;
+      }
+
       const state = useStore.getState();
       const reminder = state.workPreferences.planningReminder;
       if (!reminder.enabled) {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+          timeoutId = null;
+        }
         return;
       }
 
-      const today = new Date();
-      const dayKey = getDayKey(today);
+      const now = new Date();
+      const nowTimestamp = now.getTime();
+      const dayKey = getDayKey(now);
       const slots = state.workSchedule[dayKey];
-      if (!slots || slots.length === 0) {
-        return;
-      }
+      const window = slots
+        ? getReminderWindow(now, slots, reminder.minutesBefore)
+        : null;
 
-      const window = getReminderWindow(today, slots, reminder.minutesBefore);
-      if (!window) {
-        return;
-      }
+      if (window) {
+        const { reminderAt, endAt } = window;
 
-      const { reminderAt, endAt } = window;
-      const now = Date.now();
+        if (nowTimestamp >= reminderAt && nowTimestamp < endAt) {
+          const todayKey = getLocalDateKey(now);
+          if (reminder.lastNotifiedDate !== todayKey) {
+            state.setPlanningReminderLastNotified(todayKey);
+            toast(t('workSchedulePage.reminder.toast'), { duration: 8000 });
+            playReminderSound();
+            const randomId =
+              typeof globalThis.crypto?.randomUUID === 'function'
+                ? globalThis.crypto.randomUUID()
+                : `${Date.now().toString(36)}`;
+            state.addNotification({
+              id: `work-reminder-${todayKey}-${randomId}`,
+              type: 'tip',
+              titleKey: 'notifications.workReminder.title',
+              descriptionKey: 'notifications.workReminder.description',
+              read: false,
+              createdAt: new Date().toISOString(),
+            });
+          }
 
-      if (now >= reminderAt && now < endAt) {
-        const todayKey = today.toISOString().slice(0, 10);
-        if (reminder.lastNotifiedDate === todayKey) {
+          scheduleCheck(Math.max(1000, endAt - nowTimestamp));
           return;
         }
 
-        state.setPlanningReminderLastNotified(todayKey);
-        toast(t('workSchedulePage.reminder.toast'), { duration: 8000 });
-        playReminderSound();
-        const randomId =
-          typeof globalThis.crypto?.randomUUID === 'function'
-            ? globalThis.crypto.randomUUID()
-            : `${Date.now().toString(36)}`;
-        state.addNotification({
-          id: `work-reminder-${todayKey}-${randomId}`,
-          type: 'tip',
-          titleKey: 'notifications.workReminder.title',
-          descriptionKey: 'notifications.workReminder.description',
-          read: false,
-          createdAt: new Date().toISOString(),
-        });
+        if (nowTimestamp < reminderAt) {
+          scheduleCheck(reminderAt - nowTimestamp);
+          return;
+        }
       }
-    }, 30000);
 
-    return () => clearInterval(interval);
+      const nextWindow = findNextReminderWindow(
+        now,
+        state.workSchedule,
+        reminder.minutesBefore
+      );
+
+      if (nextWindow) {
+        scheduleCheck(nextWindow.reminderAt - nowTimestamp);
+      } else {
+        scheduleCheck(6 * 60 * 60 * 1000);
+      }
+    };
+
+    runCheck();
+
+    const unsubscribe = useStore.subscribe((state, previousState) => {
+      const planningChanged =
+        state.workPreferences.planningReminder !==
+        previousState.workPreferences.planningReminder;
+      const scheduleChanged = state.workSchedule !== previousState.workSchedule;
+
+      if (planningChanged || scheduleChanged) {
+        runCheck();
+      }
+    });
+
+    return () => {
+      destroyed = true;
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      unsubscribe();
+    };
   }, [t]);
 
   return null;

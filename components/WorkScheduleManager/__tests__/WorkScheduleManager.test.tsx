@@ -41,6 +41,10 @@ describe('WorkScheduleManager', () => {
   });
 
   afterEach(() => {
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+    jest.clearAllTimers();
     jest.useRealTimers();
     useStore.setState(initialState, true);
   });
@@ -88,14 +92,16 @@ describe('WorkScheduleManager', () => {
 
     render(<WorkScheduleManager />);
 
+    expect(mockedToast).not.toHaveBeenCalled();
+
     act(() => {
-      jest.advanceTimersByTime(30_000);
+      jest.advanceTimersByTime(15_000);
     });
 
-    expect(mockedToast).toHaveBeenCalled();
     expect(useStore.getState().workPreferences.planningReminder).toMatchObject({
       lastNotifiedDate: '2024-05-01',
     });
+    expect(mockedToast).toHaveBeenCalled();
   });
 
   it('handles reminder offsets that are persisted as strings', () => {
@@ -125,6 +131,58 @@ describe('WorkScheduleManager', () => {
     expect(
       useStore.getState().workPreferences.planningReminder.lastNotifiedDate
     ).toBe('2024-05-01');
+  });
+
+  it('fires immediately when already within the reminder window', () => {
+    jest.setSystemTime(new Date('2024-05-01T16:45:10.000Z'));
+    useStore.setState({
+      notifications: [],
+      workSchedule: {
+        ...initialState.workSchedule,
+        wednesday: [30, 31, 32, 33],
+      },
+      workPreferences: {
+        planningReminder: {
+          enabled: true,
+          minutesBefore: 15,
+          lastNotifiedDate: null,
+        },
+      },
+    });
+
+    render(<WorkScheduleManager />);
+
+    expect(mockedToast).toHaveBeenCalled();
+    expect(mockedPlayReminderSound).toHaveBeenCalled();
+  });
+
+  it('emits once when the reminder is enabled during the window', () => {
+    jest.setSystemTime(new Date('2024-05-01T16:45:10.000Z'));
+    useStore.setState({
+      notifications: [],
+      workSchedule: {
+        ...initialState.workSchedule,
+        wednesday: [30, 31, 32, 33],
+      },
+      workPreferences: {
+        planningReminder: {
+          enabled: false,
+          minutesBefore: 15,
+          lastNotifiedDate: null,
+        },
+      },
+    });
+
+    render(<WorkScheduleManager />);
+
+    expect(mockedToast).not.toHaveBeenCalled();
+
+    act(() => {
+      useStore.getState().setPlanningReminderEnabled(true);
+    });
+
+    expect(mockedToast).toHaveBeenCalledTimes(1);
+    expect(mockedPlayReminderSound).toHaveBeenCalledTimes(1);
   });
 
   it('does not emit reminders once the workday has ended', () => {
