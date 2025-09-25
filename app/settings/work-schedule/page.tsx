@@ -214,7 +214,7 @@ export default function WorkSchedulePage() {
                 {SLOT_INDICES.map(slot => (
                   <tr key={slot}>
                     <th className="sticky left-0 border border-gray-200 bg-gray-50 px-2 py-2 text-left font-normal dark:border-gray-700 dark:bg-gray-800">
-                      {formatSlotStart(slot)}
+                      {formatSlotRange(slot)}
                     </th>
                     {WEEK_DAYS.map(day => {
                       const isSelected = selectedSlots[day].has(slot);
