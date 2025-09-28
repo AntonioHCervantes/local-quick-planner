@@ -14,6 +14,7 @@ import {
   AlertTriangle,
   Info,
   Lightbulb,
+  Languages,
 } from 'lucide-react';
 import { Language, LANGUAGES } from '../../lib/i18n';
 import Icon from '../Icon/Icon';
@@ -351,13 +352,14 @@ export default function Header() {
                 <CalendarClock className="h-4 w-4" />{' '}
                 {t('actions.workSchedule')}
               </Link>
-              <div className="mt-2 border-t pt-2">
-                <label
-                  htmlFor="language-select"
-                  className="mb-2 block text-sm"
-                >
+              <label
+                htmlFor="language-select"
+                className="flex items-center gap-2 rounded px-2 py-2 hover:bg-gray-200 focus-within:bg-gray-200 dark:hover:bg-gray-800 dark:focus-within:bg-gray-800"
+              >
+                <Languages className="h-4 w-4" />
+                <span className="flex-1 text-left text-sm font-medium">
                   {t('actions.language')}
-                </label>
+                </span>
                 <select
                   id="language-select"
                   value={language}
@@ -365,7 +367,7 @@ export default function Header() {
                     setLanguage(e.target.value as Language);
                     setShowActions(false);
                   }}
-                  className="w-full rounded px-2 py-2 bg-gray-200 dark:bg-gray-800"
+                  className="rounded border border-transparent bg-transparent px-2 py-1 text-sm font-semibold text-gray-900 focus:border-gray-400 focus:outline-none dark:text-gray-100 dark:focus:border-gray-600"
                 >
                   {LANGUAGES.map(code => (
                     <option
@@ -376,7 +378,7 @@ export default function Header() {
                     </option>
                   ))}
                 </select>
-              </div>
+              </label>
             </div>
           </div>
         </div>
