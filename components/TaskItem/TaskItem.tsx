@@ -179,7 +179,7 @@ export default function TaskItem({
             aria-controls={repeatPanelId}
             aria-label={repeatButtonLabel}
             title={repeatButtonLabel}
-            className={`rounded bg-transparent p-1 text-black focus-visible:ring dark:text-white ${
+            className={`flex items-center justify-center rounded bg-transparent p-1 text-black focus-visible:ring dark:text-white ${
               showRecurringOptions || selectedDays.length > 0
                 ? 'text-[#57886C]'
                 : ''
@@ -201,7 +201,7 @@ export default function TaskItem({
                 ? t('taskItem.removeMyDay')
                 : t('taskItem.addMyDay')
             }
-            className={`rounded bg-transparent p-1 text-black focus:ring dark:text-white ${
+            className={`flex items-center justify-center rounded bg-transparent p-1 text-black focus:ring dark:text-white ${
               showHelp
                 ? 'animate-pulse ring-2 ring-[#57886C] ring-offset-2 ring-offset-gray-100 dark:ring-offset-gray-900'
                 : ''
@@ -242,7 +242,7 @@ export default function TaskItem({
           onClick={() => removeTask(task.id)}
           aria-label={t('taskItem.deleteTask')}
           title={t('taskItem.deleteTask')}
-          className="rounded bg-transparent p-1 text-black focus:ring dark:text-white"
+          className="flex items-center justify-center rounded bg-transparent p-1 text-black focus:ring dark:text-white"
         >
           <Trash2 className="h-4 w-4" />
         </button>
