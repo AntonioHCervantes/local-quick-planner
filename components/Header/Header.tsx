@@ -352,14 +352,16 @@ export default function Header() {
                 <CalendarClock className="h-4 w-4" />{' '}
                 {t('actions.workSchedule')}
               </Link>
-              <label
-                htmlFor="language-select"
-                className="flex items-center gap-2 rounded px-2 py-2 hover:bg-gray-200 focus-within:bg-gray-200 dark:hover:bg-gray-800 dark:focus-within:bg-gray-800"
-              >
-                <Languages className="h-4 w-4" />
-                <span className="flex-1 text-left text-sm font-medium">
-                  {t('actions.language')}
-                </span>
+              <div className="rounded px-2 py-2 hover:bg-gray-200 focus-within:bg-gray-200 dark:hover:bg-gray-800 dark:focus-within:bg-gray-800">
+                <div className="flex items-center gap-2">
+                  <Languages className="h-4 w-4" />
+                  <label
+                    htmlFor="language-select"
+                    className="flex-1 text-left text-sm font-medium text-gray-900 dark:text-gray-100"
+                  >
+                    {t('actions.language')}
+                  </label>
+                </div>
                 <select
                   id="language-select"
                   value={language}
@@ -367,7 +369,7 @@ export default function Header() {
                     setLanguage(e.target.value as Language);
                     setShowActions(false);
                   }}
-                  className="rounded border border-transparent bg-transparent px-2 py-1 text-sm font-semibold text-gray-900 focus:border-gray-400 focus:outline-none dark:text-gray-100 dark:focus:border-gray-600"
+                  className="mt-2 w-full rounded border border-gray-300 bg-white px-2 py-1 text-sm font-semibold text-gray-900 focus:border-gray-400 focus:outline-none dark:border-gray-700 dark:bg-gray-950 dark:text-gray-100 dark:focus:border-gray-500"
                 >
                   {LANGUAGES.map(code => (
                     <option
@@ -378,7 +380,7 @@ export default function Header() {
                     </option>
                   ))}
                 </select>
-              </label>
+              </div>
             </div>
           </div>
         </div>
