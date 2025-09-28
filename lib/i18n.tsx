@@ -110,6 +110,12 @@ const translations: Record<Language, any> = {
       noTasks: 'No tasks',
       noTasksIntro: 'Add your first task!',
     },
+    tasksView: {
+      mobileAddTask: {
+        show: 'Add task',
+        hide: 'Hide form',
+      },
+    },
     tagFilter: {
       showAll: 'Show all',
       confirmDelete:
@@ -414,6 +420,12 @@ const translations: Record<Language, any> = {
     taskList: {
       noTasks: 'No hay tareas',
       noTasksIntro: '¡Añade tu primera tarea!',
+    },
+    tasksView: {
+      mobileAddTask: {
+        show: 'Añadir tarea',
+        hide: 'Ocultar formulario',
+      },
     },
     tagFilter: {
       showAll: 'Mostrar todas',
