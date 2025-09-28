@@ -371,9 +371,15 @@ export const useStore = create<Store>((set, get) => ({
       const priorityKey = `priority-${priority}`;
       newOrder[priorityKey] = [...(newOrder[priorityKey] || []), id];
       const lastTag = tags[tags.length - 1];
-      const updatedTags = state.tags.map(t =>
-        t.label === lastTag ? { ...t, favorite: true } : t
+      const hasOtherFavorite = state.tags.some(
+        tag => tag.favorite && tag.label !== lastTag
       );
+      const updatedTags =
+        lastTag && !hasOtherFavorite
+          ? state.tags.map(t =>
+              t.label === lastTag ? { ...t, favorite: true } : t
+            )
+          : state.tags;
       return {
         tasks: [...state.tasks, task],
         order: newOrder,
