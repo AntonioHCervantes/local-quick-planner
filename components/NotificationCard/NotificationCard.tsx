@@ -4,6 +4,7 @@ import { Info, AlertTriangle, Lightbulb, X } from 'lucide-react';
 import { useI18n } from '../../lib/i18n';
 import { Notification } from '../../lib/types';
 import { useStore } from '../../lib/store';
+import { getNotificationIconClasses } from '../../lib/notifications';
 
 interface Props {
   notification: Notification;
@@ -38,12 +39,10 @@ export default function NotificationCard({ notification }: Props) {
         />
       </button>
       <div className="flex items-start gap-4">
-        <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-300">
-          <Icon
-            className="h-6 w-6"
-            aria-hidden="true"
-          />
-        </div>
+        <Icon
+          className={`mt-1 h-6 w-6 flex-shrink-0 ${getNotificationIconClasses(notification.type)}`}
+          aria-hidden="true"
+        />
         <div className="flex-1 space-y-3 pr-8">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
             {title}
