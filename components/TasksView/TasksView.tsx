@@ -1,4 +1,6 @@
 'use client';
+import { useEffect, useState } from 'react';
+import { Plus } from 'lucide-react';
 import AddTask from '../AddTask/AddTask';
 import TaskList from '../TaskList/TaskList';
 import TagFilter from '../TagFilter/TagFilter';
@@ -27,13 +29,45 @@ export default function TasksView() {
     cancelRemoveTag,
   } = actions;
   const { t } = useI18n();
+  const [showMobileAddTask, setShowMobileAddTask] = useState(!hasTasks);
+
+  useEffect(() => {
+    if (!hasTasks) {
+      setShowMobileAddTask(true);
+    }
+  }, [hasTasks]);
+
+  const showMobileForm = () => {
+    setShowMobileAddTask(true);
+  };
   return (
     <main>
-      <AddTask
-        addTask={addTask}
-        tags={tags}
-        addTag={addTag}
-      />
+      {hasTasks && !showMobileAddTask && (
+        <div className="sm:hidden">
+          <div className="flex justify-center px-4 pt-4">
+            <button
+              type="button"
+              onClick={showMobileForm}
+              className="flex items-center gap-2 rounded bg-[#57886C] px-4 py-2 text-sm text-white hover:brightness-110 focus:ring"
+              aria-expanded={showMobileAddTask}
+              aria-controls="tasks-view-add-task"
+            >
+              <Plus className="h-4 w-4" />
+              {t('tasksView.mobileAddTask.show')}
+            </button>
+          </div>
+        </div>
+      )}
+      <div
+        id="tasks-view-add-task"
+        className={`${hasTasks && !showMobileAddTask ? 'hidden ' : ''}sm:block`}
+      >
+        <AddTask
+          addTask={addTask}
+          tags={tags}
+          addTag={addTag}
+        />
+      </div>
       <TagFilter
         tags={tags}
         activeTags={activeTags}
