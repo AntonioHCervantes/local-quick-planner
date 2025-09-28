@@ -113,7 +113,6 @@ const translations: Record<Language, any> = {
     tasksView: {
       mobileAddTask: {
         show: 'Add task',
-        hide: 'Hide form',
       },
     },
     tagFilter: {
@@ -424,7 +423,6 @@ const translations: Record<Language, any> = {
     tasksView: {
       mobileAddTask: {
         show: 'Añadir tarea',
-        hide: 'Ocultar formulario',
       },
     },
     tagFilter: {
