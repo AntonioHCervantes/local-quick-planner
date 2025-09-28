@@ -833,8 +833,9 @@ export const useStore = create<Store>((set, get) => ({
     const blob = new Blob([data], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
+    const today = new Date().toISOString().split('T')[0];
     a.href = url;
-    a.download = 'localquickplanner.json';
+    a.download = `localquickplanner-${today}.json`;
     a.click();
     URL.revokeObjectURL(url);
   },
