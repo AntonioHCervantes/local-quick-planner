@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Plus, X } from 'lucide-react';
 import AddTask from '../AddTask/AddTask';
 import TaskList from '../TaskList/TaskList';
@@ -29,35 +29,53 @@ export default function TasksView() {
     cancelRemoveTag,
   } = actions;
   const { t } = useI18n();
-  const [showMobileAddTask, setShowMobileAddTask] = useState(false);
+  const [showMobileAddTask, setShowMobileAddTask] = useState(!hasTasks);
+
+  useEffect(() => {
+    if (!hasTasks) {
+      setShowMobileAddTask(true);
+    }
+  }, [hasTasks]);
 
   const toggleMobileAddTask = () => {
     setShowMobileAddTask(prev => !prev);
   };
   return (
     <main>
-      <div className="sm:hidden">
-        <button
-          type="button"
-          onClick={toggleMobileAddTask}
-          className="mx-4 mt-4 flex items-center gap-2 rounded bg-[#57886C] px-4 py-2 text-sm text-white hover:brightness-110 focus:ring"
-          aria-expanded={showMobileAddTask}
-          aria-controls="tasks-view-add-task"
-        >
-          {showMobileAddTask ? (
-            <X className="h-4 w-4" />
-          ) : (
-            <Plus className="h-4 w-4" />
-          )}
-          {showMobileAddTask
-            ? t('tasksView.mobileAddTask.hide')
-            : t('tasksView.mobileAddTask.show')}
-        </button>
-      </div>
+      {hasTasks && !showMobileAddTask && (
+        <div className="sm:hidden">
+          <div className="flex justify-center px-4 pt-4">
+            <button
+              type="button"
+              onClick={toggleMobileAddTask}
+              className="flex items-center gap-2 rounded bg-[#57886C] px-4 py-2 text-sm text-white hover:brightness-110 focus:ring"
+              aria-expanded={showMobileAddTask}
+              aria-controls="tasks-view-add-task"
+            >
+              <Plus className="h-4 w-4" />
+              {t('tasksView.mobileAddTask.show')}
+            </button>
+          </div>
+        </div>
+      )}
       <div
         id="tasks-view-add-task"
-        className={`${showMobileAddTask ? '' : 'hidden'} sm:block`}
+        className={`${hasTasks && !showMobileAddTask ? 'hidden' : ''} sm:block`}
       >
+        {hasTasks && showMobileAddTask && (
+          <div className="flex justify-end px-4 pt-4 sm:hidden">
+            <button
+              type="button"
+              onClick={toggleMobileAddTask}
+              className="flex items-center gap-2 rounded bg-[#57886C] px-4 py-2 text-sm text-white hover:brightness-110 focus:ring"
+              aria-expanded={showMobileAddTask}
+              aria-controls="tasks-view-add-task"
+            >
+              <X className="h-4 w-4" />
+              {t('tasksView.mobileAddTask.hide')}
+            </button>
+          </div>
+        )}
         <AddTask
           addTask={addTask}
           tags={tags}
