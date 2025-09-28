@@ -17,6 +17,7 @@ import {
   Languages,
 } from 'lucide-react';
 import { Language, LANGUAGES } from '../../lib/i18n';
+import { getNotificationIconClasses } from '../../lib/notifications';
 import Icon from '../Icon/Icon';
 import useHeader from './useHeader';
 
@@ -268,7 +269,9 @@ export default function Header() {
                 }}
               >
                 <div className="flex items-start gap-4">
-                  <NotificationIcon className="mt-1 h-6 w-6 flex-shrink-0 text-blue-600 dark:text-blue-300" />
+                  <NotificationIcon
+                    className={`mt-1 h-6 w-6 flex-shrink-0 ${getNotificationIconClasses(latestUnreadNotification.type)}`}
+                  />
                   <div className="min-w-0">
                     <p className="text-base font-semibold text-slate-900 dark:text-slate-100">
                       {popoverTitle}
