@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState, type MouseEvent } from 'react';
-import { Check, Trash2, Play, Clock } from 'lucide-react';
+import { Check, Trash2, Play, Clock, Star } from 'lucide-react';
 import Link from '../Link/Link';
 import Timer from './Timer';
 import useTaskCard, { UseTaskCardProps } from './useTaskCard';
@@ -31,10 +31,12 @@ export default function TaskCard(props: UseTaskCardProps) {
     priorityClass,
     isMainTask
       ? [
-          'bg-white text-gray-900',
+          'bg-amber-100 text-gray-900',
           'border border-amber-200 hover:border-amber-300',
-          'dark:bg-gray-900 dark:text-amber-50',
+          'outline outline-2 outline-amber-300 outline-offset-4 hover:outline-amber-400',
+          'dark:bg-amber-500/20 dark:text-amber-50',
           'dark:border-amber-300/70 dark:hover:border-amber-200/70',
+          'dark:outline-amber-300/70 dark:hover:outline-amber-200/70',
         ].join(' ')
       : 'bg-gray-100 dark:bg-gray-800 hover:shadow-md',
   ]
@@ -127,15 +129,16 @@ export default function TaskCard(props: UseTaskCardProps) {
                   aria-pressed={isMainTask}
                   aria-label={mainTaskLabel}
                   title={t('taskCard.mainTaskTooltip')}
-                  className={`rounded-full px-3 py-1 text-xs font-medium transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 ${
+                  className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 ${
                     isMainTask
-                      ? 'border border-amber-300 text-amber-700 hover:text-amber-600 dark:border-amber-200/70 dark:text-amber-100'
-                      : 'border border-transparent text-gray-500 hover:border-amber-200 hover:text-amber-500 dark:text-gray-400 dark:hover:border-amber-300/60 dark:hover:text-amber-200'
+                      ? 'text-amber-600 hover:text-amber-500 dark:text-amber-200 dark:hover:text-amber-100'
+                      : 'text-gray-400 hover:text-amber-400 dark:text-gray-500 dark:hover:text-amber-300'
                   }`}
                 >
-                  {isMainTask
-                    ? t('taskCard.mainTaskTooltip')
-                    : t('taskCard.setMainTask')}
+                  <Star
+                    className="h-4 w-4"
+                    strokeWidth={isMainTask ? 1.5 : 2}
+                  />
                 </button>
               </>
             ) : (
