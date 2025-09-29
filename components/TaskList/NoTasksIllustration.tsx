@@ -5,7 +5,7 @@ import type { SVGProps } from 'react';
 export default function NoTasksIllustration(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      viewBox="0 0 100 100"
+      viewBox="0 0 80 80"
       fill="none"
       aria-hidden="true"
       width="50%"
@@ -19,65 +19,73 @@ export default function NoTasksIllustration(props: SVGProps<SVGSVGElement>) {
             to { opacity: 1; }
           }
           @keyframes slideInFromLeft {
-            from { transform: translateX(-20px); opacity: 0; }
+            from { transform: translateX(-12px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
           }
-          .board-outline {
-            animation: fadeIn 0.5s ease-out forwards;
+          @keyframes drawCheck {
+            from { stroke-dashoffset: 26; opacity: 0; }
+            to { stroke-dashoffset: 0; opacity: 1; }
           }
-          .task-line {
-            animation: slideInFromLeft 0.5s ease-out forwards;
+          .logo-base {
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out forwards;
           }
-          .task-line-1 { animation-delay: 0s; }
-          .task-line-2 { animation-delay: 0.2s; }
-          .task-line-3 { animation-delay: 0.4s; }
-          .task-line-4 { animation-delay: 0.6s; }
-          .task-line-5 { animation-delay: 0.8s; }
+          .logo-line {
+            opacity: 0;
+            transform-origin: left center;
+            animation: slideInFromLeft 0.6s ease-out forwards;
+          }
+          .logo-line-1 { animation-delay: 0.1s; }
+          .logo-line-2 { animation-delay: 0.28s; }
+          .logo-line-3 { animation-delay: 0.46s; }
+          .logo-check {
+            stroke-dasharray: 26;
+            stroke-dashoffset: 26;
+            animation: drawCheck 0.6s ease-out forwards;
+            animation-delay: 0.6s;
+          }
         `}
       </style>
-
-      {/* Tareas apareciendo en cascada */}
-      <g transform="translate(25, 5)">
-        <rect
-          width="50"
-          height="1"
-          rx="0.5"
-          className="task-line task-line-1 fill-gray-500 dark:fill-gray-400"
-          style={{ opacity: 0 }}
-        />
-        <rect
-          y="4"
-          width="45"
-          height="1"
-          rx="0.5"
-          className="task-line task-line-2 fill-gray-400 dark:fill-gray-500"
-          style={{ opacity: 0 }}
-        />
-        <rect
-          y="8"
-          width="40"
-          height="1"
-          rx="0.5"
-          className="task-line task-line-3 fill-gray-300 dark:fill-gray-600"
-          style={{ opacity: 0 }}
-        />
-        <rect
-          y="12"
-          width="35"
-          height="1"
-          rx="0.5"
-          className="task-line task-line-4 fill-gray-200 dark:fill-gray-700"
-          style={{ opacity: 0 }}
-        />
-        <rect
-          y="16"
-          width="30"
-          height="1"
-          rx="0.5"
-          className="task-line task-line-5 fill-gray-100 dark:fill-gray-800"
-          style={{ opacity: 0 }}
-        />
-      </g>
+      <rect
+        x="17"
+        y="17"
+        width="46"
+        height="46"
+        rx="9"
+        className="logo-base fill-gray-200 dark:fill-gray-800"
+      />
+      <rect
+        x="26"
+        y="27"
+        width="28"
+        height="3"
+        rx="1.5"
+        className="logo-line logo-line-1 fill-gray-500 dark:fill-gray-200"
+      />
+      <rect
+        x="26"
+        y="38"
+        width="28"
+        height="3"
+        rx="1.5"
+        className="logo-line logo-line-2 fill-gray-400 dark:fill-gray-300"
+      />
+      <rect
+        x="26"
+        y="49"
+        width="14"
+        height="3"
+        rx="1.5"
+        className="logo-line logo-line-3 fill-gray-300 dark:fill-gray-400"
+      />
+      <path
+        d="M44 51L47 54L54 47"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="logo-check stroke-gray-500 dark:stroke-gray-200"
+        fill="none"
+      />
     </svg>
   );
 }
