@@ -23,24 +23,22 @@ export default function TaskCard(props: UseTaskCardProps) {
   const shouldForceShowTimer =
     mode === 'my-day' && task.dayStatus === 'doing' && Boolean(timer?.running);
   const [showTimer, setShowTimer] = useState(() => shouldForceShowTimer);
-  const [isMainTaskEntering, setIsMainTaskEntering] = useState(false);
   const isTimerVisible = showTimer || shouldForceShowTimer;
 
-  const priorityClass = priorityColors[task.priority];
+  const priorityClass = isMainTask
+    ? 'border-l-amber-400 dark:border-l-amber-300'
+    : priorityColors[task.priority];
   const cardClasses = [
-    'group relative z-0 rounded border-l-4 p-4 cursor-grab focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-400 focus-visible:outline-offset-4 transition-all duration-500 ease-out transform-gpu',
+    'group relative z-0 rounded border-l-4 p-4 cursor-grab focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-400 focus-visible:outline-offset-4 transition-colors duration-300 ease-out',
     priorityClass,
     isMainTask
       ? [
           'bg-amber-100 text-gray-900',
           'border border-amber-200 hover:border-amber-300',
-          'outline outline-2 outline-amber-300 outline-offset-4 hover:outline-amber-400',
           'dark:bg-amber-500/20 dark:text-amber-50',
           'dark:border-amber-300/70 dark:hover:border-amber-200/70',
-          'dark:outline-amber-300/70 dark:hover:outline-amber-200/70',
         ].join(' ')
       : 'bg-gray-100 dark:bg-gray-800 hover:shadow-md',
-    isMainTaskEntering ? 'animate-main-task-wow' : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -61,21 +59,6 @@ export default function TaskCard(props: UseTaskCardProps) {
     }
   }, [shouldForceShowTimer]);
 
-  useEffect(() => {
-    if (!isMainTask) {
-      setIsMainTaskEntering(false);
-      return;
-    }
-    setIsMainTaskEntering(true);
-    const timeoutId = window.setTimeout(() => {
-      setIsMainTaskEntering(false);
-    }, 800);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
-  }, [isMainTask]);
-
   const handleToggleTimer = () => {
     if (shouldForceShowTimer) {
       return;
@@ -92,14 +75,6 @@ export default function TaskCard(props: UseTaskCardProps) {
       className={cardClasses}
       data-main-task={isMainTask || undefined}
     >
-      {isMainTask && (
-        <span
-          aria-hidden
-          className={`pointer-events-none absolute left-1/2 top-1/2 h-[18rem] w-[18rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-300/35 blur-3xl ${
-            isMainTaskEntering ? 'animate-main-task-ripple' : 'opacity-0'
-          }`}
-        />
-      )}
       <div className="relative z-10">
         <div
           className={`flex justify-between ${
@@ -156,16 +131,13 @@ export default function TaskCard(props: UseTaskCardProps) {
                   title={t('taskCard.mainTaskTooltip')}
                   className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 ${
                     isMainTask
-                      ? 'bg-amber-200/60 text-amber-700 hover:text-amber-600 dark:bg-amber-400/20 dark:text-amber-200'
+                      ? 'text-amber-600 hover:text-amber-500 dark:text-amber-200 dark:hover:text-amber-100'
                       : 'text-gray-400 hover:text-amber-400 dark:text-gray-500 dark:hover:text-amber-300'
                   }`}
                 >
                   <Star
-                    className={`h-4 w-4 transition-transform duration-300 ease-out ${
-                      isMainTask ? 'scale-110 rotate-3' : ''
-                    }`}
+                    className="h-4 w-4"
                     strokeWidth={isMainTask ? 1.5 : 2}
-                    fill={isMainTask ? 'currentColor' : 'none'}
                   />
                 </button>
               </>
