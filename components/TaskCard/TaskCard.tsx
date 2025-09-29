@@ -25,7 +25,9 @@ export default function TaskCard(props: UseTaskCardProps) {
   const [showTimer, setShowTimer] = useState(() => shouldForceShowTimer);
   const isTimerVisible = showTimer || shouldForceShowTimer;
 
-  const priorityClass = priorityColors[task.priority];
+  const priorityClass = isMainTask
+    ? 'border-l-amber-400 dark:border-l-amber-300'
+    : priorityColors[task.priority];
   const cardClasses = [
     'group relative z-0 rounded border-l-4 p-4 cursor-grab focus:outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-amber-400 focus-visible:outline-offset-4 transition-colors duration-300 ease-out',
     priorityClass,
