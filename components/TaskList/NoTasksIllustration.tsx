@@ -8,8 +8,8 @@ export default function NoTasksIllustration(props: SVGProps<SVGSVGElement>) {
       viewBox="0 0 80 80"
       fill="none"
       aria-hidden="true"
-      width="50%"
-      height="50%"
+      width="20%"
+      height="20%"
       {...props}
     >
       <style>
@@ -52,7 +52,7 @@ export default function NoTasksIllustration(props: SVGProps<SVGSVGElement>) {
         width="28"
         height="3"
         rx="1.5"
-        className="logo-line logo-line-2 fill-gray-400 dark:fill-gray-300"
+        className="logo-line logo-line-2 fill-gray-500 dark:fill-gray-200"
       />
       <rect
         x="26"
@@ -60,7 +60,7 @@ export default function NoTasksIllustration(props: SVGProps<SVGSVGElement>) {
         width="14"
         height="3"
         rx="1.5"
-        className="logo-line logo-line-3 fill-gray-300 dark:fill-gray-400"
+        className="logo-line logo-line-3 fill-gray-500 dark:fill-gray-200"
       />
       <path
         d="M44 51L47 54L54 47"
