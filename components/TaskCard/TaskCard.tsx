@@ -33,10 +33,8 @@ export default function TaskCard(props: UseTaskCardProps) {
       ? [
           'bg-amber-100 text-gray-900',
           'border border-amber-200 hover:border-amber-300',
-          'outline outline-2 outline-amber-300 outline-offset-4 hover:outline-amber-400',
           'dark:bg-amber-500/20 dark:text-amber-50',
           'dark:border-amber-300/70 dark:hover:border-amber-200/70',
-          'dark:outline-amber-300/70 dark:hover:outline-amber-200/70',
         ].join(' ')
       : 'bg-gray-100 dark:bg-gray-800 hover:shadow-md',
   ]
