@@ -14,10 +14,6 @@ export default function NoTasksIllustration(props: SVGProps<SVGSVGElement>) {
     >
       <style>
         {`
-          @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-          }
           @keyframes slideInFromLeft {
             from { transform: translateX(-12px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
@@ -25,10 +21,6 @@ export default function NoTasksIllustration(props: SVGProps<SVGSVGElement>) {
           @keyframes drawCheck {
             from { stroke-dashoffset: 26; opacity: 0; }
             to { stroke-dashoffset: 0; opacity: 1; }
-          }
-          .logo-base {
-            opacity: 0;
-            animation: fadeIn 0.6s ease-out forwards;
           }
           .logo-line {
             opacity: 0;
@@ -46,14 +38,6 @@ export default function NoTasksIllustration(props: SVGProps<SVGSVGElement>) {
           }
         `}
       </style>
-      <rect
-        x="17"
-        y="17"
-        width="46"
-        height="46"
-        rx="9"
-        className="logo-base fill-gray-200 dark:fill-gray-800"
-      />
       <rect
         x="26"
         y="27"
