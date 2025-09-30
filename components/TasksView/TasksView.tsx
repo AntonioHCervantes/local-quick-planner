@@ -83,7 +83,7 @@ export default function TasksView() {
         isFiltering={isFiltering}
       />
       {tagToRemove && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div className="w-full max-w-sm rounded bg-gray-900 p-6 text-center text-gray-100">
             <p className="mb-4">{t('tagFilter.confirmDelete')}</p>
             <div className="flex justify-center gap-2">
