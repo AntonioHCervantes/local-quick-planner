@@ -142,7 +142,7 @@ export default function TaskList({
               <p className="text-center text-sm text-gray-500 dark:text-gray-400">
                 {t(emptyMessageKey)}
               </p>
-              <NoTasksIllustration className="mt-4 text-gray-400 dark:text-gray-500" />
+              <NoTasksIllustration className="mt-2 text-gray-400 dark:text-gray-500" />
             </div>
           )}
         </div>
