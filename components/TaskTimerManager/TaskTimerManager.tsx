@@ -85,7 +85,7 @@ export default function TaskTimerManager() {
               : `${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
           state.addNotification({
             id: `timer-finished-${taskId}-${randomId}`,
-            type: 'alert',
+            type: 'info',
             titleKey: 'notifications.timerFinished.title',
             descriptionKey: 'notifications.timerFinished.description',
             title: t('notifications.timerFinished.title'),
