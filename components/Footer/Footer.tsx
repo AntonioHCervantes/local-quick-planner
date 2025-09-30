@@ -30,6 +30,12 @@ export default function Footer() {
           {t('footer.faqs')}
         </Link>
         <Link
+          href="/demo-templates"
+          className="hover:underline"
+        >
+          {t('footer.demoTemplates')}
+        </Link>
+        <Link
           href="/privacy"
           className="hover:underline"
         >
