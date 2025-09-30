@@ -206,6 +206,11 @@ const translations: Record<Language, any> = {
         'Import these incredible examples of how different professionals can use Local Quick Planner.',
       confirmExisting:
         'You already have tasks or filters saved. Importing a demo template will replace your current data. Export a backup if you do not want to lose your progress. Continue?',
+      successTitle: 'Demo template imported successfully',
+      successDescription:
+        'Your workspace has been populated with demo data. Explore the tasks to see how Local Quick Planner supports this role.',
+      successRoleLabel: 'Role demo:',
+      viewDemoCta: 'View demo',
       roles: {
         techLead: {
           title: 'Technical Lead',
@@ -533,6 +538,11 @@ const translations: Record<Language, any> = {
         'Importa estos ejemplos increíbles de cómo diferentes profesionales pueden usar Local Quick Planner.',
       confirmExisting:
         'Ya tienes tareas o filtros guardados. Importar una plantilla demo reemplazará tus datos actuales. Exporta una copia de seguridad si no quieres perder tu progreso. ¿Quieres continuar?',
+      successTitle: 'Plantilla demo importada correctamente',
+      successDescription:
+        'Hemos rellenado tu espacio de trabajo con datos demo. Explora las tareas para ver cómo Local Quick Planner ayuda a este rol.',
+      successRoleLabel: 'Rol de la demo:',
+      viewDemoCta: 'Ver demo',
       roles: {
         techLead: {
           title: 'Líder Técnico',

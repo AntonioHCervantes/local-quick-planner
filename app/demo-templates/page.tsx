@@ -1,16 +1,38 @@
 'use client';
 
+import { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { DEMO_TEMPLATES } from '../../lib/demoTemplates';
 import { useI18n } from '../../lib/i18n';
 import { useStore } from '../../lib/store';
 
 export default function DemoTemplatesPage() {
   const { t } = useI18n();
+  const router = useRouter();
   const { tasks, tags, importData } = useStore(state => ({
     tasks: state.tasks,
     tags: state.tags,
     importData: state.importData,
   }));
+  const [importedTemplateId, setImportedTemplateId] = useState<string | null>(
+    null
+  );
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  const importedTemplate = useMemo(() => {
+    if (!importedTemplateId) {
+      return null;
+    }
+    return DEMO_TEMPLATES.find(item => item.id === importedTemplateId) ?? null;
+  }, [importedTemplateId]);
+  const importedTemplateTitle = useMemo(() => {
+    if (!importedTemplate) {
+      return null;
+    }
+    const roleTitleKey =
+      `demoTemplatesPage.roles.${importedTemplate.roleKey}.title` as const;
+    return t(roleTitleKey);
+  }, [importedTemplate, t]);
 
   const handleImportTemplate = (templateId: string) => {
     const template = DEMO_TEMPLATES.find(item => item.id === templateId);
@@ -28,6 +50,8 @@ export default function DemoTemplatesPage() {
 
     const nextState = template.createState();
     importData(nextState);
+    setImportedTemplateId(template.id);
+    setShowSuccessModal(true);
   };
 
   return (
@@ -56,7 +80,7 @@ export default function DemoTemplatesPage() {
               <button
                 type="button"
                 onClick={() => handleImportTemplate(template.id)}
-                className="mt-6 inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:hover:bg-blue-500 dark:focus-visible:ring-offset-gray-900"
+                className="mt-6 inline-flex items-center justify-center rounded-lg bg-[#57886C] px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#57886C] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-[#57886C] dark:focus-visible:ring-offset-gray-900"
               >
                 {t(`${rolePath}.importCta`)}
               </button>
@@ -64,6 +88,47 @@ export default function DemoTemplatesPage() {
           );
         })}
       </section>
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+          <div
+            role="dialog"
+            aria-modal="true"
+            className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl dark:bg-gray-900"
+          >
+            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+              {t('demoTemplatesPage.successTitle')}
+            </h2>
+            <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+              {t('demoTemplatesPage.successDescription')}
+            </p>
+            {importedTemplate && importedTemplateTitle ? (
+              <p className="mt-4 text-sm font-medium text-gray-900 dark:text-gray-100">
+                {t('demoTemplatesPage.successRoleLabel')}{' '}
+                <span className="font-semibold">{importedTemplateTitle}</span>
+              </p>
+            ) : null}
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+              <button
+                type="button"
+                onClick={() => setShowSuccessModal(false)}
+                className="inline-flex items-center justify-center rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#57886C] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800 dark:focus-visible:ring-offset-gray-900"
+              >
+                {t('actions.close')}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowSuccessModal(false);
+                  router.push('/my-tasks');
+                }}
+                className="inline-flex items-center justify-center rounded-lg bg-[#57886C] px-4 py-2 text-sm font-semibold text-white transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#57886C] focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:bg-[#57886C] dark:focus-visible:ring-offset-gray-900"
+              >
+                {t('demoTemplatesPage.viewDemoCta')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
