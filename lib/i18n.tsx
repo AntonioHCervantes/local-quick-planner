@@ -137,6 +137,11 @@ const translations: Record<Language, any> = {
         title: 'Welcome to Local Quick Planner',
         description:
           'Use the "My Tasks" board to collect and prioritize everything you need to do. Move items into "My Day" when you are ready to focus on them. Open settings to switch theme, export your data and more.',
+        installCta: 'Install app',
+        installUnavailable:
+          'Install is only available in supported browsers. Try using the browser menu to add Local Quick Planner to your device.',
+        installInstalled: 'App already installed',
+        demoCta: 'Explore demo templates',
       },
       workReminder: {
         title: 'Plan tomorrow',
@@ -468,6 +473,11 @@ const translations: Record<Language, any> = {
         title: '¡Hola! Te damos la bienvenida a Local Quick Planner',
         description:
           'Usa el tablero "Mis Tareas" para reunir y priorizar todo lo que debes hacer. Pasa los elementos a "Mi Día" cuando quieras enfocarte en ellos. Abre los ajustes para cambiar el tema, exportar tus datos y más.',
+        installCta: 'Instalar app',
+        installUnavailable:
+          'La instalación solo está disponible en navegadores compatibles. Usa el menú del navegador para añadir Local Quick Planner a tu dispositivo.',
+        installInstalled: 'La app ya está instalada',
+        demoCta: 'Ver plantillas de demostración',
       },
       workReminder: {
         title: 'Planifica el mañana',
