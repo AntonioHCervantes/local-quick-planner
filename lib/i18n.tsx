@@ -196,8 +196,29 @@ const translations: Record<Language, any> = {
       about: 'About',
       openSource: 'Open Source',
       faqs: 'FAQs & Support',
+      demoTemplates: 'Demo templates',
       privacy: 'Privacy Policy',
       terms: 'Terms of Service',
+    },
+    demoTemplatesPage: {
+      title: 'Demo Templates',
+      intro:
+        'Import these incredible examples of how different professionals can use Local Quick Planner.',
+      confirmExisting:
+        'You already have tasks or filters saved. Importing a demo template will replace your current data. Export a backup if you do not want to lose your progress. Continue?',
+      successTitle: 'Demo template imported successfully',
+      successDescription:
+        'Your workspace has been populated with demo data. Explore the tasks to see how Local Quick Planner supports this role.',
+      successRoleLabel: 'Role demo:',
+      viewDemoCta: 'View demo',
+      roles: {
+        techLead: {
+          title: 'Technical Lead',
+          description:
+            'As a Technical Lead you coordinate incidents, code reviews, system monitoring, and long-term initiatives while keeping the team aligned.',
+          importCta: 'Import demo template',
+        },
+      },
     },
     aboutPage: {
       title: 'About Local Quick Planner',
@@ -507,8 +528,29 @@ const translations: Record<Language, any> = {
       about: 'Acerca de',
       openSource: 'Código abierto',
       faqs: 'Preguntas frecuentes y soporte',
+      demoTemplates: 'Plantillas demo',
       privacy: 'Política de privacidad',
       terms: 'Términos del servicio',
+    },
+    demoTemplatesPage: {
+      title: 'Plantillas demo',
+      intro:
+        'Importa estos ejemplos increíbles de cómo diferentes profesionales pueden usar Local Quick Planner.',
+      confirmExisting:
+        'Ya tienes tareas o filtros guardados. Importar una plantilla demo reemplazará tus datos actuales. Exporta una copia de seguridad si no quieres perder tu progreso. ¿Quieres continuar?',
+      successTitle: 'Plantilla demo importada correctamente',
+      successDescription:
+        'Hemos rellenado tu espacio de trabajo con datos demo. Explora las tareas para ver cómo Local Quick Planner ayuda a este rol.',
+      successRoleLabel: 'Rol de la demo:',
+      viewDemoCta: 'Ver demo',
+      roles: {
+        techLead: {
+          title: 'Líder Técnico',
+          description:
+            'Como Líder Técnico necesitas organizar incidencias, revisar código, monitorizar sistemas y coordinar iniciativas para mantener al equipo alineado.',
+          importCta: 'Importar plantilla demo',
+        },
+      },
     },
     aboutPage: {
       title: 'Acerca de Local Quick Planner',
