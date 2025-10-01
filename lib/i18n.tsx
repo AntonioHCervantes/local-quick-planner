@@ -108,7 +108,7 @@ const translations: Record<Language, any> = {
     priority: { low: 'Low', medium: 'Medium', high: 'High' },
     taskList: {
       noTasks: 'No tasks',
-      noTasksIntro: 'Add your first task!',
+      noTasksIntro: 'Check your plan. Check your day.',
     },
     tasksView: {
       mobileAddTask: {
@@ -444,7 +444,7 @@ const translations: Record<Language, any> = {
     priority: { low: 'Baja', medium: 'Media', high: 'Alta' },
     taskList: {
       noTasks: 'No hay tareas',
-      noTasksIntro: '¡Añade tu primera tarea!',
+      noTasksIntro: 'Check your plan. Check your day.',
     },
     tasksView: {
       mobileAddTask: {
