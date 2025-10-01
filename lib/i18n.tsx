@@ -223,6 +223,30 @@ const translations: Record<Language, any> = {
             'As a Technical Lead you coordinate incidents, code reviews, system monitoring, and long-term initiatives while keeping the team aligned.',
           importCta: 'Import demo template',
         },
+        architect: {
+          title: 'Architect',
+          description:
+            'Architects balance concept development, consultant coordination, site observations, and permit documentation while steering design decisions.',
+          importCta: 'Import demo template',
+        },
+        graphicDesigner: {
+          title: 'Graphic Designer',
+          description:
+            'Graphic Designers juggle concepting, production, feedback rounds, and brand stewardship across digital and print touchpoints.',
+          importCta: 'Import demo template',
+        },
+        marketingDirector: {
+          title: 'Marketing Director',
+          description:
+            'Marketing Directors orchestrate campaigns, analyze performance, align teams, and report outcomes to leadership.',
+          importCta: 'Import demo template',
+        },
+        productManager: {
+          title: 'Product Manager',
+          description:
+            'Product Managers connect discovery insights, stakeholder alignment, delivery execution, and metrics to drive product impact.',
+          importCta: 'Import demo template',
+        },
       },
     },
     aboutPage: {
@@ -558,6 +582,30 @@ const translations: Record<Language, any> = {
           title: 'Líder Técnico',
           description:
             'Como Líder Técnico necesitas organizar incidencias, revisar código, monitorizar sistemas y coordinar iniciativas para mantener al equipo alineado.',
+          importCta: 'Importar plantilla demo',
+        },
+        architect: {
+          title: 'Arquitecto',
+          description:
+            'Como Arquitecto coordinas el desarrollo conceptual, la relación con consultores, las visitas a obra y la documentación para licencias.',
+          importCta: 'Importar plantilla demo',
+        },
+        graphicDesigner: {
+          title: 'Diseñador Gráfico',
+          description:
+            'Como Diseñador Gráfico combinas conceptualización, producción, rondas de feedback y cuidado de la marca en cada entrega.',
+          importCta: 'Importar plantilla demo',
+        },
+        marketingDirector: {
+          title: 'Director de Marketing',
+          description:
+            'Como Director de Marketing diriges campañas, analizas resultados, alineas equipos y reportas el impacto al liderazgo.',
+          importCta: 'Importar plantilla demo',
+        },
+        productManager: {
+          title: 'Product Manager',
+          description:
+            'Como Product Manager conectas investigación, coordinación con stakeholders, ejecución del delivery y métricas para impulsar el producto.',
           importCta: 'Importar plantilla demo',
         },
       },
