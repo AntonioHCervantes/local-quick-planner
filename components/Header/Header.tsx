@@ -166,7 +166,7 @@ export default function Header() {
         <div className="flex items-center gap-2">
           <Icon />
           <span className="hidden text-lg font-semibold text-black dark:text-white sm:inline">
-            Local Quick Planner
+            CheckPlanner
           </span>
         </div>
         <nav className="flex h-full items-center justify-center gap-4">

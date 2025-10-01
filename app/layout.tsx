@@ -12,10 +12,10 @@ import WorkScheduleManager from '../components/WorkScheduleManager/WorkScheduleM
 import RecurringTaskManager from '../components/RecurringTaskManager/RecurringTaskManager';
 
 const description =
-  'Local Quick Planner is a free, fast, private, and open source task manager that boosts your productivity and personal organization at work.';
+  'CheckPlanner is a free, fast, private, and open source task manager that boosts your productivity and personal organization at work.';
 
 export const metadata: Metadata = {
-  title: 'Local Quick Planner',
+  title: 'CheckPlanner',
   description,
   manifest: '/manifest.webmanifest',
   icons: {
@@ -26,15 +26,15 @@ export const metadata: Metadata = {
     apple: [{ url: '/icon-192.png', sizes: '192x192', type: 'image/png' }],
   },
   openGraph: {
-    title: 'Local Quick Planner',
+    title: 'CheckPlanner',
     description,
-    siteName: 'Local Quick Planner',
+    siteName: 'CheckPlanner',
     images: [
       {
         url: '/icon-512.png',
         width: 512,
         height: 512,
-        alt: 'Local Quick Planner logo',
+        alt: 'CheckPlanner logo',
       },
     ],
   },

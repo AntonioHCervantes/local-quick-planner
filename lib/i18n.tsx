@@ -121,7 +121,7 @@ const translations: Record<Language, any> = {
         'Some tasks are using this tag. If you remove it, those tasks will lose the tag. Continue?',
     },
     welcomeModal: {
-      title: 'Local Quick Planner',
+      title: 'CheckPlanner',
       p1: 'Improve your productivity, plan your tasks and organize your daily work.',
       p2: 'Your data is stored locally, nothing is sent to any server.',
       p3: 'Export your data to make local backups from time to time.',
@@ -134,12 +134,12 @@ const translations: Record<Language, any> = {
       empty: 'No notifications',
       dismiss: 'Dismiss notification',
       welcome: {
-        title: 'Welcome to Local Quick Planner',
+        title: 'Welcome to CheckPlanner',
         description:
           'Use the "My Tasks" board to collect and prioritize everything you need to do. Move items into "My Day" when you are ready to focus on them. Open settings to switch theme, export your data and more.',
         installCta: 'Install app',
         installUnavailable:
-          'Install is only available in supported browsers. Try using the browser menu to add Local Quick Planner to your device.',
+          'Install is only available in supported browsers. Try using the browser menu to add CheckPlanner to your device.',
         installInstalled: 'App already installed',
         demoCta: 'Explore demo templates',
       },
@@ -157,7 +157,7 @@ const translations: Record<Language, any> = {
     workSchedulePage: {
       title: 'Work schedule',
       intro:
-        'Save your working hours so Local Quick Planner can adapt to your workday.',
+        'Save your working hours so CheckPlanner can adapt to your workday.',
       calendar: {
         instructions:
           'Click and drag over the half-hour slots to mark when your workday starts and ends each day.',
@@ -208,12 +208,12 @@ const translations: Record<Language, any> = {
     demoTemplatesPage: {
       title: 'Demo Templates',
       intro:
-        'Import these incredible examples of how different professionals can use Local Quick Planner.',
+        'Import these incredible examples of how different professionals can use CheckPlanner.',
       confirmExisting:
         'You already have tasks or filters saved. Importing a demo template will replace your current data. Export a backup if you do not want to lose your progress. Continue?',
       successTitle: 'Demo template imported successfully',
       successDescription:
-        'Your workspace has been populated with demo data. Explore the tasks to see how Local Quick Planner supports this role.',
+        'Your workspace has been populated with demo data. Explore the tasks to see how CheckPlanner supports this role.',
       successRoleLabel: 'Role demo:',
       viewDemoCta: 'View demo',
       roles: {
@@ -226,9 +226,9 @@ const translations: Record<Language, any> = {
       },
     },
     aboutPage: {
-      title: 'About Local Quick Planner',
+      title: 'About CheckPlanner',
       intro:
-        'Local Quick Planner is a free app built to boost your personal productivity at work.',
+        'CheckPlanner is a free app built to boost your personal productivity at work.',
       features: {
         freeOpenSource: '100% free and open source.',
         privacy:
@@ -249,9 +249,9 @@ const translations: Record<Language, any> = {
     faqs: {
       title: 'Frequently Asked Questions',
       q1: {
-        question: 'What is Local Quick Planner?',
+        question: 'What is CheckPlanner?',
         answer:
-          'Local Quick Planner is a fast, free and open-source task manager that boosts your productivity by organizing tasks right in your browser.',
+          'CheckPlanner is a fast, free and open-source task manager that boosts your productivity by organizing tasks right in your browser.',
       },
       q2: {
         question: 'How do I create a new task?',
@@ -302,7 +302,7 @@ const translations: Record<Language, any> = {
     privacyPage: {
       title: 'Privacy Policy',
       intro:
-        'Local Quick Planner is a client-side application. We respect your privacy and do not collect personal data.',
+        'CheckPlanner is a client-side application. We respect your privacy and do not collect personal data.',
       localData: {
         title: 'Local Data',
         description:
@@ -320,7 +320,7 @@ const translations: Record<Language, any> = {
     },
     termsPage: {
       title: 'Terms of Service',
-      intro: 'By using Local Quick Planner, you agree to the following terms.',
+      intro: 'By using CheckPlanner, you agree to the following terms.',
       usage: {
         title: 'Use of the Application',
         description:
@@ -457,7 +457,7 @@ const translations: Record<Language, any> = {
         'Algunas tareas usan esta etiqueta. Si la eliminas, esas tareas perderán la etiqueta. ¿Continuar?',
     },
     welcomeModal: {
-      title: 'Local Quick Planner',
+      title: 'CheckPlanner',
       p1: 'Mejora tu productividad, planifica tus tareas y organiza tu trabajo diario.',
       p2: 'Tus datos se almacenan en local, no se envían a ningún servidor.',
       p3: 'Exporta tus datos para hacer copias de seguridad en local cada cierto tiempo.',
@@ -470,12 +470,12 @@ const translations: Record<Language, any> = {
       empty: 'Sin notificaciones',
       dismiss: 'Cerrar notificación',
       welcome: {
-        title: '¡Hola! Te damos la bienvenida a Local Quick Planner',
+        title: '¡Hola! Te damos la bienvenida a CheckPlanner',
         description:
           'Usa el tablero "Mis Tareas" para reunir y priorizar todo lo que debes hacer. Pasa los elementos a "Mi Día" cuando quieras enfocarte en ellos. Abre los ajustes para cambiar el tema, exportar tus datos y más.',
         installCta: 'Instalar app',
         installUnavailable:
-          'La instalación solo está disponible en navegadores compatibles. Usa el menú del navegador para añadir Local Quick Planner a tu dispositivo.',
+          'La instalación solo está disponible en navegadores compatibles. Usa el menú del navegador para añadir CheckPlanner a tu dispositivo.',
         installInstalled: 'La app ya está instalada',
         demoCta: 'Ver plantillas de demostración',
       },
@@ -493,7 +493,7 @@ const translations: Record<Language, any> = {
     workSchedulePage: {
       title: 'Jornada laboral',
       intro:
-        'Guarda tu horario laboral para que Local Quick Planner se adapte a tu jornada.',
+        'Guarda tu horario laboral para que CheckPlanner se adapte a tu jornada.',
       calendar: {
         instructions:
           'Haz clic y arrastra sobre los bloques de media hora para marcar cuándo empieza y termina tu jornada cada día.',
@@ -545,12 +545,12 @@ const translations: Record<Language, any> = {
     demoTemplatesPage: {
       title: 'Plantillas demo',
       intro:
-        'Importa estos ejemplos increíbles de cómo diferentes profesionales pueden usar Local Quick Planner.',
+        'Importa estos ejemplos increíbles de cómo diferentes profesionales pueden usar CheckPlanner.',
       confirmExisting:
         'Ya tienes tareas o filtros guardados. Importar una plantilla demo reemplazará tus datos actuales. Exporta una copia de seguridad si no quieres perder tu progreso. ¿Quieres continuar?',
       successTitle: 'Plantilla demo importada correctamente',
       successDescription:
-        'Hemos rellenado tu espacio de trabajo con datos demo. Explora las tareas para ver cómo Local Quick Planner ayuda a este rol.',
+        'Hemos rellenado tu espacio de trabajo con datos demo. Explora las tareas para ver cómo CheckPlanner ayuda a este rol.',
       successRoleLabel: 'Rol de la demo:',
       viewDemoCta: 'Ver demo',
       roles: {
@@ -563,9 +563,9 @@ const translations: Record<Language, any> = {
       },
     },
     aboutPage: {
-      title: 'Acerca de Local Quick Planner',
+      title: 'Acerca de CheckPlanner',
       intro:
-        'Local Quick Planner es una aplicación gratuita creada para impulsar tu productividad personal en el trabajo.',
+        'CheckPlanner es una aplicación gratuita creada para impulsar tu productividad personal en el trabajo.',
       features: {
         freeOpenSource: '100% gratuita y de código abierto.',
         privacy:
@@ -587,9 +587,9 @@ const translations: Record<Language, any> = {
     faqs: {
       title: 'Preguntas frecuentes',
       q1: {
-        question: '¿Qué es Local Quick Planner?',
+        question: '¿Qué es CheckPlanner?',
         answer:
-          'Local Quick Planner es un gestor de tareas rápido, gratuito y de código abierto que mejora tu productividad gracias a la organización de tus tareas en el navegador.',
+          'CheckPlanner es un gestor de tareas rápido, gratuito y de código abierto que mejora tu productividad gracias a la organización de tus tareas en el navegador.',
       },
       q2: {
         question: '¿Cómo creo una nueva tarea?',
@@ -640,7 +640,7 @@ const translations: Record<Language, any> = {
     privacyPage: {
       title: 'Política de privacidad',
       intro:
-        'Local Quick Planner es una aplicación que se ejecuta en tu dispositivo. Respetamos tu privacidad y no recopilamos datos personales.',
+        'CheckPlanner es una aplicación que se ejecuta en tu dispositivo. Respetamos tu privacidad y no recopilamos datos personales.',
       localData: {
         title: 'Datos locales',
         description:
@@ -659,7 +659,7 @@ const translations: Record<Language, any> = {
     },
     termsPage: {
       title: 'Términos del servicio',
-      intro: 'Al usar Local Quick Planner, aceptas los siguientes términos.',
+      intro: 'Al usar CheckPlanner, aceptas los siguientes términos.',
       usage: {
         title: 'Uso de la aplicación',
         description:
