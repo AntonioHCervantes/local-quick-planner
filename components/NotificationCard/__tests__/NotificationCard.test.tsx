@@ -4,7 +4,7 @@ import NotificationCard from '../NotificationCard';
 import { useStore } from '../../../lib/store';
 
 const baseNotification = {
-  id: 'n1',
+  id: 'welcome',
   type: 'info' as const,
   titleKey: 'notifications.welcome.title',
   descriptionKey: 'notifications.welcome.description',
@@ -49,6 +49,15 @@ describe('NotificationCard', () => {
     expect(link).toHaveAttribute('href', 'https://example.com');
   });
 
+  it('shows welcome quick actions', () => {
+    render(<NotificationCard notification={baseNotification} />);
+
+    expect(screen.getByRole('button', { name: /install app/i })).toBeDisabled();
+    expect(
+      screen.getByRole('link', { name: /explore demo templates/i })
+    ).toHaveAttribute('href', '/demo-templates');
+  });
+
   it('allows dismissing the notification', async () => {
     const user = userEvent.setup();
     render(<NotificationCard notification={baseNotification} />);
@@ -59,6 +68,6 @@ describe('NotificationCard', () => {
 
     await user.click(dismissButton);
 
-    expect(removeNotificationMock).toHaveBeenCalledWith('n1');
+    expect(removeNotificationMock).toHaveBeenCalledWith('welcome');
   });
 });
