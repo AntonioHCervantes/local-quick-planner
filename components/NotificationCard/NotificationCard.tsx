@@ -130,7 +130,7 @@ export default function NotificationCard({ notification }: Props) {
             {description}
           </p>
           {actions.length > 0 && (
-            <div className="flex flex-wrap justify-end gap-2">
+            <div className="mt-3 flex flex-wrap justify-end gap-2">
               {actions.map(action => (
                 <span
                   key={action.key}
