@@ -41,8 +41,28 @@ export default function NotificationCard({ notification }: Props) {
     : !canInstall
       ? t('notifications.welcome.installUnavailable')
       : undefined;
+  const primaryActionClasses =
+    'inline-flex items-center justify-center gap-2 rounded bg-[#57886C] px-3 py-2 text-sm font-semibold text-white transition hover:brightness-110 focus:outline-none focus:ring focus:ring-offset-2 focus:ring-[#57886C] disabled:cursor-not-allowed disabled:opacity-60';
+  const secondaryActionClasses =
+    'inline-flex items-center justify-center gap-2 rounded bg-gray-200 px-3 py-2 text-sm font-semibold text-gray-900 transition hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700 dark:focus-visible:outline-gray-600';
 
   if (notification.id === 'welcome') {
+    actions.push({
+      key: 'demo',
+      node: (
+        <Link
+          href="/demo-templates"
+          className={secondaryActionClasses}
+        >
+          <LayoutTemplate
+            className="h-4 w-4"
+            aria-hidden="true"
+          />
+          {t('notifications.welcome.demoCta')}
+        </Link>
+      ),
+    });
+
     actions.push({
       key: 'install',
       node: (
@@ -55,11 +75,7 @@ export default function NotificationCard({ notification }: Props) {
           }}
           disabled={installDisabled}
           title={installTitle}
-          className={`inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-1.5 text-sm font-semibold text-white transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500 ${
-            installDisabled
-              ? 'cursor-not-allowed opacity-60 hover:bg-emerald-600'
-              : 'hover:bg-emerald-500'
-          }`}
+          className={primaryActionClasses}
         >
           <MonitorSmartphone
             className="h-4 w-4"
@@ -67,22 +83,6 @@ export default function NotificationCard({ notification }: Props) {
           />
           {t('notifications.welcome.installCta')}
         </button>
-      ),
-    });
-
-    actions.push({
-      key: 'demo',
-      node: (
-        <Link
-          href="/demo-templates"
-          className="inline-flex items-center gap-2 rounded-full bg-gray-200 px-4 py-1.5 text-sm font-semibold text-gray-900 transition hover:bg-gray-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-400 dark:bg-gray-800 dark:text-gray-100 dark:hover:bg-gray-700 dark:focus-visible:outline-gray-600"
-        >
-          <LayoutTemplate
-            className="h-4 w-4"
-            aria-hidden="true"
-          />
-          {t('notifications.welcome.demoCta')}
-        </Link>
       ),
     });
   }
