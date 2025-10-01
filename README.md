@@ -1,6 +1,6 @@
-# Local Quick Planner
+# CheckPlanner
 
-Local Quick Planner is a simple, fast, and free tool to organize your tasks and
+CheckPlanner is a simple, fast, and free tool to organize your tasks and
 boost your productivity.
 
 Your privacy is paramount: all data is stored locally in your browser's
@@ -30,7 +30,7 @@ Your privacy is paramount: all data is stored locally in your browser's
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/local-quick-planner.git
+  git clone https://github.com/your-username/checkplanner.git
    ```
 2. Install dependencies:
    ```bash

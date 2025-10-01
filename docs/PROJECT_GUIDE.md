@@ -1,9 +1,9 @@
-# Local Quick Planner – Project Guide
+# CheckPlanner – Project Guide
 
 ## Purpose of this document
 
 Use this handbook as the single source of truth when you collaborate with the
-Local Quick Planner codebase. It summarizes the architecture, data flows,
+CheckPlanner codebase. It summarizes the architecture, data flows,
 quality gates, and conventions that every agent must follow to keep the project
 healthy and scalable.
 
@@ -171,4 +171,4 @@ Add or update Jest tests alongside your changes:
   availability—mirror that approach.
 
 Following these guidelines ensures every agent contributes changes that
-integrate smoothly with Local Quick Planner’s architecture and long-term vision.
+integrate smoothly with CheckPlanner’s architecture and long-term vision.

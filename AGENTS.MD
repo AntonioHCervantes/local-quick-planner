@@ -1,4 +1,4 @@
-# Local Quick Planner – Agent Quick Guide
+# CheckPlanner – Agent Quick Guide
 
 ## Project overview
 - Personal planner, local-first PWA, fully offline, no backend or env vars.

@@ -19,7 +19,7 @@ describe('WelcomeModal', () => {
   it('shows modal when no tasks and not seen', async () => {
     render(<WelcomeModal />);
     expect(
-      await screen.findByRole('heading', { name: /Local Quick Planner/i })
+      await screen.findByRole('heading', { name: /CheckPlanner/i })
     ).toBeInTheDocument();
   });
 

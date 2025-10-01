@@ -1,6 +1,6 @@
 {
-  "name": "Local Quick Planner",
-  "short_name": "Quick Planner",
+  "name": "CheckPlanner",
+  "short_name": "CheckPlanner",
   "description": "Plan your tasks and day locally.",
   "start_url": "/my-tasks",
   "display": "fullscreen",

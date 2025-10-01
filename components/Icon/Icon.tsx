@@ -6,7 +6,7 @@ export default function Icon() {
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 80 80"
       role="img"
-      aria-label="Local Quick Planner"
+      aria-label="CheckPlanner"
       className="h-10 w-10 md:h-20 md:w-20"
     >
       <rect

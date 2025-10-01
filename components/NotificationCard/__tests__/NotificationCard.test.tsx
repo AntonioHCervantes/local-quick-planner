@@ -28,9 +28,7 @@ describe('NotificationCard', () => {
   it('renders title and description', () => {
     render(<NotificationCard notification={baseNotification} />);
 
-    expect(
-      screen.getByText('Welcome to Local Quick Planner')
-    ).toBeInTheDocument();
+    expect(screen.getByText('Welcome to CheckPlanner')).toBeInTheDocument();
     expect(screen.getByText(/Use the "My Tasks" board/i)).toBeInTheDocument();
   });
 
