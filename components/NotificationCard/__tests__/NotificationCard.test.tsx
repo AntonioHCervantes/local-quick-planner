@@ -14,6 +14,10 @@ const baseNotification = {
 
 const initialState = useStore.getState();
 const removeNotificationMock = jest.fn();
+const dismissibleNotification = {
+  ...baseNotification,
+  id: 'other-notification',
+};
 
 beforeEach(() => {
   removeNotificationMock.mockReset();
@@ -56,9 +60,19 @@ describe('NotificationCard', () => {
     ).toHaveAttribute('href', '/demo-templates');
   });
 
-  it('allows dismissing the notification', async () => {
-    const user = userEvent.setup();
+  it('keeps the welcome notification fixed', () => {
     render(<NotificationCard notification={baseNotification} />);
+
+    expect(
+      screen.queryByRole('button', {
+        name: /dismiss notification/i,
+      })
+    ).not.toBeInTheDocument();
+  });
+
+  it('allows dismissing other notifications', async () => {
+    const user = userEvent.setup();
+    render(<NotificationCard notification={dismissibleNotification} />);
 
     const dismissButton = screen.getByRole('button', {
       name: /dismiss notification/i,
@@ -66,6 +80,6 @@ describe('NotificationCard', () => {
 
     await user.click(dismissButton);
 
-    expect(removeNotificationMock).toHaveBeenCalledWith('welcome');
+    expect(removeNotificationMock).toHaveBeenCalledWith('other-notification');
   });
 });
