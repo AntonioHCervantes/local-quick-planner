@@ -272,6 +272,8 @@ const translations: Record<Language, any> = {
     },
     faqs: {
       title: 'Frequently Asked Questions',
+      intro:
+        'Find answers to common questions about how to make the most of CheckPlanner.',
       q1: {
         question: 'What is CheckPlanner?',
         answer:
@@ -634,6 +636,8 @@ const translations: Record<Language, any> = {
     },
     faqs: {
       title: 'Preguntas frecuentes',
+      intro:
+        'Encuentra respuestas a las preguntas más comunes sobre cómo aprovechar CheckPlanner.',
       q1: {
         question: '¿Qué es CheckPlanner?',
         answer:
