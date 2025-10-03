@@ -34,7 +34,7 @@ export default function PrivacyPage() {
           <p>
             {t('privacyPage.contact.description')}{' '}
             <Link
-              href="https://github.com/AntonioHCervantes/local-quick-planner/issues"
+              href="https://github.com/AntonioHCervantes/checkplanner/issues"
               target="_blank"
               rel="noopener noreferrer"
               className="underline hover:no-underline"

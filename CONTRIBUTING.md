@@ -21,7 +21,7 @@ If you have an idea to improve the project, please open an issue with the "enhan
 ### Project Setup
 
 1. Fork the repository.
-2. Clone your fork: `git clone https://github.com/your-username/local-quick-planner.git`
+2. Clone your fork: `git clone https://github.com/your-username/checkplanner.git`
 3. Install dependencies: `npm install`
 4. Run the development server: `npm run dev`
 

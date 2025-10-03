@@ -7,7 +7,7 @@ describe('Footer', () => {
     expect(screen.getByRole('link', { name: /about/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /open source/i })).toHaveAttribute(
       'href',
-      'https://github.com/AntonioHCervantes/local-quick-planner'
+      'https://github.com/AntonioHCervantes/checkplanner'
     );
   });
 });
