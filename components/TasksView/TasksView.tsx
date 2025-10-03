@@ -66,6 +66,7 @@ export default function TasksView() {
           addTask={addTask}
           tags={tags}
           addTag={addTag}
+          toggleFavoriteTag={toggleFavoriteTag}
         />
       </div>
       <TagFilter
