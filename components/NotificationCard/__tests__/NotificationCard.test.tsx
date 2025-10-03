@@ -51,6 +51,23 @@ describe('NotificationCard', () => {
     expect(link).toHaveAttribute('href', 'https://example.com');
   });
 
+  it('renders internal action with primary styling in the same tab', () => {
+    render(
+      <NotificationCard
+        notification={{
+          ...dismissibleNotification,
+          actionUrl: '/settings/work-schedule',
+          actionLabelKey: 'notifications.workScheduleSuggestion.cta',
+        }}
+      />
+    );
+
+    const link = screen.getByRole('link', { name: /set work schedule/i });
+    expect(link).toHaveAttribute('href', '/settings/work-schedule');
+    expect(link).not.toHaveAttribute('target');
+    expect(link).toHaveClass('bg-[#57886C]', { exact: false });
+  });
+
   it('shows welcome quick actions', () => {
     render(<NotificationCard notification={baseNotification} />);
 

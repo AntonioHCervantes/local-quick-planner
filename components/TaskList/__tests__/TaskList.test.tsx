@@ -50,7 +50,9 @@ describe('TaskList', () => {
         isFiltering={false}
       />
     );
-    expect(screen.getByText('Add your first task!')).toBeInTheDocument();
+    expect(
+      screen.getByText('Check your plan. Check your day.')
+    ).toBeInTheDocument();
   });
 
   it('shows default empty message while filtering', () => {

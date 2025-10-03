@@ -144,6 +144,12 @@ const translations: Record<Language, any> = {
         installInstalled: 'App already installed',
         demoCta: 'Explore demo templates',
       },
+      workScheduleSuggestion: {
+        title: 'Add your work schedule',
+        description:
+          'Save your working hours so you can enable a planning reminder before the end of each workday, plan tomorrow ahead of time, and start the day productively.',
+        cta: 'Set work schedule',
+      },
       workReminder: {
         title: 'Plan tomorrow',
         description:
@@ -509,6 +515,12 @@ const translations: Record<Language, any> = {
           'La instalación solo está disponible en navegadores compatibles. Usa el menú del navegador para añadir CheckPlanner a tu dispositivo.',
         installInstalled: 'La app ya está instalada',
         demoCta: 'Ver plantillas de demostración',
+      },
+      workScheduleSuggestion: {
+        title: 'Añade tu jornada laboral',
+        description:
+          'Guarda tu horario laboral para activar un aviso de planificación antes de que termine cada jornada, preparar el trabajo del día siguiente y empezar de forma productiva.',
+        cta: 'Configurar jornada laboral',
       },
       workReminder: {
         title: 'Planifica el mañana',
