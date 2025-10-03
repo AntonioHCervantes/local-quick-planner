@@ -28,6 +28,7 @@ const translations: Record<Language, any> = {
       favoriteTag: 'Add tag to favorites',
       unfavoriteTag: 'Remove tag from favorites',
       close: 'Close',
+      cancel: 'Cancel',
       notifications: 'Notifications',
     },
     confirmDelete: {
@@ -209,8 +210,11 @@ const translations: Record<Language, any> = {
       title: 'Demo Templates',
       intro:
         'Import these incredible examples of how different professionals can use CheckPlanner.',
-      confirmExisting:
-        'You already have tasks or filters saved. Importing a demo template will replace your current data. Export a backup if you do not want to lose your progress. Continue?',
+      confirmExistingTitle: 'Back up your tasks before importing',
+      confirmExistingDescription:
+        'You already have tasks or filters saved. Importing a demo template will replace your current data. Export your tasks first to avoid losing progress. In Settings you will find options to Export, Import, or Delete everything.',
+      confirmExistingExportCta: 'Export tasks',
+      confirmExistingContinueCta: 'Import demo anyway',
       successTitle: 'Demo template imported successfully',
       successDescription:
         'Your workspace has been populated with demo data. Explore the tasks to see how CheckPlanner supports this role.',
@@ -389,6 +393,7 @@ const translations: Record<Language, any> = {
       favoriteTag: 'Marcar etiqueta como favorita',
       unfavoriteTag: 'Quitar etiqueta de favoritas',
       close: 'Cerrar',
+      cancel: 'Cancelar',
       notifications: 'Notificaciones',
     },
     confirmDelete: {
@@ -572,8 +577,11 @@ const translations: Record<Language, any> = {
       title: 'Plantillas demo',
       intro:
         'Importa estos ejemplos increíbles de cómo diferentes profesionales pueden usar CheckPlanner.',
-      confirmExisting:
-        'Ya tienes tareas o filtros guardados. Importar una plantilla demo reemplazará tus datos actuales. Exporta una copia de seguridad si no quieres perder tu progreso. ¿Quieres continuar?',
+      confirmExistingTitle: 'Respalda tus tareas antes de importar',
+      confirmExistingDescription:
+        'Ya tienes tareas o filtros guardados. Importar una plantilla demo reemplazará tus datos actuales. Exporta tus tareas para no perder tu progreso. En Ajustes encontrarás las opciones de Exportar, Importar y Eliminar todo.',
+      confirmExistingExportCta: 'Exportar tareas',
+      confirmExistingContinueCta: 'Importar demo igualmente',
       successTitle: 'Plantilla demo importada correctamente',
       successDescription:
         'Hemos rellenado tu espacio de trabajo con datos demo. Explora las tareas para ver cómo CheckPlanner ayuda a este rol.',
