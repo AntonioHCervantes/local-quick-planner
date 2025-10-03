@@ -33,6 +33,7 @@ describe('AddTask', () => {
         addTask={jest.fn()}
         tags={[]}
         addTag={jest.fn()}
+        toggleFavoriteTag={jest.fn()}
       />
     );
 

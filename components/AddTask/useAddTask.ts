@@ -11,12 +11,14 @@ export interface UseAddTaskProps {
   }) => string;
   tags: Tag[];
   addTag: (tag: Tag) => void;
+  toggleFavoriteTag: (label: string) => void;
 }
 
 export default function useAddTask({
   addTask,
   tags: existingTags,
   addTag,
+  toggleFavoriteTag,
 }: UseAddTaskProps) {
   const favoriteLabels = existingTags.filter(t => t.favorite).map(t => t.label);
   const [title, setTitle] = useState('');
@@ -105,7 +107,11 @@ export default function useAddTask({
   };
 
   const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter(t => t !== tagToRemove));
+    setTags(prev => prev.filter(t => t !== tagToRemove));
+    const tag = existingTags.find(t => t.label === tagToRemove);
+    if (tag?.favorite) {
+      toggleFavoriteTag(tagToRemove);
+    }
   };
 
   return {
