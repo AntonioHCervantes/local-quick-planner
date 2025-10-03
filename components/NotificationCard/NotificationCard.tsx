@@ -90,14 +90,23 @@ export default function NotificationCard({ notification }: Props) {
   }
 
   if (notification.actionUrl && notification.actionLabelKey) {
+    const isInternalAction = notification.actionUrl.startsWith('/');
+
     actions.push({
       key: 'action',
-      node: (
+      node: isInternalAction ? (
+        <Link
+          href={notification.actionUrl}
+          className={primaryActionClasses}
+        >
+          {t(notification.actionLabelKey)}
+        </Link>
+      ) : (
         <a
           href={notification.actionUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex max-w-full flex-wrap break-words rounded-full bg-blue-600 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+          className={primaryActionClasses}
         >
           {t(notification.actionLabelKey)}
         </a>
