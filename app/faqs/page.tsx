@@ -19,23 +19,30 @@ export default function FAQsPage() {
   ];
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 px-4 py-16">
-      <h1 className="text-2xl font-bold">{t('faqs.title')}</h1>
-      <Accordion items={faqs} />
-      <div>
-        <h2 className="font-semibold">{t('faqs.supportTitle')}</h2>
-        <p>
-          {t('faqs.support')}{' '}
-          <Link
-            href="https://github.com/AntonioHCervantes/local-quick-planner/issues"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline dark:text-blue-400"
-          >
-            {t('faqs.supportLink')}
-          </Link>
+    <main className="mx-auto max-w-4xl space-y-8 px-4 py-16">
+      <header className="space-y-4">
+        <h1 className="text-3xl font-bold">{t('faqs.title')}</h1>
+        <p className="text-lg text-gray-600 dark:text-gray-300">
+          {t('faqs.intro')}
         </p>
-      </div>
-    </div>
+      </header>
+      <section className="space-y-6">
+        <Accordion items={faqs} />
+        <div className="space-y-2 text-gray-700 dark:text-gray-200">
+          <h2 className="text-xl font-semibold">{t('faqs.supportTitle')}</h2>
+          <p>
+            {t('faqs.support')}{' '}
+            <Link
+              href="https://github.com/AntonioHCervantes/local-quick-planner/issues"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline dark:text-blue-400"
+            >
+              {t('faqs.supportLink')}
+            </Link>
+          </p>
+        </div>
+      </section>
+    </main>
   );
 }
