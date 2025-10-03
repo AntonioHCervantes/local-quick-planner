@@ -16,7 +16,7 @@ export default function Footer() {
           {t('footer.about')}
         </Link>
         <Link
-          href="https://github.com/AntonioHCervantes/local-quick-planner"
+          href="https://github.com/AntonioHCervantes/checkplanner"
           target="_blank"
           rel="noopener noreferrer"
           className="hover:underline"

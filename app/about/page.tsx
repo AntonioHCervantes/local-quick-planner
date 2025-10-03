@@ -27,7 +27,7 @@ export default function AboutPage() {
         <p className="text-gray-700 dark:text-gray-200">
           {t('aboutPage.sourceCode')}{' '}
           <a
-            href="https://github.com/AntonioHCervantes/local-quick-planner"
+            href="https://github.com/AntonioHCervantes/checkplanner"
             target="_blank"
             rel="noopener noreferrer"
             className="underline hover:no-underline"

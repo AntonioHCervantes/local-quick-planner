@@ -33,7 +33,7 @@ export default function FAQsPage() {
           <p>
             {t('faqs.support')}{' '}
             <Link
-              href="https://github.com/AntonioHCervantes/local-quick-planner/issues"
+              href="https://github.com/AntonioHCervantes/checkplanner/issues"
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:underline dark:text-blue-400"
