@@ -134,8 +134,7 @@ export default function WorkScheduleManager() {
             id: SUGGESTION_NOTIFICATION_ID,
             type: 'tip',
             titleKey: 'notifications.workScheduleSuggestion.title',
-            descriptionKey:
-              'notifications.workScheduleSuggestion.description',
+            descriptionKey: 'notifications.workScheduleSuggestion.description',
             actionUrl: '/settings/work-schedule',
             actionLabelKey: 'notifications.workScheduleSuggestion.cta',
             read: false,
@@ -154,8 +153,7 @@ export default function WorkScheduleManager() {
 
     const unsubscribe = useStore.subscribe((state, previousState) => {
       const tasksChanged = state.tasks !== previousState.tasks;
-      const scheduleChanged =
-        state.workSchedule !== previousState.workSchedule;
+      const scheduleChanged = state.workSchedule !== previousState.workSchedule;
 
       if (tasksChanged || scheduleChanged) {
         ensureSuggestionVisibility();
