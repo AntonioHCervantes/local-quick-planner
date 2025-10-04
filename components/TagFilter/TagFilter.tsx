@@ -30,24 +30,21 @@ export default function TagFilter({
         return (
           <div
             key={tag.id}
-            className="relative inline-flex"
-            style={{ opacity: isActive ? 1 : 0.5 }}
+            className="relative inline-flex items-center rounded-full pr-1 py-1 text-xs text-white"
+            style={{
+              backgroundColor: tag.color,
+              opacity: isActive ? 1 : 0.5,
+            }}
           >
             <button
               type="button"
               onClick={() => toggleTag(tag.label)}
               aria-pressed={isActive}
-              style={{ backgroundColor: tag.color }}
-              className="flex cursor-pointer items-center rounded-full pl-2 pr-9 py-1 text-xs text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
+              className="flex h-full cursor-pointer items-center rounded-full pl-2 pr-8 text-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
             >
               <span className="select-none">{tag.label}</span>
               {isActive ? (
-                <span
-                  aria-hidden="true"
-                  className="ml-1 text-[0.65rem]"
-                >
-                  {t('tagFilter.activeIndicator')}
-                </span>
+                <span className="sr-only">{t('tagFilter.activeIndicator')}</span>
               ) : null}
             </button>
             <div className="pointer-events-none absolute inset-y-0 right-1 flex items-center gap-1">
