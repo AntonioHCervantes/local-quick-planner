@@ -3,6 +3,7 @@ import { useState } from 'react';
 import confetti from 'canvas-confetti';
 import {
   closestCorners,
+  KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
@@ -10,6 +11,7 @@ import {
   DragStartEvent,
   DragOverEvent,
 } from '@dnd-kit/core';
+import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { Task } from '../../lib/types';
 import type { DayStatus } from '../../lib/dayStatus';
 import { useStore } from '../../lib/store';
@@ -20,7 +22,10 @@ export interface UseBoardProps {
 
 export default function useBoard({ mode }: UseBoardProps) {
   const sensors = useSensors(
-    useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
   );
   const { tasks, lists, order, moveTask, reorderTask } = useStore();
   const [activeTask, setActiveTask] = useState<Task | null>(null);

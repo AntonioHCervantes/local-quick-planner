@@ -19,6 +19,14 @@ export default function TaskCard(props: UseTaskCardProps) {
   const { markInProgress, markDone, getTagColor, deleteTask, toggleMainTask } =
     actions;
   const { task, mode } = props;
+  const instructionId = `${task.id}-drag-instructions`;
+  const keyboardInstructions = t('dnd.keyboardInstructions');
+  const originalDescribedBy = (
+    attributes as unknown as { 'aria-describedby'?: string }
+  )['aria-describedby'];
+  const describedBy = [originalDescribedBy, instructionId]
+    .filter(Boolean)
+    .join(' ');
   const timer = useStore(state => state.timers[task.id]);
   const shouldForceShowTimer =
     mode === 'my-day' && task.dayStatus === 'doing' && Boolean(timer?.running);
@@ -72,9 +80,16 @@ export default function TaskCard(props: UseTaskCardProps) {
       style={style as any}
       {...attributes}
       {...listeners}
+      aria-describedby={describedBy || undefined}
       className={cardClasses}
       data-main-task={isMainTask || undefined}
     >
+      <p
+        id={instructionId}
+        className="sr-only"
+      >
+        {keyboardInstructions}
+      </p>
       <div className="relative z-10">
         <div
           className={`flex justify-between ${
