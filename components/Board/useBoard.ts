@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
 import {
   closestCorners,
@@ -27,6 +27,7 @@ export default function useBoard({ mode }: UseBoardProps) {
     useStore();
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const { t } = useI18n();
+  const dragOriginRef = useRef<{ dayStatus?: DayStatus } | null>(null);
 
   const columns: Array<{ id: string; title: string; status?: DayStatus }> =
     mode === 'my-day'
@@ -58,6 +59,12 @@ export default function useBoard({ mode }: UseBoardProps) {
     const id = event.active.id as string;
     const task = tasks.find(t => t.id === id) || null;
     setActiveTask(task);
+    dragOriginRef.current =
+      mode === 'my-day'
+        ? {
+            dayStatus: task?.dayStatus,
+          }
+        : null;
   };
 
   const handleDragOver = (event: DragOverEvent) => {
@@ -84,6 +91,8 @@ export default function useBoard({ mode }: UseBoardProps) {
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     setActiveTask(null);
+    const origin = dragOriginRef.current;
+    dragOriginRef.current = null;
     if (!over) return;
     const activeId = active.id as string;
     const activeContainer = active.data.current?.sortable.containerId as string;
@@ -92,15 +101,19 @@ export default function useBoard({ mode }: UseBoardProps) {
       (over.id as string);
     const overIndex =
       over.data.current?.sortable?.index ?? getTasks(overContainer).length;
+    const startedInDone =
+      mode === 'my-day'
+        ? origin?.dayStatus === 'done'
+        : activeContainer === 'done';
 
-    if (overContainer === 'done' && activeContainer === 'done') {
+    if (overContainer === 'done' && startedInDone) {
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
 
     if (
       mode === 'my-day' &&
       overContainer === 'done' &&
-      activeContainer !== 'done'
+      !startedInDone
     ) {
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       if (mainMyDayTaskId === activeId) {
