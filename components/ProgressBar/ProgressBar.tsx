@@ -37,10 +37,16 @@ export default function ProgressBar({
         <div
           className={`h-full rounded ${colorClass}`}
           style={{ width: `${percent}%` }}
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={percent}
+          aria-label={`${percent}% ${message}`}
         />
       </div>
       <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-sm text-gray-600 dark:text-gray-400">
         <span>{message}</span>
+        <span className="sr-only">{percent}%</span>
         {showClearAction ? (
           <button
             type="button"
