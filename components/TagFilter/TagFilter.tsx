@@ -30,52 +30,64 @@ export default function TagFilter({
         return (
           <div
             key={tag.id}
-            onClick={() => toggleTag(tag.label)}
-            onKeyDown={e => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                toggleTag(tag.label);
-              }
-            }}
-            role="button"
-            tabIndex={0}
-            style={{ backgroundColor: tag.color, opacity: isActive ? 1 : 0.5 }}
-            className="flex items-center rounded-full pl-2 pr-1 py-1 text-xs cursor-pointer text-white"
+            className="relative inline-flex"
+            style={{ opacity: isActive ? 1 : 0.5 }}
           >
-            <span className="mr-1 select-none">{tag.label}</span>
             <button
-              onClick={e => {
-                e.stopPropagation();
-                toggleFavorite(tag.label);
-              }}
-              aria-label={
-                tag.favorite
-                  ? t('actions.unfavoriteTag')
-                  : t('actions.favoriteTag')
-              }
-              title={
-                tag.favorite
-                  ? t('actions.unfavoriteTag')
-                  : t('actions.favoriteTag')
-              }
-              className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20"
+              type="button"
+              onClick={() => toggleTag(tag.label)}
+              aria-pressed={isActive}
+              style={{ backgroundColor: tag.color }}
+              className="flex cursor-pointer items-center rounded-full pl-2 pr-9 py-1 text-xs text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
             >
-              <Star
-                className="h-3 w-3"
-                fill={tag.favorite ? 'currentColor' : 'none'}
-              />
+              <span className="select-none">{tag.label}</span>
+              {isActive ? (
+                <span
+                  aria-hidden="true"
+                  className="ml-1 text-[0.65rem]"
+                >
+                  {t('tagFilter.activeIndicator')}
+                </span>
+              ) : null}
             </button>
-            <button
-              onClick={e => {
-                e.stopPropagation();
-                removeTag(tag.label);
-              }}
-              aria-label={t('actions.removeTag')}
-              title={t('actions.removeTag')}
-              className="ml-1 flex h-4 w-4 items-center justify-center rounded-full hover:bg-black/20"
-            >
-              ×
-            </button>
+            <div className="pointer-events-none absolute inset-y-0 right-1 flex items-center gap-1">
+              <button
+                type="button"
+                onClick={e => {
+                  e.stopPropagation();
+                  toggleFavorite(tag.label);
+                }}
+                aria-pressed={tag.favorite}
+                aria-label={
+                  tag.favorite
+                    ? t('actions.unfavoriteTag')
+                    : t('actions.favoriteTag')
+                }
+                title={
+                  tag.favorite
+                    ? t('actions.unfavoriteTag')
+                    : t('actions.favoriteTag')
+                }
+                className="pointer-events-auto flex h-4 w-4 items-center justify-center rounded-full text-white hover:bg-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
+              >
+                <Star
+                  className="h-3 w-3"
+                  fill={tag.favorite ? 'currentColor' : 'none'}
+                />
+              </button>
+              <button
+                type="button"
+                onClick={e => {
+                  e.stopPropagation();
+                  removeTag(tag.label);
+                }}
+                aria-label={t('actions.removeTag')}
+                title={t('actions.removeTag')}
+                className="pointer-events-auto flex h-4 w-4 items-center justify-center rounded-full text-white hover:bg-black/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/70"
+              >
+                ×
+              </button>
+            </div>
           </div>
         );
       })}
