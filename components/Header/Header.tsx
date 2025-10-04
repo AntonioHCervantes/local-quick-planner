@@ -20,6 +20,7 @@ import { Language, LANGUAGES } from '../../lib/i18n';
 import { getNotificationIconClasses } from '../../lib/notifications';
 import Icon from '../Icon/Icon';
 import useHeader from './useHeader';
+import useDialogFocusTrap from '../../lib/useDialogFocusTrap';
 
 export default function Header() {
   const { state, actions } = useHeader();
@@ -50,6 +51,14 @@ export default function Header() {
   const headerRef = useRef<HTMLElement | null>(null);
   const bellRef = useRef<HTMLAnchorElement | null>(null);
   const langMenuRef = useRef<HTMLDivElement | null>(null);
+  const confirmDialogRef = useRef<HTMLDivElement | null>(null);
+  const confirmCancelButtonRef = useRef<HTMLButtonElement | null>(null);
+  const {
+    onFocusStartGuard: onConfirmFocusStartGuard,
+    onFocusEndGuard: onConfirmFocusEndGuard,
+  } = useDialogFocusTrap(showConfirm, confirmDialogRef, {
+    initialFocusRef: confirmCancelButtonRef,
+  });
   const [popoverPosition, setPopoverPosition] = useState<{
     top: number;
     right: number;
@@ -398,10 +407,29 @@ export default function Header() {
       )}
       {showConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-sm rounded bg-gray-900 p-6 text-center text-gray-100">
-            <p className="mb-4">{t('confirmDelete.message')}</p>
+          <div
+            ref={confirmDialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="confirm-delete-title"
+            className="w-full max-w-sm rounded bg-gray-900 p-6 text-center text-gray-100"
+          >
+            <span
+              tabIndex={0}
+              aria-hidden="true"
+              data-focus-guard
+              onFocus={onConfirmFocusStartGuard}
+              className="sr-only"
+            />
+            <h2
+              id="confirm-delete-title"
+              className="mb-4 text-lg font-semibold"
+            >
+              {t('confirmDelete.message')}
+            </h2>
             <div className="flex justify-center gap-2">
               <button
+                ref={confirmCancelButtonRef}
                 onClick={() => setShowConfirm(false)}
                 className="rounded bg-gray-700 px-3 py-1 hover:bg-gray-600 focus:bg-gray-600"
               >
@@ -414,6 +442,13 @@ export default function Header() {
                 {t('confirmDelete.delete')}
               </button>
             </div>
+            <span
+              tabIndex={0}
+              aria-hidden="true"
+              data-focus-guard
+              onFocus={onConfirmFocusEndGuard}
+              className="sr-only"
+            />
           </div>
         </div>
       )}

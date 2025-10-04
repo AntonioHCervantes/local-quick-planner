@@ -4,6 +4,7 @@ import { Plus, Mic } from 'lucide-react';
 import { Priority } from '../../lib/types';
 import { useI18n, Language } from '../../lib/i18n';
 import useAddTask, { UseAddTaskProps } from './useAddTask';
+import useDialogFocusTrap from '../../lib/useDialogFocusTrap';
 
 export default function AddTask(props: UseAddTaskProps) {
   const { state, actions } = useAddTask(props);
@@ -25,6 +26,14 @@ export default function AddTask(props: UseAddTaskProps) {
   const titleRef = useRef(title);
   const initialTitleRef = useRef('');
   const tagInputRef = useRef<HTMLInputElement>(null);
+  const voiceWarningRef = useRef<HTMLDivElement | null>(null);
+  const voiceWarningCloseButtonRef = useRef<HTMLButtonElement | null>(null);
+  const {
+    onFocusStartGuard: onVoiceWarningFocusStartGuard,
+    onFocusEndGuard: onVoiceWarningFocusEndGuard,
+  } = useDialogFocusTrap(showVoiceWarning, voiceWarningRef, {
+    initialFocusRef: voiceWarningCloseButtonRef,
+  });
 
   const getTagColor = (tagLabel: string) => {
     const tag = existingTags.find(t => t.label === tagLabel);
@@ -187,14 +196,40 @@ export default function AddTask(props: UseAddTaskProps) {
       </form>
       {showVoiceWarning && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-          <div className="w-full max-w-sm rounded bg-gray-900 p-6 text-center text-gray-100">
-            <p className="mb-4">{t('addTask.voiceInputNoText')}</p>
+          <div
+            ref={voiceWarningRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="voice-warning-title"
+            className="w-full max-w-sm rounded bg-gray-900 p-6 text-center text-gray-100"
+          >
+            <span
+              tabIndex={0}
+              aria-hidden="true"
+              data-focus-guard
+              onFocus={onVoiceWarningFocusStartGuard}
+              className="sr-only"
+            />
+            <h2
+              id="voice-warning-title"
+              className="mb-4 text-lg font-semibold"
+            >
+              {t('addTask.voiceInputNoText')}
+            </h2>
             <button
+              ref={voiceWarningCloseButtonRef}
               onClick={() => setShowVoiceWarning(false)}
               className="rounded bg-gray-700 px-3 py-1 hover:bg-gray-600 focus:bg-gray-600"
             >
               {t('actions.close')}
             </button>
+            <span
+              tabIndex={0}
+              aria-hidden="true"
+              data-focus-guard
+              onFocus={onVoiceWarningFocusEndGuard}
+              className="sr-only"
+            />
           </div>
         </div>
       )}
