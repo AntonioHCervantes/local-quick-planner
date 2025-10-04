@@ -129,6 +129,7 @@ export default function TaskItem({
   const showLimitedWeekdaysHint = availableWeekdays.length < WEEKDAYS.length;
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: taskId, disabled: !task });
+  const keyboardInstructions = t('dnd.keyboardInstructions');
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -137,6 +138,17 @@ export default function TaskItem({
   if (!task) {
     return null;
   }
+
+  const dragHandleInstructionsId = `${task.id}-drag-handle-instructions`;
+  const originalHandleDescribedBy = (
+    attributes as unknown as { 'aria-describedby'?: string }
+  )['aria-describedby'];
+  const handleDescribedBy = [
+    originalHandleDescribedBy,
+    dragHandleInstructionsId,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const isInMyDay = Boolean(task.plannedFor);
   const dayStatus = isInMyDay ? (task.dayStatus ?? 'todo') : undefined;
@@ -314,9 +326,16 @@ export default function TaskItem({
       <div
         {...attributes}
         {...listeners}
+        aria-describedby={handleDescribedBy || undefined}
         className="flex items-center pr-2 cursor-grab"
         style={{ touchAction: 'none' }}
       >
+        <span
+          id={dragHandleInstructionsId}
+          className="sr-only"
+        >
+          {keyboardInstructions}
+        </span>
         <GripVertical className="h-4 w-4 text-gray-500" />
       </div>
       <div

@@ -17,11 +17,17 @@ export default function useTaskCard({
   task,
   dragOverlay = false,
 }: UseTaskCardProps) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({
-      id: task.id,
-      disabled: dragOverlay,
-    });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: task.id,
+    disabled: dragOverlay,
+  });
   const style = dragOverlay
     ? undefined
     : {
@@ -84,6 +90,7 @@ export default function useTaskCard({
       t,
       allTags,
       isMainTask: mainMyDayTaskId === task.id,
+      isDragging,
     },
     actions: {
       markInProgress,

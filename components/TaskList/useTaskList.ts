@@ -1,12 +1,14 @@
 'use client';
 import { useCallback } from 'react';
 import {
+  KeyboardSensor,
   MouseSensor,
   TouchSensor,
   useSensor,
   useSensors,
   DragEndEvent,
 } from '@dnd-kit/core';
+import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { Task } from '../../lib/types';
 import { useStore } from '../../lib/store';
 
@@ -19,6 +21,9 @@ export default function useTaskList({ tasks }: UseTaskListProps) {
     useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
     useSensor(TouchSensor, {
       activationConstraint: { delay: 100, tolerance: 5 },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
     })
   );
   const { reorderMyTasks } = useStore();

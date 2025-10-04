@@ -1,5 +1,10 @@
 'use client';
-import { useEffect, useState, type MouseEvent } from 'react';
+import {
+  useEffect,
+  useState,
+  type MouseEvent,
+  type KeyboardEvent,
+} from 'react';
 import { Check, Trash2, Play, Clock, Star } from 'lucide-react';
 import Link from '../Link/Link';
 import Timer from './Timer';
@@ -15,10 +20,26 @@ const priorityColors = {
 
 export default function TaskCard(props: UseTaskCardProps) {
   const { state, actions } = useTaskCard(props);
-  const { attributes, listeners, setNodeRef, style, t, isMainTask } = state;
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    style,
+    t,
+    isMainTask,
+    isDragging,
+  } = state;
   const { markInProgress, markDone, getTagColor, deleteTask, toggleMainTask } =
     actions;
   const { task, mode } = props;
+  const instructionId = `${task.id}-drag-instructions`;
+  const keyboardInstructions = t('dnd.keyboardInstructions');
+  const originalDescribedBy = (
+    attributes as unknown as { 'aria-describedby'?: string }
+  )['aria-describedby'];
+  const describedBy = [originalDescribedBy, instructionId]
+    .filter(Boolean)
+    .join(' ');
   const timer = useStore(state => state.timers[task.id]);
   const shouldForceShowTimer =
     mode === 'my-day' && task.dayStatus === 'doing' && Boolean(timer?.running);
@@ -39,9 +60,16 @@ export default function TaskCard(props: UseTaskCardProps) {
           'dark:border-amber-300/70 dark:hover:border-amber-200/70',
         ].join(' ')
       : 'bg-gray-100 dark:bg-gray-800 hover:shadow-md',
+    isDragging && !props.dragOverlay ? 'opacity-0' : null,
   ]
     .filter(Boolean)
     .join(' ');
+
+  const handleActionKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === ' ' || event.key === 'Enter') {
+      event.stopPropagation();
+    }
+  };
 
   const handleToggleMainTask = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -72,9 +100,16 @@ export default function TaskCard(props: UseTaskCardProps) {
       style={style as any}
       {...attributes}
       {...listeners}
+      aria-describedby={describedBy || undefined}
       className={cardClasses}
       data-main-task={isMainTask || undefined}
     >
+      <p
+        id={instructionId}
+        className="sr-only"
+      >
+        {keyboardInstructions}
+      </p>
       <div className="relative z-10">
         <div
           className={`flex justify-between ${
@@ -99,6 +134,7 @@ export default function TaskCard(props: UseTaskCardProps) {
                     aria-label={t('taskCard.markInProgress')}
                     title={t('taskCard.markInProgress')}
                     className="flex h-8 w-8 items-center justify-center rounded-full text-blue-400 transition-colors duration-150 hover:text-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300/60 focus-visible:ring-offset-2"
+                    onKeyDown={handleActionKeyDown}
                   >
                     <Play className="h-4 w-4" />
                   </button>
@@ -109,6 +145,7 @@ export default function TaskCard(props: UseTaskCardProps) {
                     aria-label={t('taskCard.markDone')}
                     title={t('taskCard.markDone')}
                     className="flex h-8 w-8 items-center justify-center rounded-full text-green-400 transition-colors duration-150 hover:text-green-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300/60 focus-visible:ring-offset-2"
+                    onKeyDown={handleActionKeyDown}
                   >
                     <Check className="h-4 w-4" />
                   </button>
@@ -119,6 +156,7 @@ export default function TaskCard(props: UseTaskCardProps) {
                     aria-label={t('taskCard.deleteTask')}
                     title={t('taskCard.deleteTask')}
                     className="flex h-8 w-8 items-center justify-center rounded-full text-red-400 transition-colors duration-150 hover:text-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300/60 focus-visible:ring-offset-2"
+                    onKeyDown={handleActionKeyDown}
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -134,6 +172,7 @@ export default function TaskCard(props: UseTaskCardProps) {
                       ? 'text-amber-600 hover:text-amber-500 dark:text-amber-200 dark:hover:text-amber-100'
                       : 'text-gray-400 hover:text-amber-400 dark:text-gray-500 dark:hover:text-amber-300'
                   }`}
+                  onKeyDown={handleActionKeyDown}
                 >
                   <Star
                     className="h-4 w-4"

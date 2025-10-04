@@ -111,6 +111,10 @@ const translations: Record<Language, any> = {
       noTasks: 'No tasks',
       noTasksIntro: 'Check your plan. Check your day.',
     },
+    dnd: {
+      keyboardInstructions:
+        'Press space to pick up a task, use the arrow keys to move it, press space again to drop it, or press Escape to cancel.',
+    },
     tasksView: {
       mobileAddTask: {
         show: 'Add task',
@@ -482,6 +486,10 @@ const translations: Record<Language, any> = {
     taskList: {
       noTasks: 'No hay tareas',
       noTasksIntro: 'Check your plan. Check your day.',
+    },
+    dnd: {
+      keyboardInstructions:
+        'Pulsa la barra espaciadora para seleccionar una tarea, usa las flechas para moverla, vuelve a pulsar espacio para soltarla o pulsa Escape para cancelar.',
     },
     tasksView: {
       mobileAddTask: {
