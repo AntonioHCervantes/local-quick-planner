@@ -7,7 +7,7 @@ type UseDialogFocusTrapOptions = {
   /**
    * Optional ref for the element that should receive focus when the dialog opens.
    */
-  initialFocusRef?: RefObject<HTMLElement>;
+  initialFocusRef?: RefObject<HTMLElement | null>;
 };
 
 const getFocusableElements = (container: HTMLElement) => {
@@ -25,7 +25,7 @@ const getFocusableElements = (container: HTMLElement) => {
 
 export default function useDialogFocusTrap(
   isOpen: boolean,
-  dialogRef: RefObject<HTMLElement>,
+  dialogRef: RefObject<HTMLElement | null>,
   options: UseDialogFocusTrapOptions = {}
 ) {
   const previouslyFocusedElement = useRef<HTMLElement | null>(null);
