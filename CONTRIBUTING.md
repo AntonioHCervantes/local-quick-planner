@@ -25,15 +25,32 @@ If you have an idea to improve the project, please open an issue with the "enhan
 3. Install dependencies: `npm install`
 4. Run the development server: `npm run dev`
 
+### Run checks locally
+
+Before opening a pull request, ensure the following commands succeed locally and resolve any warnings or failures:
+
+1. **Lint (sin warnings):** `npm run lint`
+2. **Typecheck:** `npm run typecheck`
+3. **Tests:** `npm run test`
+4. **Build:** `npm run build`
+
+If any command fails or surfaces warnings, fix the issues before pushing your branch.
+
 ### Pull Requests
 
 When you are ready to submit your contribution, please follow these steps:
 
-1. Create a new branch for your changes: `git checkout -b your-feature-name`
+1. Create a new branch for your changes. Use descriptive English kebab-case prefixed with the work type (e.g., `feature/add-calendar-widget`, `fix/drag-drop-edge-case`, `docs/update-readme`).
 2. Make your changes and commit them following the guidelines below.
-3. Push your changes to your fork: `git push origin your-feature-name`
+3. Push your changes to your fork: `git push origin <branch-name>`
 4. Open a Pull Request (PR) to the `main` branch of the original repository.
 5. Ensure the PR description clearly describes the problem and solution. Include the relevant issue number if applicable.
+
+When drafting the PR description:
+
+- Start with a concise summary of what changed and why.
+- List key implementation details or screenshots/GIFs if the UI is affected.
+- Reference related issues using `Closes #123` or `Relates to #123` so they link automatically.
 
 ### Commit Messages
 
