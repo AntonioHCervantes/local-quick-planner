@@ -14,6 +14,7 @@ import { Task } from '../../lib/types';
 import type { DayStatus } from '../../lib/dayStatus';
 import { useStore } from '../../lib/store';
 import { useI18n } from '../../lib/i18n';
+import { playApplause } from '../../lib/sounds';
 export interface UseBoardProps {
   mode: 'my-day' | 'kanban';
 }
@@ -22,7 +23,8 @@ export default function useBoard({ mode }: UseBoardProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
   );
-  const { tasks, lists, order, moveTask, reorderTask } = useStore();
+  const { tasks, lists, order, moveTask, reorderTask, mainMyDayTaskId } =
+    useStore();
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const { t } = useI18n();
 
@@ -93,6 +95,17 @@ export default function useBoard({ mode }: UseBoardProps) {
 
     if (overContainer === 'done' && activeContainer === 'done') {
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+    }
+
+    if (
+      mode === 'my-day' &&
+      overContainer === 'done' &&
+      activeContainer !== 'done'
+    ) {
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      if (mainMyDayTaskId === activeId) {
+        playApplause();
+      }
     }
 
     reorderTask(activeId, overContainer, overIndex, mode);
