@@ -65,17 +65,8 @@ export default function TaskCard(props: UseTaskCardProps) {
     .filter(Boolean)
     .join(' ');
 
-  const handleKeyDownCapture = (event: KeyboardEvent<HTMLDivElement>) => {
-    const target = event.target as HTMLElement | null;
-    if (!target) {
-      return;
-    }
-
-    if (
-      target.closest(
-        'button, [role="button"], a, input, textarea, select, [contenteditable]'
-      )
-    ) {
+  const handleActionKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === ' ' || event.key === 'Enter') {
       event.stopPropagation();
     }
   };
@@ -112,7 +103,6 @@ export default function TaskCard(props: UseTaskCardProps) {
       aria-describedby={describedBy || undefined}
       className={cardClasses}
       data-main-task={isMainTask || undefined}
-      onKeyDownCapture={handleKeyDownCapture}
     >
       <p
         id={instructionId}
@@ -144,6 +134,7 @@ export default function TaskCard(props: UseTaskCardProps) {
                     aria-label={t('taskCard.markInProgress')}
                     title={t('taskCard.markInProgress')}
                     className="flex h-8 w-8 items-center justify-center rounded-full text-blue-400 transition-colors duration-150 hover:text-blue-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-300/60 focus-visible:ring-offset-2"
+                    onKeyDown={handleActionKeyDown}
                   >
                     <Play className="h-4 w-4" />
                   </button>
@@ -154,6 +145,7 @@ export default function TaskCard(props: UseTaskCardProps) {
                     aria-label={t('taskCard.markDone')}
                     title={t('taskCard.markDone')}
                     className="flex h-8 w-8 items-center justify-center rounded-full text-green-400 transition-colors duration-150 hover:text-green-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-300/60 focus-visible:ring-offset-2"
+                    onKeyDown={handleActionKeyDown}
                   >
                     <Check className="h-4 w-4" />
                   </button>
@@ -164,6 +156,7 @@ export default function TaskCard(props: UseTaskCardProps) {
                     aria-label={t('taskCard.deleteTask')}
                     title={t('taskCard.deleteTask')}
                     className="flex h-8 w-8 items-center justify-center rounded-full text-red-400 transition-colors duration-150 hover:text-red-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-300/60 focus-visible:ring-offset-2"
+                    onKeyDown={handleActionKeyDown}
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -179,6 +172,7 @@ export default function TaskCard(props: UseTaskCardProps) {
                       ? 'text-amber-600 hover:text-amber-500 dark:text-amber-200 dark:hover:text-amber-100'
                       : 'text-gray-400 hover:text-amber-400 dark:text-gray-500 dark:hover:text-amber-300'
                   }`}
+                  onKeyDown={handleActionKeyDown}
                 >
                   <Star
                     className="h-4 w-4"
