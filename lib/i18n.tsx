@@ -342,7 +342,7 @@ const translations: Record<Language, any> = {
       localData: {
         title: 'Local Data',
         description:
-          'All tasks and settings are stored locally in your browser and never sent to a server.',
+          'All lists, custom columns and task states are processed directly in your browser with no account required. We keep this information in the browser local storage alongside preferences like language, theme and tips you have dismissed. The data stays on your device unless you export it or clear it manually, such as by wiping the browser cache or using the in-app reset actions.',
       },
       analytics: {
         title: 'Analytics',
@@ -716,7 +716,7 @@ const translations: Record<Language, any> = {
       localData: {
         title: 'Datos locales',
         description:
-          'Todas las tareas y ajustes se guardan localmente en tu navegador y nunca se envían a un servidor.',
+          'CheckPlanner funciona íntegramente en tu navegador. Las listas, columnas personalizadas y el estado de cada tarea se gestionan en tu dispositivo sin necesidad de crear cuentas ni conectarse a servicios externos. Guardamos esta información en el almacenamiento local del navegador (localStorage), junto con preferencias como el idioma, el tema y los recordatorios o tutoriales que hayas ocultado. Estos datos permanecen en tu equipo hasta que decides exportarlos o borrarlos manualmente, por ejemplo limpiando la caché del navegador o usando las acciones de reinicio de la aplicación.',
       },
       analytics: {
         title: 'Analítica',
