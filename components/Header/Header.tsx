@@ -303,6 +303,36 @@ export default function Header() {
             onClick={e => e.stopPropagation()}
           >
             <div className="flex flex-col gap-2">
+              <Link
+                href="/settings/work-schedule"
+                onClick={() => setShowActions(false)}
+                className="flex items-center gap-2 rounded px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800"
+              >
+                <CalendarClock className="h-4 w-4" />
+                {t('actions.workSchedule')}
+              </Link>
+              <button
+                onClick={() => {
+                  toggleTheme();
+                  setShowActions(false);
+                }}
+                className="flex items-center gap-2 rounded px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800"
+              >
+                {theme === 'dark' ? (
+                  <Sun className="h-4 w-4" />
+                ) : (
+                  <Moon className="h-4 w-4" />
+                )}
+                {t('actions.toggleTheme')}
+              </button>
+              <Link
+                href="/notifications"
+                onClick={() => setShowActions(false)}
+                className="flex items-center gap-2 rounded px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800"
+              >
+                <Bell className="h-4 w-4" />
+                {t('actions.notifications')}
+              </Link>
               <button
                 onClick={() => {
                   exportData();
@@ -333,28 +363,6 @@ export default function Header() {
               >
                 <Trash2 className="h-4 w-4" /> {t('actions.clearAll')}
               </button>
-              <button
-                onClick={() => {
-                  toggleTheme();
-                  setShowActions(false);
-                }}
-                className="flex items-center gap-2 rounded px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800"
-              >
-                {theme === 'dark' ? (
-                  <Sun className="h-4 w-4" />
-                ) : (
-                  <Moon className="h-4 w-4" />
-                )}
-                {t('actions.toggleTheme')}
-              </button>
-              <Link
-                href="/settings/work-schedule"
-                onClick={() => setShowActions(false)}
-                className="flex items-center gap-2 rounded px-2 py-2 hover:bg-gray-200 dark:hover:bg-gray-800"
-              >
-                <CalendarClock className="h-4 w-4" />{' '}
-                {t('actions.workSchedule')}
-              </Link>
               <div className="rounded px-2 py-2 hover:bg-gray-200 focus-within:bg-gray-200 dark:hover:bg-gray-800 dark:focus-within:bg-gray-800">
                 <div className="flex items-center gap-2">
                   <Languages className="h-4 w-4" />
