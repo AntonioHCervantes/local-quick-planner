@@ -110,11 +110,7 @@ export default function useBoard({ mode }: UseBoardProps) {
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
 
-    if (
-      mode === 'my-day' &&
-      overContainer === 'done' &&
-      !startedInDone
-    ) {
+    if (mode === 'my-day' && overContainer === 'done' && !startedInDone) {
       confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       if (mainMyDayTaskId === activeId) {
         playApplause();
