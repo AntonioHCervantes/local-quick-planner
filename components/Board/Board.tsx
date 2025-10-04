@@ -42,6 +42,7 @@ export default function Board(props: UseBoardProps) {
           <TaskCard
             task={activeTask}
             dragOverlay
+            mode={props.mode}
           />
         ) : null}
       </DragOverlay>

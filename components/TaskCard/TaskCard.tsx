@@ -1,5 +1,10 @@
 'use client';
-import { useEffect, useState, type MouseEvent } from 'react';
+import {
+  useEffect,
+  useState,
+  type MouseEvent,
+  type KeyboardEvent,
+} from 'react';
 import { Check, Trash2, Play, Clock, Star } from 'lucide-react';
 import Link from '../Link/Link';
 import Timer from './Timer';
@@ -15,7 +20,15 @@ const priorityColors = {
 
 export default function TaskCard(props: UseTaskCardProps) {
   const { state, actions } = useTaskCard(props);
-  const { attributes, listeners, setNodeRef, style, t, isMainTask } = state;
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    style,
+    t,
+    isMainTask,
+    isDragging,
+  } = state;
   const { markInProgress, markDone, getTagColor, deleteTask, toggleMainTask } =
     actions;
   const { task, mode } = props;
@@ -47,9 +60,25 @@ export default function TaskCard(props: UseTaskCardProps) {
           'dark:border-amber-300/70 dark:hover:border-amber-200/70',
         ].join(' ')
       : 'bg-gray-100 dark:bg-gray-800 hover:shadow-md',
+    isDragging && !props.dragOverlay ? 'opacity-0' : null,
   ]
     .filter(Boolean)
     .join(' ');
+
+  const handleKeyDownCapture = (event: KeyboardEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLElement | null;
+    if (!target) {
+      return;
+    }
+
+    if (
+      target.closest(
+        'button, [role="button"], a, input, textarea, select, [contenteditable]'
+      )
+    ) {
+      event.stopPropagation();
+    }
+  };
 
   const handleToggleMainTask = (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
@@ -83,6 +112,7 @@ export default function TaskCard(props: UseTaskCardProps) {
       aria-describedby={describedBy || undefined}
       className={cardClasses}
       data-main-task={isMainTask || undefined}
+      onKeyDownCapture={handleKeyDownCapture}
     >
       <p
         id={instructionId}
