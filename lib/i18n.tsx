@@ -122,6 +122,7 @@ const translations: Record<Language, any> = {
     },
     tagFilter: {
       showAll: 'Show all',
+      activeIndicator: '(active)',
       confirmDelete:
         'Some tasks are using this tag. If you remove it, those tasks will lose the tag. Continue?',
     },
@@ -498,6 +499,7 @@ const translations: Record<Language, any> = {
     },
     tagFilter: {
       showAll: 'Mostrar todas',
+      activeIndicator: '(activo)',
       confirmDelete:
         'Algunas tareas usan esta etiqueta. Si la eliminas, esas tareas perderán la etiqueta. ¿Continuar?',
     },
