@@ -39,6 +39,7 @@ describe('TaskCard', () => {
         t: (k: string) => k,
         allTags: [],
         isMainTask: false,
+        isDragging: false,
       },
       actions: {
         markInProgress: jest.fn(),
